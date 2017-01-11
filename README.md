@@ -1,1 +1,7 @@
 # consume-frontend
+
+
+
+## Dépendances
+
+* Webpack
