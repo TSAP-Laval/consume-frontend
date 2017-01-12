@@ -7,7 +7,7 @@
   "author": "William Dussault <dalloriam@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "mocha -w test/helpers/setup.js test/**/*-test.jsx"
+    "test": "echo Not Implemented"
   },
   "dependencies": {
     "@types/node": "^7.0.0",
