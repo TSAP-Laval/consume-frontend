@@ -1,0 +1,15 @@
+- hosts: web
+  remote_user: wduss
+
+  tasks:
+
+  - name: Delete old website version
+    file: path=/home/wduss/web state=absent
+
+  - name: Create web directory
+    file: path=/home/wduss/web state=directory
+
+  - name: Upload new build
+    copy:
+      src: ../dist/
+      dest: /home/wduss/web/
