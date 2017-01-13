@@ -1,4 +1,5 @@
 import * as React from "react";
+import {ArrowMap} from "../../components/ArrowMap/arrowmap"
 
 require('../../sass/Layout.scss');
 
@@ -8,7 +9,7 @@ export interface ILayoutState {
     title: string
 }
 
-export class Layout extends React.Component<ILayoutProps, ILayoutState> {
+export class Index extends React.Component<ILayoutProps, ILayoutState> {
 
     constructor() {
         super();
@@ -19,7 +20,7 @@ export class Layout extends React.Component<ILayoutProps, ILayoutState> {
 
     render() {
         return (
-            <h1>Hello, World!</h1>
+            <ArrowMap height={800}></ArrowMap>
         );
     }
 }
