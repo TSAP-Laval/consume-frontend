@@ -1,12 +1,16 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {Router, Route, IndexRoute, hashHistory} from "react-router";
+import {Router, Route, IndexRoute, hashHistory, Link} from "react-router";
 
-import {App} from "./app/App";
+import { Layout } from "./pages/Layout"
+import { User } from "./pages/User"
 
 const root = document.getElementById("root");
 
-ReactDOM.render(<Router history={hashHistory}>
-  <Route path="/" component={App}>
-  </Route>
-</Router>, root);
+ReactDOM.render(
+  <Router history={hashHistory}>
+    <Route path="/" component={Layout}>
+      <Route path="user" component={User}></Route>
+    </Route>
+  </Router>, 
+root);

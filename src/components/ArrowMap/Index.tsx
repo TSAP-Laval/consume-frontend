@@ -7,44 +7,50 @@ export interface ILayoutProps {
     height:number
 }
 
-export interface ILayoutState {}
+export interface ILayoutState {
+    numbers:number[]
+}
 
 export class ArrowMap extends React.Component<ILayoutProps, ILayoutState> {
-
-    letters: String[];
-
-    constructor() {
-        super()
-        this.letters = Store.getLetters();
-    }
-
-    readonly width = this.props.height * 2;
-    readonly height = this.props.height;
+    height: number;
+    width: number;
     readonly mainColor = "black";   
     readonly strokeWidth = 3;
 
+    constructor(props: ILayoutProps) {
+        super(props)
+
+        this.state = {
+            numbers: Store.getNumbers()
+        }
+
+        this.height = this.props.height;    
+        this.width = this.height * 2;
+    }
+
     addData(e:MouseEvent){
-        Actions.AddLetter();
+        Actions.AddNumber();
     }
 
     componentWillMount(){
         Store.on("change", () => {
-            this.letters = Store.getLetters();
+            this.setState({
+                numbers:Store.getNumbers()
+            })
         })
     }
 
-    renderMap() {
-                
-        const LettersList =  this.letters.map((letter) => {
-            return <li>letter</li>
+    render() {              
+        const NumbersList =  this.state.numbers.map((num) => {
+            return <li key={num}>{num}</li>
         })
 
         return(
             <div>
-                <button onClick={this.addData.bind(this)}>PISSE-PLIS :(</button>
+                <button onClick={this.addData.bind(this)}>ONE LOVE REACT</button>
 
                 <ul>
-                    <li>TABARNACK</li>
+                    {NumbersList}
                 </ul>
 
                 <Stage width={this.width} height={this.height}>
@@ -74,9 +80,5 @@ export class ArrowMap extends React.Component<ILayoutProps, ILayoutState> {
                 </Stage>
             </div>
         );
-    }
-
-    render() {
-        return(this.renderMap());
     }
 }

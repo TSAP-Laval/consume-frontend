@@ -1,28 +1,26 @@
 import { EventEmitter } from "events";
-import { IAction } from "../interfaces"
-import dispatcher from "../dispatcher"; 
+import { IAction } from "../../interfaces"
+import dispatcher from "../../dispatcher";
+import { AddNumber } from "./actions/AddNumber" 
 
 class ArrowMapStore extends EventEmitter {
-    data: String[];
+    data: number[];
 
     constructor() {
         super();
-        this.data = ["A", "B", "C"];
+        this.data = [];
     }
 
-    getLetters() {
+    getNumbers() {
         return this.data;
-    }
-
-    addLetter(letter: String){
-        this.data.push(letter);
     }
 
     handleActions(action: IAction){
         switch(action.type) {
-            case "ADD_LETTER":
-                this.data.push(action.type);
-                this.emit("change");
+            case "ADD_NUMBER":
+                this.data.push(Date.now())
+                this.emit("change")
+                break;
         }
     }
 }
