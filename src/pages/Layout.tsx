@@ -1,13 +1,14 @@
 import * as React from "react";
+import {Link} from "react-router"
 import {Header} from "./Header";
 import {Footer} from "./Footer"
-import {ArrowMap} from "../ArrowMap/Index"
+import {ArrowMap} from "../components/ArrowMap/Index"
 
 export interface ILayoutProps {}
 
 export interface ILayoutState {}
 
-export class App extends React.Component<ILayoutProps, ILayoutState> {
+export class Layout extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
         super();
         this.state = {
@@ -19,6 +20,11 @@ export class App extends React.Component<ILayoutProps, ILayoutState> {
         return (
             <div>
                 <Header/>
+                <ul>
+                    <li><Link to="/">Page d'accueil</Link></li>
+                    <li><Link to="/user">Page d'utilisateur</Link></li>
+                </ul>
+                    {this.props.children}
                 <Footer/>
             </div>
         );
