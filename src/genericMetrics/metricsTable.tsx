@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import MetricRow from "../genericMetrics/MetricRow";
+
 //require('../../sass/Layout.scss');
 
 // Represent the props reveived by the Component GenericMetrics.
@@ -26,6 +28,7 @@ export default class MetricsTable extends React.Component<IDataProps, IDataState
             <th>Value</th>
             <th>Type</th>
         </thead>
+        <MetricRow />
       </table>
     );
     }
