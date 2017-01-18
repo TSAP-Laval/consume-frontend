@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Link} from "react-router"
-import {Header} from "../components/Header";
-import {Footer} from "../components/Footer"
+import {Header} from "./Header";
+import {Footer} from "./Footer"
 import {ArrowMap} from "../components/ArrowMap/Index"
 
 export interface ILayoutProps {}

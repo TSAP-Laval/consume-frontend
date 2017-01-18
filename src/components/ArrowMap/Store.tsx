@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
-import { IAction } from "../../interfaces"
-import dispatcher from "../../dispatcher";
+import { IAction } from "../IAction"
+import dispatcher from "../dispatcher";
 
 class ArrowMapStore extends EventEmitter {
     constructor() {

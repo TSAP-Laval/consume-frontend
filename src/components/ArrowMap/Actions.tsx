@@ -1,9 +1,9 @@
-import * as interfaces from "../../interfaces"
+import {IAction} from "../IAction"
 
-import Coordinate from "../../models/Coordinate"
-import Arrow from "../../models/Arrow"
+import Coordinate from "./models/Coordinate"
+import Arrow from "./models/Arrow"
 
-export class FetchArrows implements interfaces.IAction {
+export class FetchArrows implements IAction {
     type: String
     arrows: Arrow[]
 
