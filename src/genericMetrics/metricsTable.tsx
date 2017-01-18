@@ -22,8 +22,10 @@ export default class MetricsTable extends React.Component<IDataProps, IDataState
     render() {
     return (
       <table>
-        <th>Value</th>
-        <th>Type</th>
+        <thead>
+            <th>Value</th>
+            <th>Type</th>
+        </thead>
       </table>
     );
     }
