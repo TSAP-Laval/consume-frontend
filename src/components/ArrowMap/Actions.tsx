@@ -1,7 +1,26 @@
-import dispatcher from "../../dispatcher"
-import * as Actions from "./actions/AddNumber"
+import * as interfaces from "../../interfaces"
 
-export function AddNumber() {
-    const action = new Actions.AddNumber()
-    dispatcher.dispatch(action);
+import Coordinate from "../../models/Coordinate"
+import Arrow from "../../models/Arrow"
+
+export class FetchArrows implements interfaces.IAction {
+    type: String
+    arrows: Arrow[]
+
+    constructor(match_id: number, player_id: number) {
+        this.type = "FETCH_ARROWS"
+        this.arrows = this.getArrows()
+    }
+
+    getArrows(){
+        let arrows = new Array<Arrow>()
+
+        for(var i = 1; i <= 5; i++) {
+            let value = i * 10
+            let coord = new Coordinate(value, value)
+            arrows.push(new Arrow(coord, coord))
+        }
+
+        return arrows;
+    }
 }

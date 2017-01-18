@@ -1,15 +1,11 @@
 import * as React from "react";
 import {Layer, Rect, Stage, Circle, Line} from 'react-konva';
-import Store from "./Store"
-import * as Actions from "./Actions"
 
 export interface ILayoutProps {
     height:number
 }
 
-export interface ILayoutState {
-    numbers:number[]
-}
+export interface ILayoutState {}
 
 export class ArrowMap extends React.Component<ILayoutProps, ILayoutState> {
     height: number;
@@ -20,39 +16,13 @@ export class ArrowMap extends React.Component<ILayoutProps, ILayoutState> {
     constructor(props: ILayoutProps) {
         super(props)
 
-        this.state = {
-            numbers: Store.getNumbers()
-        }
-
         this.height = this.props.height;    
         this.width = this.height * 2;
     }
 
-    addData(e:MouseEvent){
-        Actions.AddNumber();
-    }
-
-    componentWillMount(){
-        Store.on("change", () => {
-            this.setState({
-                numbers:Store.getNumbers()
-            })
-        })
-    }
-
     render() {              
-        const NumbersList =  this.state.numbers.map((num) => {
-            return <li key={num}>{num}</li>
-        })
-
         return(
             <div>
-                <button onClick={this.addData.bind(this)}>ONE LOVE REACT</button>
-
-                <ul>
-                    {NumbersList}
-                </ul>
-
                 <Stage width={this.width} height={this.height}>
                     <Layer>
                         <Rect
