@@ -22,9 +22,10 @@ export class Layout extends React.Component<ILayoutProps, ILayoutState> {
 
     render() {
         const greating = "Hello World";
+        const title = "TSAP consume Props";
         return (
             <div>
-            <Header title="TSAP Consume Props"/>
+            <Header title = {title}/>
             <h1>{greating}!</h1>
             <Footer/>
             </div>

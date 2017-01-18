@@ -1,6 +1,8 @@
 import * as React from "react";
 
-export interface ILayoutProps {}
+export interface ILayoutProps {
+    title: string
+}
 
 export interface ILayoutState {
     title: string
@@ -8,13 +10,11 @@ export interface ILayoutState {
 
 export class Header extends React.Component<ILayoutProps, ILayoutState> {
 
-    constructor() {
-        super();
-    }
-
     render() {
+        // Le titre qui vient de l'index.
+        // var title = this.props.title;
         return (
-            <header><h1>TSAP-Consume</h1></header>
+            <header><h1>{this.props.title}</h1></header>
         );
     }
 }

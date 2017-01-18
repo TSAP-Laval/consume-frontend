@@ -1,5 +1,9 @@
 import * as React from "react";
 
+import GenericMetricsStore from "../genericMetrics/GenericMetricsStore";
+
+import MetricsTable from "../genericMetrics/MetricsTable";
+
 //require('../../sass/Layout.scss');
 
 // Represent the props reveived by the Component GenericMetrics.
@@ -10,7 +14,7 @@ export interface IDataStates {
 }
 
 //This component will display all metrics from a team.
-export default class MetricsTable extends React.Component<IDataProps, IDataStates> {
+export class GenericMetricsView extends React.Component<IDataProps, IDataStates> {
 
     constructor() {
         super();
@@ -19,12 +23,19 @@ export default class MetricsTable extends React.Component<IDataProps, IDataState
         }
     }
 
+    // Will fetch and load the data.
+    componentWillMunt(){
+
+    }
+
+    // Will fetch and load the data.
+    componentWillUnmunt(){
+
+    }
+
     render() {
     return (
-      <table>
-        <th>Value</th>
-        <th>Type</th>
-      </table>
+        <MetricsTable />
     );
     }
 }

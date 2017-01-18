@@ -4,9 +4,15 @@ import * as ReactDOM from "react-dom";
 import {Router, Route, IndexRoute, hashHistory} from "react-router";
 
 import { Layout } from "./layouts/Layout"
-import { Header } from "./app/Header" 
+import { Header } from "./app/Header"
+import { GenericMetricsView } from "./GenericMetrics/GenericMetricsView"
 
-ReactDOM.render(
+/**ReactDOM.render(
   <Layout/>,
   document.getElementById('root')
-);
+);*/
+
+ ReactDOM.render(
+  <GenericMetricsView/>,
+  document.getElementById('root')
+); 
