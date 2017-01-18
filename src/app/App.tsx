@@ -19,7 +19,6 @@ export class App extends React.Component<ILayoutProps, ILayoutState> {
         return (
             <div>
                 <Header/>
-                <ArrowMap height={800}/>
                 <Footer/>
             </div>
         );
