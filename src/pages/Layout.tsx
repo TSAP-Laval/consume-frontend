@@ -12,7 +12,7 @@ export interface ILayoutState {
     Error?: string
 }
 
-export class Layout extends React.Component<ILayoutProps, ILayoutState> {
+export default class Layout extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
         super();
         this.getError = this.getError.bind(this);
