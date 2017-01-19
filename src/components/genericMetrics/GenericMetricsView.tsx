@@ -1,8 +1,10 @@
 import * as React from "react";
-
-import GenericMetricsStore from "../genericMetrics/GenericMetricsStore";
-
+import genericMetricsStore from "../genericMetrics/GenericMetricsStore";
 import MetricsTable from "../genericMetrics/MetricsTable";
+import IJoueur from "./models/IJoueur";
+import Status from "./models/Status";
+import { ProgressBar } from 'react-bootstrap';
+import { CreateGetPlayersAction } from "./actions/genericMetricsActions";
 
 //require('../../sass/Layout.scss');
 
@@ -10,7 +12,8 @@ import MetricsTable from "../genericMetrics/MetricsTable";
 export interface IDataProps {}
 
 export interface IDataStates {
-    title: string
+     requestState?: Status,
+    joueurs?: IJoueur[]
 }
 
 //This component will display all metrics from a team.
@@ -18,19 +21,41 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
 
     constructor() {
         super();
+
+         this.getStatus = this.getStatus.bind(this);
+        this.getResults = this.getResults.bind(this);
+
         this.state = {
-            title: "TSAP"
+            requestState: genericMetricsStore.getRequestStatus(),
+            joueurs: genericMetricsStore.getAllPlayers()
         }
     }
 
     // Will fetch and load the data.
     componentWillMunt(){
-        
+        genericMetricsStore.on("dataChange", this.getResults);
+        genericMetricsStore.on("requestState", this.getStatus);
+        CreateGetPlayersAction(1);
     }
 
-    // Will fetch and load the data.
+    // Pour la gestion de mémoire on supprime les listener d'events.
     componentWillUnmunt(){
+        genericMetricsStore.removeListener("dataChange", this.getResults);
+        genericMetricsStore.removeListener("requestState", this.getStatus);
+    }
 
+    // Va récupérer les joueurs du store.
+     getResults() {
+        this.setState({
+            joueurs: genericMetricsStore.getAllPlayers()
+        });
+    }
+
+    // Va récupérer le status de la requête.
+    getStatus() {
+        this.setState({
+            requestState: genericMetricsStore.getRequestStatus()
+        })
     }
 
     render() {

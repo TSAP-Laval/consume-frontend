@@ -5,7 +5,7 @@ import * as React from "react";
 // Represent the props reveived by the Component GenericMetrics.
 export interface IDataProps {
     columns: Array<String>,
-    data:
+    data: Array<Array<String>>
 }
 
 export interface IDataStates {

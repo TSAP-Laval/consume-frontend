@@ -22,10 +22,11 @@ export class Player extends React.Component<ILayoutProps, ILayoutState> {
         let arrowTitle = <h3>Tracé des actions</h3>;
         let statsTitle = <h3>Statistiques du joueur</h3>;
         let graphTitle = <h3>Progression du joueur</h3>;
+        let statsTeamTitle = <h3>Statistique de l'équipe</h3>;
 
         return (
             <div>
-                <Panel header={graphTitle} className="data-panel"><GenericMetricsView Height={300} Width={600} /></Panel>
+                <Panel header={statsTeamTitle} className="data-panel"><GenericMetricsView Height={300} Width={600} /></Panel>
             </div>
         );
     }

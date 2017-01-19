@@ -26,19 +26,19 @@ export class PlayersReceivedAction implements IAction {
     }
 }
 
-export function CreateGetPlayersAction(playerId: number, teamId: number) {
+export function CreateGetPlayersAction(teamId: number) {
     dispatcher.dispatch(new GetPlayersActions(teamId));
 
     // On définit l'URL à partir duquel axios va effectuer son call asyncrhone.
-    var url: string = Config.serverUrl + "/stats/team/"+ teamId.toString();
+    var url: string = Config.serverUrl + "/stats/team/" + teamId.toString();
 
     axios.get(url)
     .then((response) => {
-        let joueurs : Array<IJoueur> = response.data.matches as Array<IJoueur>;
+        //On récupère les joueurs contenu dans la réponse en JSON.
+        let joueurs : Array<IJoueur> = response.data.players as Array<IJoueur>;
 
-        joueurs = joueurs.map((joueur) => {
-            return joueur;
-        });
+        //Nous allons passer la liste de joueurs au dispatcher afin que celui
+        //le dispatche. Le store correspondant répondra.
         dispatcher.dispatch(new PlayersReceivedAction(joueurs));
     }, 
     (err) => {
