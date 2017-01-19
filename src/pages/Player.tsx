@@ -14,7 +14,7 @@ export interface ILayoutProps {}
 
 export interface ILayoutState {}
 
-export class Player extends React.Component<ILayoutProps, ILayoutState> {
+export default class Player extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
         super();
     }
