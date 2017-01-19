@@ -26,7 +26,7 @@ export class Player extends React.Component<ILayoutProps, ILayoutState> {
 
         return (
             <div>
-                <Panel header={statsTeamTitle} className="data-panel"><GenericMetricsView Height={300} Width={600} /></Panel>
+                <Panel header={statsTeamTitle} className="data-panel"><GenericMetricsView /></Panel>
             </div>
         );
     }

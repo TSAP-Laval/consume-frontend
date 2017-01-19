@@ -58,16 +58,31 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
         })
     }
 
-    render() {
-    return (
-        <div>
-        <select>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-        </select><br/><br/>
-        <MetricsTable />
-        </div>
-        
-    );
+     render() {
+         //Pour afficher le nom et le prénom du joueur.
+        let baseCols: Array<String> = ["Prénom", "Nom"];
+        // Pour récupérer ces données.
+        let cols = baseCols.concat(this.state.joueurs.length > 0? 
+        this.state.joueurs[0].metrics.map((metric) => {
+            return metric.name
+        }): []);
+        // Pour récupérer les mtrics.
+        let data = this.state.joueurs.map((joueur) => {
+            let baseData: Array<String> = [joueur.firstName, joueur.lastName];
+            return baseData.concat(joueur.metrics.map((metric) => {
+                return metric.value.toFixed(2).toString();
+            }));
+        });
+
+        return (
+            this.state.requestState == Status.Idle?
+            <div>
+                <MetricsTable columns={ cols } data={ data }/>
+            </div>
+            : <div>
+                <h3>{ "Chargement..." }</h3>
+                <ProgressBar active now={45} />
+              </div>
+        )
     }
 }
