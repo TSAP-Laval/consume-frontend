@@ -111,7 +111,7 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
         let data = {
             labels: labels,
             datasets: datasets
-        } as LinearChartData
+        };
 
         let config: Chart.ChartConfiguration = {
             type: "line",
