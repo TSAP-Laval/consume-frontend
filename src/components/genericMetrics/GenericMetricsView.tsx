@@ -14,7 +14,7 @@ export interface IDataStates {
 }
 
 //This component will display all metrics from a team.
-export class GenericMetricsView extends React.Component<IDataProps, IDataStates> {
+export default class GenericMetricsView extends React.Component<IDataProps, IDataStates> {
 
     constructor() {
         super();
@@ -25,7 +25,7 @@ export class GenericMetricsView extends React.Component<IDataProps, IDataStates>
 
     // Will fetch and load the data.
     componentWillMunt(){
-
+        
     }
 
     // Will fetch and load the data.
@@ -35,7 +35,14 @@ export class GenericMetricsView extends React.Component<IDataProps, IDataStates>
 
     render() {
     return (
+        <div>
+        <select>
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+        </select><br/><br/>
         <MetricsTable />
+        </div>
+        
     );
     }
 }

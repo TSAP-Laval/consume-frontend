@@ -3,7 +3,10 @@ import * as React from "react";
 //require('../../sass/Layout.scss');
 
 // Represent the props reveived by the Component GenericMetrics.
-export interface IDataProps {}
+export interface IDataProps {
+    columns: Array<String>,
+    data:
+}
 
 export interface IDataStates {
     title: string
