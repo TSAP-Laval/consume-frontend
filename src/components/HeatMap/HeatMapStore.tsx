@@ -6,28 +6,33 @@ import {IZone} from "./models/BaseModels"
 
 class HeatMapStore extends EventEmitter {
     zones: IZone[];
-    message: string;
+    fetching: boolean;
 
     constructor() {
     super();
     this.zones = [];
-    this.message = "";
+    this.fetching = false;
   }
 
   getZones(){
       return this.zones;
   }
 
+  isFetching(){
+    return this.fetching;
+  }
+
   handleActions(action: IAction){
       switch(action.type) {
       case "GET_ZONES": {
-        this.message = "Loading..."
-        this.emit("change")
+        this.fetching = true;
+        this.emit("GET_ZONES")
         break;
       }
       case "RECIEVE_ZONES": {
         this.zones = (action as RecieveData).zones;
-        this.emit("change");
+        this.fetching = false;
+        this.emit("RECIEVE_ZONES");
         break;
       }
     }

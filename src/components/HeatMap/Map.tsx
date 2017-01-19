@@ -3,7 +3,8 @@ import * as Actions from "./Actions"
 import Store from "./HeatMapStore"
 import Map from "../Map/Index"
 import { IZone } from "./models/BaseModels"
-import {Layer, Rect, Stage, Circle, Line} from 'react-konva';
+import { ProgressBar } from 'react-bootstrap';
+import {Layer, Rect, Stage, Circle, Line, Text} from 'react-konva';
 
 export interface ILayoutProps {
 }
@@ -20,28 +21,34 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
     width: number;
     playerid: number;
     matchid: number;
-    readonly mainColor = "black";   
-    readonly strokeWidth = 3;
     constructor(props: ILayoutProps) {
         super(props);
         this.getZones = this.getZones.bind(this);
+        this.setLoadingStatus = this.setLoadingStatus.bind(this)
         this.state = {
-            zones: Store.getZones()
+            zones: Store.getZones(),
+            loading: Store.isFetching()
         }
         this.height = this.state.height;
         this.width = this.height * 2;
         this.playerid = 112;
         this.matchid = 2;
     }
-
     componentWillMount() {
-        Store.on("change", this.getZones);
+        Store.on("GET_ZONES", this.setLoadingStatus);
+        Store.on("RECIEVE_ZONES", this.getZones);
     }
 
     componentWillUnmount() {
-        Store.removeListener("change", this.getZones);
+        Store.removeListener("GET_ZONES", this.setLoadingStatus);
+        Store.removeListener("RECIEVE_ZONES", this.getZones);
     }
 
+    setLoadingStatus() {
+        this.setState({
+            loading: Store.isFetching()
+        })
+    }
 
     loadZones() {
         Actions.GetData(this.playerid, this.matchid);
@@ -64,25 +71,60 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
     }
 
     getZones() {
-    this.setState({
-      zones: Store.getZones()
-    });
-  }
+        this.setState({
+            loading: Store.isFetching(),
+            zones: Store.getZones()
+        });
+    }
   
 
     render() {
-        const { zones } = this.state;
+            var zoneWidth = this.state.width/4;
+            var zoneHeight = this.state.height/3;
+        const Zones = this.state.zones.map((zone, i)=> {
+            var startX = zoneWidth * zone.x;
+            var ys: number[] = [2,1,0];
+            var startY = zoneHeight * ys[zone.y];
+            var opacity = zone.percentage * 4;
+            var colorZone;
+            if(zone.rating < 0.25){
+                colorZone = "red"
+            } else if (zone.rating < 0.75){
+                colorZone = "yellow"
+            } else {
+                colorZone = "green"
+            }
 
-        return(
-            <div>
-                <button onClick={this.loadZones.bind(this)}>Load Zones</button>
+            return <Rect key={i} x={startX} y={startY} width={zoneWidth} height={zoneHeight} stroke="black" fill={colorZone} opacity={opacity}/>
+        }) 
+
+        const Texts = this.state.zones.map((zone,i)=>{
+            var text =  (zone.percentage * 100).toString() + '%';
+            var startX = (zoneWidth * zone.x) + (zoneWidth/2);
+            var ys: number[] = [2,1,0];
+            var startY = (zoneHeight * ys[zone.y]) + (zoneHeight/2);
+
+            return <Text key={i} x={startX} y={startY} text={text} fontSize={32}/>
+        })
+
+        if(!this.state.loading) {
+            return(
                 <div ref="mainStage">
                     <Stage width={this.state.width} height={this.state.height}>
                         <Map height={this.state.height}/>
+                        <Layer>{Zones}</Layer>
+                        <Layer>{Texts}</Layer>
                     </Stage>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            return(
+                <div>
+                    <h3>{ "Chargement... "}</h3>
+                    <ProgressBar active now={45} />
+                </div>
+            )
+        }
     }
 
 }

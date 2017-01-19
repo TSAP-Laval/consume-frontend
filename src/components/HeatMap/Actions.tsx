@@ -37,8 +37,8 @@ export function GetData(playerid: number, matchid: number) {
               }
             }
           }
-          zone.percentage = +((nbActions/rawData.length) * 100).toFixed(2);
-          zone.rating = + ((rating/nbActions) * 100).toFixed(2);
+          zone.percentage = +(nbActions/rawData.length).toFixed(2);
+          zone.rating = + (rating/nbActions).toFixed(2);
         }
         const recieve = new Actions.RecieveData(zones)
         dispatcher.dispatch(recieve);
