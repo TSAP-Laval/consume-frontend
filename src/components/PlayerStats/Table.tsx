@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { Table as T } from 'react-bootstrap';
+
 export interface ITableProps {
     columns: Array<String>,
     data: Array<Array<String>>
@@ -23,12 +25,12 @@ export default class Table extends React.Component<ITableProps, ITableState> {
         });
 
         return (
-            <table frameBorder={1}>
-            <tbody>
-                <tr>{ headers }</tr>
-                { dataRows }
-            </tbody>
-            </table>
+            <T striped bordered condensed hover responsive>
+                <tbody>
+                    <tr>{ headers }</tr>
+                    { dataRows }
+                </tbody>
+            </T>
         );
     }
 }

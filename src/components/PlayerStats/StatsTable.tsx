@@ -68,8 +68,6 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
 
         return (
             <div>
-                <p>State: { this.state.requestState }</p>
-                <p>Matches: { this.state.matches.length }</p>
                 <Table columns={ cols } data={ data }/>
             </div>
         )
