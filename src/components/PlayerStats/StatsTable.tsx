@@ -7,6 +7,8 @@ import IMatch from "./models/IMatch";
 
 import Table from "./Table";
 
+import { ProgressBar } from 'react-bootstrap';
+
 export interface IStatsProps {}
 
 export interface IStatsState {
@@ -67,9 +69,14 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
         });
 
         return (
+            this.state.requestState == Status.Idle?
             <div>
                 <Table columns={ cols } data={ data }/>
             </div>
+            : <div>
+                <h3>{ "Chargement..." }</h3>
+                <ProgressBar active now={45} />
+              </div>
         )
     }
 

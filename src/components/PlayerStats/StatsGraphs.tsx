@@ -11,6 +11,8 @@ import Table from "./Table";
 
 import { Chart } from 'chart.js';
 
+import { ProgressBar } from 'react-bootstrap';
+
 export interface IGraphsProps {
     Width: number,
     Height: number
@@ -57,7 +59,8 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
 
     getResults() {
         this.setState({
-            matches: StatsTableStore.getMatches()
+            matches: StatsTableStore.getMatches(),
+            requestState: StatsTableStore.getRequestStatus()
         });
         this.drawGraph();
     }
@@ -68,11 +71,11 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
         })
     }
 
-    componentDidMount() {
-        this.drawGraph();
-    }
-
     drawGraph() {
+
+        if (this.state.requestState == Status.Started) {
+            return
+        }
         let ctx : CanvasRenderingContext2D = (this.refs.statGraph as HTMLCanvasElement).getContext("2d");
 
 
@@ -136,8 +139,13 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
         });
 
         return (
-            <canvas ref={"statGraph"} >
-            </canvas>
+            this.state.requestState == Status.Idle?
+                <canvas ref={"statGraph"} >
+                </canvas>
+            : <div>
+                <h3>{ "Chargement..." }</h3>
+                <ProgressBar active now={45} />
+              </div>
         )
     }
 

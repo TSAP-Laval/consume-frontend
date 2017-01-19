@@ -1,5 +1,6 @@
 import * as React from "react";
 import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
+import { ProgressBar } from 'react-bootstrap';
 import * as ActionsCreator from "./ActionsCreator"
 import ArrowModel from "./models/Arrow"
 import Map from "../Index"
@@ -95,7 +96,8 @@ export class ArrowMap extends React.Component<ILayoutProps, ILayoutState> {
         } else {
             return(
                 <div>
-                    <p>CHARGEMENT ...</p>
+                    <h3>{ "Chargement... "}</h3>
+                    <ProgressBar active now={45} />
                 </div>
             )
         }
