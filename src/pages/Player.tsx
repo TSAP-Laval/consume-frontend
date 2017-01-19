@@ -1,19 +1,26 @@
 import * as React from "react";
+
 import {ArrowMap} from "../components/Map/ArrowMap/Index"
 import {HeatMap} from "../components/HeatMap/Map"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
+import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
 
 import { Panel } from "react-bootstrap";
 
 require('../sass/Player.scss');
 
-export interface ILayoutProps {}
+export interface ILayoutProps {
+    params: {
+        teamID: number,
+        playerID: number
+    }
+}
 
 export interface ILayoutState {}
 
-export class Player extends React.Component<ILayoutProps, ILayoutState> {
+export default class Player extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
         super();
     }
@@ -28,8 +35,8 @@ export class Player extends React.Component<ILayoutProps, ILayoutState> {
             <div>
                 <Panel header={arrowTitle} className="data-panel"><ArrowMap/></Panel>
                 <Panel header={heatmapTitle} className="data-panel"><HeatMap/></Panel>
-                <Panel header={statsTitle} className="data-panel"><StatsTable/></Panel>
-                <Panel header={graphTitle} className="data-panel"><StatsGraphs Height={300} Width={600} /></Panel>
+                <Panel header={statsTitle} className="data-panel"><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></Panel>
+                <Panel header={graphTitle} className="data-panel"><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></Panel>
             </div>
         );
     }

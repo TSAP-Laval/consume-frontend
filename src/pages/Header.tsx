@@ -25,11 +25,6 @@ export class Header extends React.Component<ILayoutProps, ILayoutState> {
                         </Link>
                     </Navbar.Brand>
                 </Navbar.Header>
-                <Nav>
-                    <LinkContainer to={"/user"}>
-                        <NavItem eventKey={1}>Joueur</NavItem>
-                    </LinkContainer>
-                </Nav>
             </Navbar>
         );
     }

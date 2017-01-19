@@ -9,7 +9,10 @@ import Table from "./Table";
 
 import { ProgressBar } from 'react-bootstrap';
 
-export interface IStatsProps {}
+export interface IStatsProps {
+    teamID: number,
+    playerID: number
+}
 
 export interface IStatsState {
     requestState?: Status,
@@ -33,7 +36,7 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
     componentWillMount() {
         StatsTableStore.on("dataChange", this.getResults);
         StatsTableStore.on("requestState", this.getStatus)
-        CreateGetMatchesAction(127, 3);
+        CreateGetMatchesAction(this.props.playerID, this.props.teamID);
     }
 
     componentWillUnmount() {
