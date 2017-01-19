@@ -13,7 +13,7 @@ export class User extends React.Component<ILayoutProps, ILayoutState> {
     render() {
         return (
             <div>
-                <ArrowMap height={300}/>
+                <ArrowMap height={600}/>
             </div>
         );
     }

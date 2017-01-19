@@ -32,6 +32,14 @@ module.exports = {
         })
     ],
 
+    externals: {
+         'Config': JSON.stringify(process.env.ENV === 'production' ? {
+             serverUrl: "/api"
+         } : {
+             serverUrl: "http://localhost:8080/api"
+         })
+     },
+
     postcss: [
         autoprefixer({
             browsers: ['last 2 versions']
