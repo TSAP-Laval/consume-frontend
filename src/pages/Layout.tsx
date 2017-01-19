@@ -19,10 +19,6 @@ export class Layout extends React.Component<ILayoutProps, ILayoutState> {
         return (
             <div>
                 <Header/>
-                <ul>
-                    <li><Link to="/">Page d'accueil</Link></li>
-                    <li><Link to="/user">Page d'utilisateur</Link></li>
-                </ul>
                     {this.props.children}
                 <Footer/>
             </div>
