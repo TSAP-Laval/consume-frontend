@@ -23,7 +23,7 @@ export default class MetricsRow extends React.Component<IRowProps, IRowState> {
         });
 
         boxes.push(
-            <td key={boxes.length}><Link to={"/team/" + this.props.teamID + "/player/" + this.props.playerID}>{"Hello"}</Link></td>
+            <td key={boxes.length}><Link to={"/team/" + this.props.teamID + "/player/" + this.props.playerID}>{"Voir"}</Link></td>
         )
 
         return <tr>{ boxes }</tr>
