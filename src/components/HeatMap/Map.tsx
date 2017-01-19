@@ -1,15 +1,18 @@
 import * as React from "react";
 import * as Actions from "./Actions"
 import Store from "./HeatMapStore"
+import Map from "../Map/Index"
 import { IZone } from "./models/BaseModels"
 import {Layer, Rect, Stage, Circle, Line} from 'react-konva';
 
 export interface ILayoutProps {
-    height:number
 }
 
 export interface ILayoutState {
-    zones: IZone[];
+    zones? : IZone[];
+    loading? : boolean,
+    height?: number,
+    width?: number
 }
 
 export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
@@ -25,7 +28,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         this.state = {
             zones: Store.getZones()
         }
-        this.height = this.props.height;    
+        this.height = this.state.height;
         this.width = this.height * 2;
         this.playerid = 112;
         this.matchid = 2;
@@ -44,44 +47,40 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         Actions.GetData(this.playerid, this.matchid);
     }
 
+    refs: {
+        [string: string]: (Element);
+        mainStage: (HTMLElement);
+    }
+    componentDidMount() {
+
+        let w = this.refs.mainStage.clientWidth
+        let h = w / 2;
+
+        this.setState({
+            height: h,
+            width: w
+        });
+        this.loadZones();
+    }
+
     getZones() {
     this.setState({
       zones: Store.getZones()
     });
   }
+  
 
     render() {
         const { zones } = this.state;
-        console.log(zones)
 
         return(
             <div>
                 <button onClick={this.loadZones.bind(this)}>Load Zones</button>
-                <Stage width={this.width} height={this.height}>
-                    <Layer>
-                        <Rect
-                            x={0} y={0} width={this.width} height={this.height}
-                            stroke={this.mainColor}
-                            strokeWidth={this.strokeWidth}
-                        />
-                        <Rect
-                            x={0} y={this.height / 4} width={this.width/8} height={this.height/2}
-                            stroke={this.mainColor}
-                            strokeWidth={this.strokeWidth}
-                        />
-                        <Circle x={this.width/2} y={this.height/2} radius={this.height/6} stroke="black" strokeWidth={this.strokeWidth} />
-                        <Line
-                            stroke={this.mainColor}
-                            strokeWidth={this.strokeWidth}
-                            points={[this.width/2, 0, this.width / 2, this.height]}
-                        />
-                        <Rect
-                            x={this.width * 7/8} y={this.height / 4} width={this.width/8} height={this.height/2}
-                            stroke={this.mainColor}
-                            strokeWidth={this.strokeWidth}
-                        />
-                    </Layer>
-                </Stage>
+                <div ref="mainStage">
+                    <Stage width={this.state.width} height={this.state.height}>
+                        <Map height={this.state.height}/>
+                    </Stage>
+                </div>
             </div>
         );
     }
