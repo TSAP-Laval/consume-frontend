@@ -2,10 +2,10 @@ import { expect } from 'chai';
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { Layout } from '..';
+import  StatsGraph  from '../StatsGraphs';
 
-describe('Main Layout component', () => {
-    it('should exist', () => {
+describe('Main StatsGraph component', () => {
+    it('should pass', () => {
         
     });
 });

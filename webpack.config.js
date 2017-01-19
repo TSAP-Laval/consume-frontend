@@ -1,4 +1,5 @@
-var debug = false;
+var debug = !(process.env.ENV === 'production');
+console.log("DEBUG: " + debug.valueOf());
 var webpack = require('webpack');
 var path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -19,18 +20,37 @@ module.exports = {
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: "eval-cheap-source-map",
+    devtool: debug? "eval-cheap-source-map": "source-map",
 
-    plugins: debug ? [] : [
-        new webpack.optimize.DedupePlugin(),
+    plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({ mangle: true, sourcemap: false }),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        }),
+
+        new webpack.optimize.UglifyJsPlugin({
+            mangle: true,
+            compressor: {
+                warnings: false
+            }
+        }),
         new ExtractTextPlugin('bundle.css'),
         new HtmlWebpackPlugin({
             title: "TSAP",
             template: "templates/index.ejs"
         })
     ],
+
+    externals: {
+         'Config': JSON.stringify(debug ? {
+             serverUrl: "http://localhost:8080/api"
+         } : {
+             serverUrl: "/api"
+         })
+     },
 
     postcss: [
         autoprefixer({
