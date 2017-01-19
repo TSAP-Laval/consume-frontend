@@ -6,6 +6,8 @@ import {serverUrl} from "Config"
 import {ICoordinate} from "../../ICoordinate"
 import axios from "axios"
 
+import { CreateErrorAction } from "../../Error/ErrorAction";
+
 export function getArrows(match_id: number, player_id: number) {
     const fetch_arrows = new Actions.FetchArrows()
     dispatcher.dispatch(fetch_arrows)
@@ -22,6 +24,6 @@ export function getArrows(match_id: number, player_id: number) {
         const receive_arrows = new Actions.ReceiveArrows(arrows)
         dispatcher.dispatch(receive_arrows)
     }).catch((error) => {
-        console.log(error)
+        CreateErrorAction(error);
     })
 }   
