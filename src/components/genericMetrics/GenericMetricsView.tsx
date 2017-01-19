@@ -73,7 +73,6 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
 
         // Pour récupérer les metrics.
         let data = this.state.joueurs.map((joueur, i) => {
-            console.log(joueur);
             let baseData: Array<string> = [joueur.first_name, joueur.last_name];
             baseData = baseData.concat(joueur.metrics.map((metric) => {
                 return metric.value.toFixed(2).toString();
