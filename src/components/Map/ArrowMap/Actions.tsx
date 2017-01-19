@@ -1,4 +1,4 @@
-import {IAction} from "../IAction"
+import {IAction} from "../../IAction"
 
 import Coordinate from "./models/Coordinate"
 import Arrow from "./models/Arrow"

@@ -1,9 +1,9 @@
-import dispatcher from "../dispatcher"
+import dispatcher from "../../dispatcher"
 import * as Actions from "./Actions"
 import Arrow from "./models/Arrow"
 import Coordinate from "./models/Coordinate"
 import {serverUrl} from "Config"
-import {ICoordinate} from "../ICoordinate"
+import {ICoordinate} from "../../ICoordinate"
 import axios from "axios"
 
 export function getArrows(match_id: number, player_id: number) {

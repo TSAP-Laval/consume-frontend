@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ArrowMap} from "../components/ArrowMap/Index"
+import {ArrowMap} from "../components/Map/ArrowMap/Index"
 
 export interface ILayoutProps {}
 

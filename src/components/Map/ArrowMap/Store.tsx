@@ -1,8 +1,8 @@
 import { EventEmitter } from "events";
-import { IAction } from "../IAction"
+import { IAction } from "../../IAction"
 import * as Actions from "./Actions"
 import Arrow from "./models/Arrow"
-import dispatcher from "../dispatcher";
+import dispatcher from "../../dispatcher";
 
 class ArrowMapStore extends EventEmitter {
     arrows: Arrow[]

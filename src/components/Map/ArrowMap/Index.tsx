@@ -2,6 +2,7 @@ import * as React from "react";
 import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
 import * as ActionsCreator from "./ActionsCreator"
 import ArrowModel from "./models/Arrow"
+import Map from "../Index"
 import Store from "./Store"
 
 export interface ILayoutProps {
@@ -77,31 +78,8 @@ export class ArrowMap extends React.Component<ILayoutProps, ILayoutState> {
             return(
                 <div>
                     <Stage width={this.width} height={this.height}>
-                        <Layer>
-                            <Rect
-                                x={0} y={0} width={this.width} height={this.height}
-                                stroke={this.mainColor}
-                                strokeWidth={this.strokeWidth}
-                            />
-                            <Rect
-                                x={0} y={this.height / 4} width={this.width/8} height={this.height/2}
-                                stroke={this.mainColor}
-                                strokeWidth={this.strokeWidth}
-                            />
-                            <Circle x={this.width/2} y={this.height/2} radius={this.height/6} stroke={this.mainColor} strokeWidth={this.strokeWidth} />
-                            <Line
-                                stroke={this.mainColor}
-                                strokeWidth={this.strokeWidth}
-                                points={[this.width/2, 0, this.width / 2, this.height]}
-                            />
-                            <Rect
-                                x={this.width * 7/8} y={this.height / 4} width={this.width/8} height={this.height/2}
-                                stroke={this.mainColor}
-                                strokeWidth={this.strokeWidth}
-                            />
-
-                            {Arrows}
-                        </Layer>
+                        <Map height={this.height}/>
+                        <Layer>{Arrows}</Layer>
                     </Stage>
                 </div>
             );
