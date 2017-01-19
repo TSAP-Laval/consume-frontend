@@ -35,14 +35,14 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
     }
 
     // Will fetch and load the data.
-    componentWillMunt(){
+    componentWillMount(){
         genericMetricsStore.on("dataChange", this.getResults);
         genericMetricsStore.on("requestState", this.getStatus);
         CreateGetPlayersAction(1);
     }
 
     // Pour la gestion de mémoire on supprime les listener d'events.
-    componentWillUnmunt(){
+    componentWillUnmount(){
         genericMetricsStore.removeListener("dataChange", this.getResults);
         genericMetricsStore.removeListener("requestState", this.getStatus);
     }
@@ -71,7 +71,8 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
         }): []);
         // Pour récupérer les mtrics.
         let data = this.state.joueurs.map((joueur) => {
-            let baseData: Array<String> = [joueur.firstName, joueur.lastName];
+            console.log(joueur);
+            let baseData: Array<String> = [joueur.first_name, joueur.last_name];
             return baseData.concat(joueur.metrics.map((metric) => {
                 return metric.value.toFixed(2).toString();
             }));
