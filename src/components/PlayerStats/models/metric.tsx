@@ -1,6 +1,6 @@
 export default class Metric {
     id: number;
-    name: String;
+    name: string;
     value: number;
     deviation: number;
 }
