@@ -4,13 +4,16 @@ export interface ITeam {
 }
 
 export interface IZone {
+    x: number;
+    y: number;
     percentage: number;
     rating: number;
 }
 
 export interface IRawData {
-    valids: boolean[];
-    
+    valid: boolean;
+    x: number;
+    y: number;
 }
 
 export interface IAction {

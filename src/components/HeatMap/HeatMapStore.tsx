@@ -10,7 +10,7 @@ class HeatMapStore extends EventEmitter {
 
     constructor() {
     super();
-    this.zones = [,];
+    this.zones = [];
     this.message = "";
   }
 

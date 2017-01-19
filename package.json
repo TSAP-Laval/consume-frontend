@@ -10,7 +10,6 @@
     "test": "karma start"
   },
   "dependencies": {
-    "@types/axios": "^0.9.34",
     "@types/chai": "^3.4.34",
     "@types/enzyme": "^2.7.1",
     "@types/flux": "^3.0.0",

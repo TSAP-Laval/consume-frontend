@@ -1,13 +1,16 @@
 import * as React from "react";
 import * as Actions from "./Actions"
 import Store from "./HeatMapStore"
+import { IZone } from "./models/BaseModels"
 import {Layer, Rect, Stage, Circle, Line} from 'react-konva';
 
 export interface ILayoutProps {
     height:number
 }
 
-export interface ILayoutState {}
+export interface ILayoutState {
+    zones: IZone[];
+}
 
 export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
     height: number;
@@ -18,23 +21,42 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
     readonly strokeWidth = 3;
     constructor(props: ILayoutProps) {
         super(props);
+        this.getZones = this.getZones.bind(this);
         this.state = {
             zones: Store.getZones()
         }
         this.height = this.props.height;    
         this.width = this.height * 2;
-        this.playerid = 116;
+        this.playerid = 112;
         this.matchid = 2;
     }
 
-    getZones() {
+    componentWillMount() {
+        Store.on("change", this.getZones);
+    }
+
+    componentWillUnmount() {
+        Store.removeListener("change", this.getZones);
+    }
+
+
+    loadZones() {
         Actions.GetData(this.playerid, this.matchid);
     }
 
-        render() {              
+    getZones() {
+    this.setState({
+      zones: Store.getZones()
+    });
+  }
+
+    render() {
+        const { zones } = this.state;
+        console.log(zones)
+
         return(
             <div>
-                <button onClick={this.getZones.bind(this)}>Load Zones</button>
+                <button onClick={this.loadZones.bind(this)}>Load Zones</button>
                 <Stage width={this.width} height={this.height}>
                     <Layer>
                         <Rect
