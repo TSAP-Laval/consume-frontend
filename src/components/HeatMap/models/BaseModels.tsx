@@ -3,6 +3,16 @@ export interface ITeam {
     name: string;
 }
 
+export interface IZone {
+    percentage: number;
+    rating: number;
+}
+
+export interface IRawData {
+    valids: boolean[];
+    
+}
+
 export interface IAction {
     id: number;
     type: ITypeAction;

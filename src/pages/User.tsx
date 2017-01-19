@@ -1,5 +1,6 @@
 import * as React from "react";
 import {ArrowMap} from "../components/ArrowMap/Index"
+import {HeatMap} from "../components/HeatMap/Map"
 
 export interface ILayoutProps {}
 
@@ -14,7 +15,9 @@ export class User extends React.Component<ILayoutProps, ILayoutState> {
         return (
             <div>
                 <ArrowMap height={300}/>
+                <HeatMap height={300}/>
             </div>
+
         );
     }
 }
