@@ -1,5 +1,10 @@
 import * as React from "react";
 
+import { Navbar, Nav, NavItem } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+
+import { Link } from "react-router"
+
 export interface ILayoutProps {}
 
 export interface ILayoutState {}
@@ -12,9 +17,20 @@ export class Header extends React.Component<ILayoutProps, ILayoutState> {
 
     render() {
         return (
-            <div>
-                <h1>TSAP-Consume</h1>
-            </div>
+            <Navbar>
+                <Navbar.Header>
+                    <Navbar.Brand>
+                        <Link to="/">
+                            <a href="#">TSAP</a>
+                        </Link>
+                    </Navbar.Brand>
+                </Navbar.Header>
+                <Nav>
+                    <LinkContainer to={"/user"}>
+                        <NavItem eventKey={1}>Joueur</NavItem>
+                    </LinkContainer>
+                </Nav>
+            </Navbar>
         );
     }
 }
