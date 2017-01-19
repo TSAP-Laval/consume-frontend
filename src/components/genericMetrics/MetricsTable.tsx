@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import MetricRow from "../genericMetrics/MetricRow";
-
 import { Table as T } from 'react-bootstrap';
 
 //require('../../sass/Layout.scss');

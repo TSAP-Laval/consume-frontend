@@ -2,8 +2,6 @@ import * as React from "react";
 import {Link} from "react-router"
 import {Header} from "./Header";
 
-require('../sass/Layout.scss');
-
 export interface ILayoutProps {}
 
 export interface ILayoutState {}

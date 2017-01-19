@@ -9,7 +9,10 @@ import { CreateGetPlayersAction } from "./actions/genericMetricsActions";
 //require('../../sass/Layout.scss');
 
 // Represent the props reveived by the Component GenericMetrics.
-export interface IDataProps {}
+export interface IDataProps {
+    Width: number,
+    Height: number
+}
 
 export interface IDataStates {
      requestState?: Status,
