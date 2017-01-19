@@ -1,7 +1,8 @@
 import * as React from "react";
 import {Link} from "react-router"
 import {Header} from "./Header";
-import {Footer} from "./Footer"
+
+require('../sass/Layout.scss');
 
 export interface ILayoutProps {}
 
@@ -19,8 +20,9 @@ export class Layout extends React.Component<ILayoutProps, ILayoutState> {
         return (
             <div>
                 <Header/>
-                    {this.props.children}
-                <Footer/>
+                    <main>
+                        {this.props.children}
+                    </main>
             </div>
         );
     }
