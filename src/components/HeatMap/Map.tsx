@@ -31,8 +31,8 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         }
         this.height = this.state.height;
         this.width = this.height * 2;
-        this.playerid = 112;
-        this.matchid = 2;
+        this.playerid = 116;
+        this.matchid = 1;
     }
     componentWillMount() {
         Store.on("GET_ZONES", this.setLoadingStatus);
@@ -99,7 +99,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         }) 
 
         const Texts = this.state.zones.map((zone,i)=>{
-            var text =  (zone.percentage * 100).toString() + '%';
+            var text =  (Math.round(zone.percentage * 100)).toString() + '%';
             var startX = (zoneWidth * zone.x) + (zoneWidth/2);
             var ys: number[] = [2,1,0];
             var startY = (zoneHeight * ys[zone.y]) + (zoneHeight/2);
@@ -111,9 +111,9 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             return(
                 <div ref="mainStage">
                     <Stage width={this.state.width} height={this.state.height}>
-                        <Map height={this.state.height}/>
                         <Layer>{Zones}</Layer>
                         <Layer>{Texts}</Layer>
+                        <Map height={this.state.height}/>
                     </Stage>
                 </div>
             );
