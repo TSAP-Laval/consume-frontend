@@ -60,7 +60,7 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
         }): []);
 
         let data = this.state.matches.map((match) => {
-            let baseData: Array<String> = [match.opposing.name, match.date.toString()];
+            let baseData: Array<String> = [match.opposing.name, match.date.toDateString()];
             return baseData.concat(match.metrics.map((metric) => {
                 return metric.value.toFixed(2).toString();
             }));

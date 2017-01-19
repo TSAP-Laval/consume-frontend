@@ -29,7 +29,15 @@ export function CreateGetMatchesAction(playerId: number, teamId: number) {
     axios.get(url)
     .then((response) => {
         let matches : Array<IMatch> = response.data.matches as Array<IMatch>;
-        dispatcher.dispatch(new MatchesReceivedAction(matches));
+
+        // TEMPORAIRE: Parse date, serait mieux de faire dans un objet?
+        matches = matches.map((match) => {
+            match.date = new Date(match.date.toString())
+            return match;
+        });
+        dispatcher.dispatch(new MatchesReceivedAction(matches.sort((a, b) => {
+            return a.date.getTime() - b.date.getTime();
+        })));
     }, 
     (err) => {
         console.log(err);
