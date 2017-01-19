@@ -14,8 +14,8 @@ import { Chart } from 'chart.js';
 import { ProgressBar } from 'react-bootstrap';
 
 export interface IGraphsProps {
-    Width: number,
-    Height: number
+    teamID: number,
+    playerID: number
 }
 
 
@@ -49,7 +49,7 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
     componentWillMount() {
         StatsTableStore.on("dataChange", this.getResults);
         StatsTableStore.on("requestState", this.getStatus)
-        CreateGetMatchesAction(127, 3);
+        CreateGetMatchesAction(this.props.playerID, this.props.teamID);
     }
 
     componentWillUnmount() {

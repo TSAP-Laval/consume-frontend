@@ -6,23 +6,23 @@ import Status from "./models/Status";
 import { ProgressBar } from 'react-bootstrap';
 import { CreateGetPlayersAction } from "./actions/genericMetricsActions";
 
-//require('../../sass/Layout.scss');
+import MetricRow from './MetricsRow';
 
 // Represent the props reveived by the Component GenericMetrics.
 export interface IDataProps {
-    Width: number,
-    Height: number
+    teamID: number
 }
 
 export interface IDataStates {
-     requestState?: Status,
-    joueurs?: IJoueur[]
+    requestState?: Status,
+    joueurs?: IJoueur[],
+    nomEquipe?: string
 }
 
 //This component will display all metrics from a team.
 export default class GenericMetricsView extends React.Component<IDataProps, IDataStates> {
 
-    constructor() {
+    constructor(props: IDataProps) {
         super();
 
          this.getStatus = this.getStatus.bind(this);
@@ -38,7 +38,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
     componentWillMount(){
         genericMetricsStore.on("dataChange", this.getResults);
         genericMetricsStore.on("requestState", this.getStatus);
-        CreateGetPlayersAction(1);
+        CreateGetPlayersAction(this.props.teamID);
     }
 
     // Pour la gestion de mémoire on supprime les listener d'events.
@@ -50,7 +50,8 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
     // Va récupérer les joueurs du store.
      getResults() {
         this.setState({
-            joueurs: genericMetricsStore.getAllPlayers()
+            joueurs: genericMetricsStore.getAllPlayers(),
+            nomEquipe: genericMetricsStore.getTeamName()
         });
     }
 
@@ -69,19 +70,25 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
         this.state.joueurs[0].metrics.map((metric) => {
             return metric.name
         }): []);
-        // Pour récupérer les mtrics.
-        let data = this.state.joueurs.map((joueur) => {
+
+        // Pour récupérer les metrics.
+        let data = this.state.joueurs.map((joueur, i) => {
             console.log(joueur);
-            let baseData: Array<String> = [joueur.first_name, joueur.last_name];
-            return baseData.concat(joueur.metrics.map((metric) => {
+            let baseData: Array<string> = [joueur.first_name, joueur.last_name];
+            baseData = baseData.concat(joueur.metrics.map((metric) => {
                 return metric.value.toFixed(2).toString();
             }));
+
+            return <MetricRow key={i} playerID={joueur.id} teamID={this.props.teamID} Data={ baseData }/>
         });
 
         return (
             this.state.requestState == Status.Idle?
             <div>
-                <MetricsTable columns={ cols } data={ data }/>
+                <h2>Statistiques pour <b>{this.state.nomEquipe}</b></h2>
+                <MetricsTable columns={ cols }>
+                    { data }
+                </MetricsTable>
             </div>
             : <div>
                 <h3>{ "Chargement..." }</h3>

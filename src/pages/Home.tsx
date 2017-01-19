@@ -25,8 +25,8 @@ export default class Home extends React.Component<IHomeProps, IHomeState> {
             <Jumbotron className="homeJumbotron">
                 <h1>Console TSAP</h1>
                 <p>
-                    <Link to="/user">
-                        <Button bsStyle="primary">Statistiques d'un joueur</Button>
+                    <Link to="/team/3">
+                        <Button bsStyle="primary">Statistiques de l'équipe</Button>
                     </Link>
                 </p>
             </Jumbotron>
