@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ArrowMap} from "../components/ArrowMap/Index"
+import {ArrowMap} from "../components/Map/ArrowMap/Index"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
@@ -16,7 +16,7 @@ export class User extends React.Component<ILayoutProps, ILayoutState> {
     render() {
         return (
             <div>
-                <ArrowMap height={300}/>
+                <ArrowMap height={600}/>
                 <StatsTable/>
                 <StatsGraphs Height={300} Width={600} />
             </div>

@@ -1,3 +1,3 @@
 declare module 'Config' {
-    export var serverUrl: string;
-}
+     export var serverUrl: string;
+ }

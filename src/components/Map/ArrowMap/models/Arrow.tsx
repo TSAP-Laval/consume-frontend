@@ -8,4 +8,8 @@ export default class Arrow {
         this.start = start
         this.end = end
     }
+
+    getCoordinates() {
+        return [this.start.x, this.start.y, this.end.x, this.end.y]
+    }
 }
