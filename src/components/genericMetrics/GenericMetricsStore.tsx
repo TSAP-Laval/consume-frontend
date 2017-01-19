@@ -11,12 +11,15 @@ class GenericMetricsStore extends EventEmitter{
     data: Array<IJoueur>;
     // Le statut qui sera retourné avec l'action.
     requestStatus: Status;
+
+    teamName: string;
     
      constructor() {
         super();
         //Initialisation des propriétés.
         this.data = [];
         this.requestStatus = Status.Idle;
+        this.teamName = "";
     }
 
     // Retourne un array contenant des structures joueurs.
@@ -27,6 +30,10 @@ class GenericMetricsStore extends EventEmitter{
     //Pour obtenir le statut de la requête.
     getRequestStatus(): Status {
         return this.requestStatus;
+    }
+
+    getTeamName(): string {
+        return this.teamName;
     }
 
     // Permet de controler les actions qui vont être
@@ -41,8 +48,11 @@ class GenericMetricsStore extends EventEmitter{
                 break;
 
             case "PLAYERS_RECEIVED":
-                this.data = (action as PlayersReceivedAction).joueurs;
+                let act: PlayersReceivedAction = action as PlayersReceivedAction;
+                this.data = act.joueurs;
+                this.teamName = act.nomEquipe;
                 this.emit("dataChange");
+
                 // Initialisation du status.
                 this.requestStatus = Status.Idle
                 this.emit("requestState");

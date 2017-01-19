@@ -6,8 +6,7 @@ import { Table as T } from 'react-bootstrap';
 
 // Represent the props reveived by the Component GenericMetrics.
 export interface IDataProps {
-    columns: Array<String>,
-    data: Array<Array<String>>
+    columns: Array<String>
 }
 
 export interface IDataStates {
@@ -17,24 +16,20 @@ export interface IDataStates {
 //This component will display all metrics from a team.
 export default class MetricsTable extends React.Component<IDataProps, IDataStates> {
 
-        render() {
+    render() {
         let headers = this.props.columns.map((h, i) => {
             return <th key={ i }><span>{ h }</span></th>
         });
 
-        let dataRows = this.props.data.map((r, i) => {
-            let boxes = r.map((b, j) => {
-                return <td key={j}><span>{b}</span></td>
-            });
-
-            return <tr key={ i }>{ boxes }</tr>
-        });
+        headers.push(
+            <th>{ "Voir Détails" }</th>
+        )
 
         return (
             <T striped bordered condensed hover responsive>
                 <tbody>
                     <tr>{ headers }</tr>
-                    { dataRows }
+                    { this.props.children }
                 </tbody>
             </T>
         );

@@ -3,6 +3,8 @@ import dispatcher from "../../dispatcher";
 import axios from 'axios';
 import IJoueur from "../models/IJoueur";
 
+import { CreateErrorAction } from "../../Error/ErrorAction";
+
 import * as Config from 'Config';
 
 // Action pour recevoir les joueurs­.
@@ -20,9 +22,11 @@ export class PlayersReceivedAction implements IAction {
     type = "PLAYERS_RECEIVED";
 
     joueurs: IJoueur[];
+    nomEquipe: string;
 
-    constructor(joueurs: IJoueur[]) {
+    constructor(joueurs: IJoueur[], nomEquipe: string) {
         this.joueurs = joueurs;
+        this.nomEquipe = nomEquipe;
     }
 }
 
@@ -36,16 +40,17 @@ export function CreateGetPlayersAction(teamId: number) {
     .then((response) => {
         //On récupère les joueurs contenu dans la réponse en JSON.
         let joueurs : Array<IJoueur> = response.data.players as Array<IJoueur>;
+        let nomEquipe: string = response.data.name;
 
         //Nous allons passer la liste de joueurs au dispatcher afin que celui
         //le dispatche. Le store correspondant répondra.
-        dispatcher.dispatch(new PlayersReceivedAction(joueurs));
+        CreatePlayersReceivedAction(joueurs, nomEquipe);
     }, 
     (err) => {
-        console.log(err);
+        CreateErrorAction(err.toString());
     });
 }
 
-export function CreatePlayersReceivedAction(joueurs: IJoueur[]) {
-    dispatcher.dispatch(new PlayersReceivedAction(joueurs));
+export function CreatePlayersReceivedAction(joueurs: IJoueur[], nomEquipe: string) {
+    dispatcher.dispatch(new PlayersReceivedAction(joueurs, nomEquipe));
 }
