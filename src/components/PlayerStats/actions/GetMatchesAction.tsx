@@ -1,6 +1,8 @@
 import  IAction  from "../../IAction"
 import dispatcher from "../../dispatcher"
 
+import { CreateErrorAction } from "../../Error/ErrorAction";
+
 import axios from 'axios';
 
 import IMatch from "../models/IMatch";
@@ -39,7 +41,7 @@ export function CreateGetMatchesAction(playerId: number, teamId: number) {
             return a.date.getTime() - b.date.getTime();
         })));
     }, 
-    (err) => {
-        console.log(err);
+    (err: Error) => {
+        CreateErrorAction(err.toString());
     });
 }
