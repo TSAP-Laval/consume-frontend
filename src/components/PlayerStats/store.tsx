@@ -26,7 +26,7 @@ class StatsTableStore extends EventEmitter {
         return this.requestStatus;
     }
 
-        getPlayerName(): string{
+        getPlayerName(): string {
         return this.pName;
     }
 
