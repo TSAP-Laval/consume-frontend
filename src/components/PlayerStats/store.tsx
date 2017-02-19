@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import  IAction  from "../IAction";
-import dispatcher from "../dispatcher"; 
+import dispatcher from "../dispatcher";
 
 import IMatch from "./models/IMatch";
 import Status from "./models/Status";
@@ -26,7 +26,7 @@ class StatsTableStore extends EventEmitter {
         return this.requestStatus;
     }
 
-        getPlayerName(): string {
+    getPlayerName(): string {
         return this.pName;
     }
 

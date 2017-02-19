@@ -28,9 +28,12 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
     constructor(props: ILayoutProps) {
         super();
         this.getPlayerName = this.getPlayerName.bind(this);
+        this.state = {
+            playerName: 'un Joueur'
+        }
     }
 
-     componentWillMount() {
+    componentWillMount() {
         StatsTableStore.on("dataChange", this.getPlayerName);
         CreateGetMatchesAction(this.props.params.playerID, this.props.params.teamID);
     }
@@ -44,7 +47,7 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         this.setState({
             playerName: StatsTableStore.getPlayerName()
         });
-    } 
+    }
 
     render() {
         let arrowTitle = <h3>Tracé des actions</h3>;
