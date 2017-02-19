@@ -7,6 +7,7 @@ import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
 import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
 import StatsTableStore from "../components/PlayerStats/store";
+import { CreateGetMatchesAction } from "../components/PlayerStats/actions/GetMatchesAction";
 
 import { Panel } from "react-bootstrap";
 
@@ -24,13 +25,14 @@ export interface ILayoutState {
 }
 
 export default class Player extends React.Component<ILayoutProps, ILayoutState> {
-    constructor() {
+    constructor(props: ILayoutProps) {
         super();
-        // this.getPlayerName = this.getPlayerName.bind(this);
+        this.getPlayerName = this.getPlayerName.bind(this);
     }
 
-    /* componentWillMount() {
+     componentWillMount() {
         StatsTableStore.on("dataChange", this.getPlayerName);
+        CreateGetMatchesAction(this.props.params.playerID, this.props.params.teamID);
     }
 
     componentWillUnmount() {
@@ -42,7 +44,7 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         this.setState({
             playerName: StatsTableStore.getPlayerName()
         });
-    } */
+    } 
 
     render() {
         let arrowTitle = <h3>Tracé des actions</h3>;
@@ -52,6 +54,7 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
 
         return (
             <div>
+                <h2>Statistiques pour <b>{this.state.playerName}</b></h2>
                 <Panel header={arrowTitle} className="data-panel"><ArrowMap/></Panel>
                 <Panel header={heatmapTitle} className="data-panel"><HeatMap/></Panel>
                 <Panel header={graphTitle} className="data-panel"><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></Panel>
