@@ -1,43 +1,43 @@
 import { EventEmitter } from "events";
 import { IAction } from "../../IAction"
 import * as Actions from "./Actions"
-import Arrow from "./models/Arrow"
+import Action from "./models/Action"
 import dispatcher from "../../dispatcher";
 
-class ArrowMapStore extends EventEmitter {
-    arrows: Arrow[]
+class ActionMapStore extends EventEmitter {
+    actions: Action[]
     fetching: boolean
 
     constructor() {
         super();
-        this.arrows = new Array<Arrow>()
+        this.actions = new Array<Action>()
         this.fetching = false
     }
 
-    setArrows(arrows: Arrow[]){
-        this.arrows = arrows
+    setActions(actions: Action[]){
+        this.actions = actions
     }
     
-    getArrows() {
-        return this.arrows;
+    getActions() {
+        return this.actions;
     }
 
     handleActions(action: IAction) {
         switch(action.type) {
-            case "FETCH_ARROWS":
+            case "FETCH_ACTIONS":
                 this.fetching = true
-                this.emit("FETCH_ARROWS")
+                this.emit("FETCH_ACTIONS")
                 break;
-            case "RECEIVE_ARROWS":
-                this.setArrows((action as Actions.ReceiveArrows).getArrows())
+            case "RECEIVE_ACTIONS":
+                this.setActions((action as Actions.ReceiveActions).getActions())
                 this.fetching = false
-                this.emit("RECEIVE_ARROWS")
+                this.emit("RECEIVE_ACTIONS")
                 break;
         }
     }
 }
 
-const store = new ArrowMapStore();
+const store = new ActionMapStore();
 export default store;
 
 dispatcher.register(store.handleActions.bind(store));

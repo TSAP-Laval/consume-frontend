@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ArrowMap } from "../components/Map/ArrowMap/Index"
+import { ActionMap } from "../components/Map/ArrowMap/Index"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";

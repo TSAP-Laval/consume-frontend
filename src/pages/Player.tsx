@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {ArrowMap} from "../components/Map/ArrowMap/Index"
+import {ActionMap} from "../components/Map/ArrowMap/Index"
 import {HeatMap} from "../components/HeatMap/Map"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
@@ -33,7 +33,7 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
 
         return (
             <div>
-                <Panel header={arrowTitle} className="data-panel"><ArrowMap/></Panel>
+                <Panel header={arrowTitle} className="data-panel"><ActionMap/></Panel>
                 <Panel header={heatmapTitle} className="data-panel"><HeatMap/></Panel>
                 <Panel header={statsTitle} className="data-panel"><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></Panel>
                 <Panel header={graphTitle} className="data-panel"><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></Panel>
