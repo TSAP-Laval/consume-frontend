@@ -9,11 +9,13 @@ import { MatchesReceivedAction } from './actions/MatchesReceivedAction';
 class StatsTableStore extends EventEmitter {
     data: Array<IMatch>;
     requestStatus: Status;
+    playerName: string;
 
     constructor() {
         super();
         this.data = [];
         this.requestStatus = Status.Idle;
+        this.playerName = "";
     }
 
     getMatches(): Array<IMatch> {
@@ -23,6 +25,11 @@ class StatsTableStore extends EventEmitter {
     getRequestStatus(): Status {
         return this.requestStatus;
     }
+
+        getPlayerName(): string{
+        return this.playerName;
+    }
+
 
     handleActions(action: IAction){
         switch(action.type) {
@@ -35,6 +42,7 @@ class StatsTableStore extends EventEmitter {
 
             case "MATCHES_RECEIVED":
                 this.data = (action as MatchesReceivedAction).matches;
+                this.playerName = (action as MatchesReceivedAction).playerName;
                 this.emit("dataChange");
 
                 this.requestStatus = Status.Idle

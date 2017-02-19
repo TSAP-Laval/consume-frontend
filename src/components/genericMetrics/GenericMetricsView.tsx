@@ -65,7 +65,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
      render() {
          //Pour afficher le nom et le prénom du joueur.
         let baseCols: Array<String> = ["Prénom", "Nom"];
-        // Pour récupérer ces données.
+        // Pour récupérer les noms des colonnes qui seront afffichées.
         let cols = baseCols.concat(this.state.joueurs.length > 0? 
         this.state.joueurs[0].metrics.map((metric) => {
             return metric.name
