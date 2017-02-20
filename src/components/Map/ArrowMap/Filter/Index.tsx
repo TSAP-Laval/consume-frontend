@@ -31,15 +31,15 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
     }
 
     componentWillMount() {
-        Store.on("FILTER_ACTIONS", this.setActionTypes)
+        Store.on("FILTER_ACTIONS", this.setActionTypes.bind(this))
     }
 
     componentDidMount() {
         this.setActionTypes()
     }
-    
+
     componentWillUnmount() {
-        Store.removeListener("FILTER_ACTIONS", this.setActionTypes)
+        Store.removeListener("FILTER_ACTIONS", this.setActionTypes.bind(this))
     }
 
     render() {
