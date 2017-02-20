@@ -16,7 +16,7 @@ class HeatMapStore extends EventEmitter {
     this.fetching = false;
   }
 
-  getZones(searchTypes?: string[]){
+  getZones(){
       return this.zones;
   }
 

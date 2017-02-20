@@ -102,13 +102,10 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
                 return <label className="checkbox-inline" key={i} ><input checked={this.state.searchTypes.indexOf(action) != -1} onChange={this.handleCheck.bind(this)} type="checkbox" value={action}/> {action}</label>
             })
         const Zones = this.state.zones.map((zone, i)=> {
-            console.log(zone.rating);
             var startX = zoneWidth * zone.x;
-            var opacity = 100;
             var ys: number[] = [2,1,0];
             var startY = zoneHeight * ys[zone.y];
             var color = !isNaN(zone.rating) ? "hsl("+ Math.floor((zone.rating * 100) * 120 / 100) +", 50%,50%)" : "white";
-            console.log(color);
             return <Rect key={i} x={startX} y={startY} width={zoneWidth} height={zoneHeight} stroke="black" fill={color}/>
         }) 
 
