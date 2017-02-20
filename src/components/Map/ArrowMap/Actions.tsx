@@ -4,7 +4,7 @@ import Coordinate from "./models/Coordinate"
 import Action from "./models/Action"
 
 export class FetchActions implements IAction {
-    type: String
+    type: string
 
     constructor() {
         this.type = "FETCH_ACTIONS"
@@ -12,7 +12,7 @@ export class FetchActions implements IAction {
 }
 
 export class ReceiveActions implements IAction {
-    type: String
+    type: string
     actions: Action[]
 
     constructor(actions: Action[]) {
