@@ -5,6 +5,7 @@ import Coordinate from "./models/Coordinate"
 import {serverUrl} from "Config"
 import IPlayerAction from "../../IPlayerAction"
 import axios from "axios"
+import ActionType from "./Filter/models/ActionType"
 
 import { CreateErrorAction } from "../../Error/ErrorAction";
 
@@ -30,4 +31,9 @@ export function getActions(match_id: number, player_id: number) {
     }).catch((error) => {
         CreateErrorAction(error);
     })
+}
+
+export function filterActions(action_type: ActionType){
+    const filter_action = new Actions.FilterActions(action_type)
+    dispatcher.dispatch(filter_action)
 }   

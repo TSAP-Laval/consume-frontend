@@ -2,6 +2,7 @@ import {IAction} from "../../IAction"
 
 import Coordinate from "./models/Coordinate"
 import Action from "./models/Action"
+import ActionType from "./Filter/models/ActionType"
 
 export class FetchActions implements IAction {
     type: string
@@ -22,5 +23,19 @@ export class ReceiveActions implements IAction {
 
     getActions() {
         return this.actions
+    }
+}
+
+export class FilterActions implements IAction {
+    type: string
+    filter: ActionType
+
+    constructor(action_type: ActionType){
+        this.type = "FILTER_ACTIONS"
+        this.filter = action_type
+    }
+
+    getFilter() {
+        return this.filter
     }
 }

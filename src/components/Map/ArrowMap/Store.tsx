@@ -34,19 +34,27 @@ class ActionMapStore extends EventEmitter {
         })
     }
 
-    setActionTypes(actions: Action[]) {
-        let types = this.action_types.map((action) => {
-            return action.getType()
-        })
+    getActionTypes(){
+        return this.action_types;
+    }
 
-        for(let action of actions) {
-            if(types.indexOf(action.getType()) == -1) {
-                this.action_types.push(new ActionType(action.getType(), true))
-                actions = actions.filter((x) => {
-                    return x.getType() != action.getType()
-                })
-            }
+    updateActions(action_type: ActionType){
+        let index = this.action_types.map((type) => {
+            return type.getType()
+        }).indexOf(action_type.getType())
+
+        if(index != -1) {
+            this.action_types[index].setUse(action_type.isUsed())
         }
+    }
+
+    setActionTypes(actions: Action[]) {
+        this.action_types =  actions.reduce((acc, action) => {
+            if(acc.indexOf(action.getType()) == -1) {
+                acc.push(action.getType())
+            }
+            return acc;
+        }, new Array<string>()).map((type) => (new ActionType(type, true)));
     }
 
     receiveActions(actions: Action[]){
@@ -64,6 +72,10 @@ class ActionMapStore extends EventEmitter {
                 this.receiveActions((action as Actions.ReceiveActions).getActions())
                 this.fetching = false
                 this.emit("RECEIVE_ACTIONS")
+                break;
+            case "FILTER_ACTIONS":
+                this.updateActions((action as Actions.FilterActions).getFilter())
+                this.emit("FILTER_ACTIONS")
                 break;
         }
     }

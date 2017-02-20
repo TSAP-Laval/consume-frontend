@@ -5,6 +5,8 @@ import * as ActionsCreator from "./ActionsCreator"
 import ActionModel from "./models/Action"
 import Map from "../Index"
 import Store from "./Store"
+import ActionType from "./Filter/models/ActionType"
+import ActionMapFilter from "./Filter/Index"
 
 export interface ILayoutProps {
 }
@@ -50,11 +52,13 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
     componentWillMount() {
         Store.on("FETCH_ACTIONS", this.setLoadingStatus)
         Store.on("RECEIVE_ACTIONS", this.setActions)
+        Store.on("FILTER_ACTIONS", this.setActions)
     }
 
     componentWillUnmount() {
         Store.removeListener("FETCH_ACTIONS", this.setLoadingStatus)
         Store.removeListener("RECEIVE_ACTIONS", this.setActions)
+        Store.removeListener("FILTER_ACTIONS", this.setActions)
     }
 
     refs: {
@@ -63,7 +67,6 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
     }
 
     componentDidMount() {
-
         let w = this.refs.mainStage.clientWidth
         let h = w / 2;
 
@@ -97,6 +100,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
                         <Map height={this.state.height}/>
                         <Layer>{Actions}</Layer>
                     </Stage>
+                    <ActionMapFilter></ActionMapFilter>
                 </div>
             );
         } else {

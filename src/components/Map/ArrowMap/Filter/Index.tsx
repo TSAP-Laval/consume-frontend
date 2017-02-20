@@ -1,25 +1,54 @@
-/*import * as React from "react";
+import * as React from "react";
 import Store from "../Store"
+import ActionType from "./models/ActionType"
+import * as ActionsCreator from "../ActionsCreator"
 
 export interface ILayoutProps {}
-export interface ILayoutState {}
+export interface ILayoutState {
+    action_types: ActionType[]
+}
 
-export class ActionMapFilter extends React.Component<ILayoutProps, ILayoutState> {
+export default class ActionMapFilter extends React.Component<ILayoutProps, ILayoutState> {
     constructor(props: ILayoutProps) {
         super(props)
         this.state = {
-            action_types: new Array<string>(),
+            action_types: new Array<ActionType>()
         }
+        this.onCheckboxClick.bind(this)
+        this.setActionTypes.bind(this)
+    }
+
+    onCheckboxClick(e: React.FormEvent<HTMLInputElement>){
+        ActionsCreator.filterActions(new ActionType(e.currentTarget.value, e.currentTarget.checked))
+    }
+
+    setActionTypes(){
+        this.setState({
+            action_types: Store.getActionTypes()
+        })
+    }
+
+    componentWillMount() {
+        Store.on("FILTER_ACTIONS", this.setActionTypes)
     }
 
     componentDidMount() {
-        Store.on("FETCH_ACTIONS", this.setLoadingStatus)
-        Store.on("RECEIVE_ACTIONS", this.setActions)
+        this.setActionTypes()
+    }
+    
+    componentWillUnmount() {
+        Store.removeListener("FILTER_ACTIONS", this.setActionTypes)
     }
 
     render() {
+        const ActionTypes = this.state.action_types.map((action_type, i) => {
+            return <li key={i}><input type="checkbox" value={action_type.getType()} checked={action_type.isUsed()} onClick={this.onCheckboxClick}/>{action_type.getType()}</li>
+        })
+
         return(
-            <h1>TEST</h1>
+            <div>
+                <ul>{ActionTypes}</ul>
+            </div>
         );
     }
-}*/
+}

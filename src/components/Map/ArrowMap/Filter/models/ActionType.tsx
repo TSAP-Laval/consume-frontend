@@ -11,6 +11,10 @@ export default class ActionType {
         return this.type
     }
 
+    setUse(used: boolean){
+        this.used = used
+    }
+
     isUsed(){
         return this.used
     }
