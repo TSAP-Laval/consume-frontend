@@ -29,7 +29,7 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         super();
         this.getPlayerName = this.getPlayerName.bind(this);
         this.state = {
-            playerName: 'un Joueur'
+            playerName: 'un joueur'
         }
     }
 
