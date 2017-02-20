@@ -13,7 +13,9 @@ export interface ILayoutState {
     zones? : IZone[];
     loading? : boolean,
     height?: number,
-    width?: number
+    width?: number,
+    actions?: string[],
+    searchTypes?: string[]
 }
 
 export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
@@ -27,7 +29,9 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         this.setLoadingStatus = this.setLoadingStatus.bind(this)
         this.state = {
             zones: Store.getZones(),
-            loading: Store.isFetching()
+            actions: Store.getActions(),
+            loading: Store.isFetching(),
+            searchTypes: []
         }
         this.height = this.state.height;
         this.width = this.height * 2;
@@ -50,52 +54,62 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         })
     }
 
-    loadZones() {
-        Actions.GetData(this.playerid, this.matchid);
-    }
-
     refs: {
         [string: string]: (Element);
         mainStage: (HTMLElement);
     }
     componentDidMount() {
 
-        let w = this.refs.mainStage.clientWidth
+        let w = this.refs.mainStage.clientWidth;
         let h = w / 2;
 
         this.setState({
             height: h,
             width: w
         });
-        this.loadZones();
+        Actions.GetData(this.playerid, this.matchid, this.state.searchTypes);
+    }
+
+    handleCheck(event: React.FormEvent<HTMLInputElement>) {
+        var checked: string = event.currentTarget.value;
+        var allTypes : string[] = this.state.searchTypes;
+        var index = allTypes.indexOf(checked);
+        if (index == -1){
+            allTypes.push(checked);
+        } else {
+            allTypes.splice(index,1);
+        }
+        this.setState({
+            loading: Store.isFetching(),
+            searchTypes: allTypes
+        });
+        Actions.GetData(this.playerid, this.matchid, allTypes);
     }
 
     getZones() {
-        this.setState({
-            loading: Store.isFetching(),
-            zones: Store.getZones()
-        });
+            this.setState({
+                loading: Store.isFetching(),
+                zones: Store.getZones(),
+                actions: Store.getActions()
+            });
     }
   
 
     render() {
             var zoneWidth = this.state.width/4;
             var zoneHeight = this.state.height/3;
+            const ActionTypes = this.state.actions.map((action, i) => {
+                return <label className="checkbox-inline" key={i} ><input checked={this.state.searchTypes.indexOf(action) != -1} onChange={this.handleCheck.bind(this)} type="checkbox" value={action}/> {action}</label>
+            })
         const Zones = this.state.zones.map((zone, i)=> {
+            console.log(zone.rating);
             var startX = zoneWidth * zone.x;
+            var opacity = 100;
             var ys: number[] = [2,1,0];
             var startY = zoneHeight * ys[zone.y];
-            var opacity = zone.percentage * 4;
-            var colorZone;
-            if(zone.rating < 0.25){
-                colorZone = "red"
-            } else if (zone.rating < 0.75){
-                colorZone = "yellow"
-            } else {
-                colorZone = "green"
-            }
-
-            return <Rect key={i} x={startX} y={startY} width={zoneWidth} height={zoneHeight} stroke="black" fill={colorZone} opacity={opacity}/>
+            var color = !isNaN(zone.rating) ? "hsl("+ Math.floor((zone.rating * 100) * 120 / 100) +", 50%,50%)" : "white";
+            console.log(color);
+            return <Rect key={i} x={startX} y={startY} width={zoneWidth} height={zoneHeight} stroke="black" fill={color}/>
         }) 
 
         const Texts = this.state.zones.map((zone,i)=>{
@@ -110,6 +124,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         if(!this.state.loading) {
             return(
                 <div ref="mainStage">
+                    {ActionTypes}
                     <Stage width={this.state.width} height={this.state.height}>
                         <Layer>{Zones}</Layer>
                         <Layer>{Texts}</Layer>

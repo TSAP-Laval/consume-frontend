@@ -7,15 +7,21 @@ import {IZone} from "./models/BaseModels"
 class HeatMapStore extends EventEmitter {
     zones: IZone[];
     fetching: boolean;
+    actions: string[];
 
     constructor() {
     super();
     this.zones = [];
+    this.actions = [];
     this.fetching = false;
   }
 
-  getZones(){
+  getZones(searchTypes?: string[]){
       return this.zones;
+  }
+
+  getActions(){
+    return this.actions;
   }
 
   isFetching(){
@@ -31,6 +37,7 @@ class HeatMapStore extends EventEmitter {
       }
       case "RECIEVE_ZONES": {
         this.zones = (action as RecieveData).zones;
+        this.actions = (action as RecieveData).actionsTypes;
         this.fetching = false;
         this.emit("RECIEVE_ZONES");
         break;
