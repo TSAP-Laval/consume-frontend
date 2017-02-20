@@ -36,7 +36,6 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
     componentWillMount() {
         StatsTableStore.on("dataChange", this.getResults);
         StatsTableStore.on("requestState", this.getStatus)
-        CreateGetMatchesAction(this.props.playerID, this.props.teamID);
     }
 
     componentWillUnmount() {
@@ -59,7 +58,7 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
     render() {
         let baseCols: Array<String> = ["Adversaire", "Date"];
 
-        let cols = baseCols.concat(this.state.matches.length > 0? 
+        let cols = baseCols.concat(this.state.matches.length > 0?
         this.state.matches[0].metrics.map((metric) => {
             return metric.name
         }): []);

@@ -9,6 +9,9 @@ import IMatch from "../models/IMatch";
 
 import { MatchesReceivedAction } from "./MatchesReceivedAction";
 
+import { CreateGetSeasonsAction } from "./GetSeasonsAction";
+import { CreateGetPositionsAction } from "./GetPositionsAction";
+
 import * as Config from 'Config';
 
 export class GetMatchesAction implements IAction {
@@ -28,6 +31,9 @@ export function CreateGetMatchesAction(playerId: number, teamId: number) {
 
     var url: string = Config.serverUrl + "/stats/player/" + playerId.toString() + "/team/" + teamId.toString();
 
+    CreateGetSeasonsAction();
+    CreateGetPositionsAction(playerId);
+
     axios.get(url)
     .then((response) => {
         let matches : Array<IMatch> = response.data.matches as Array<IMatch>;
@@ -44,7 +50,7 @@ export function CreateGetMatchesAction(playerId: number, teamId: number) {
         dispatcher.dispatch(new MatchesReceivedAction(matches.sort((a, b) => {
             return a.date.getTime() - b.date.getTime();
         }), playerName));
-    }, 
+    },
     (err: Error) => {
         CreateErrorAction(err.toString());
     });

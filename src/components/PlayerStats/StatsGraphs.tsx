@@ -49,7 +49,6 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
     componentWillMount() {
         StatsTableStore.on("dataChange", this.getResults);
         StatsTableStore.on("requestState", this.getStatus)
-        CreateGetMatchesAction(this.props.playerID, this.props.teamID);
     }
 
     componentWillUnmount() {
@@ -61,8 +60,7 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
         this.setState({
             matches: StatsTableStore.getMatches(),
             requestState: StatsTableStore.getRequestStatus()
-        });
-        this.drawGraph();
+        }, this.drawGraph);
     }
 
     getStatus() {
@@ -126,7 +124,7 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
     render() {
         let baseCols: Array<String> = ["Adversaire", "Date"];
 
-        let cols = baseCols.concat(this.state.matches.length > 0? 
+        let cols = baseCols.concat(this.state.matches.length > 0?
         this.state.matches[0].metrics.map((metric) => {
             return metric.name
         }): []);
