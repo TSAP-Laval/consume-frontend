@@ -6,18 +6,25 @@ import { IZone } from "./models/BaseModels"
 import {serverUrl} from "Config"
 import axios from 'axios'
 
-export function GetData(playerid: number, matchid: number) {
+export function GetData(playerid: number, matchid: number, searchTypes: string[]) {
     const send = new Actions.GetData();
     dispatcher.dispatch(send);
     axios.get(serverUrl + '/stats/match/' + matchid + '/player/' + playerid)
       .then(function (response) {
         let data: Models.IPlayerActions = response.data as Models.IPlayerActions;
         var rawData: IRawData[] = new Array();
+        var actionTypes: string[] = new Array();
         for (let action of data.actions) {
-          var x = Math.floor(action.x1*4);
-          var y = Math.floor(action.y1*3);
-          var entry: IRawData = {x: x, y: y, valid:action.is_valid};
-          rawData.push(entry);
+          if(searchTypes.length == 0 || searchTypes.indexOf(action.TypeAction.name) != -1)
+          {
+            var x = Math.floor(action.x1*4);
+            var y = Math.floor(action.y1*3);
+            var entry: IRawData = {x: x, y: y, valid:action.is_valid};
+            rawData.push(entry);
+          }
+          if (actionTypes.indexOf(action.TypeAction.name) == -1){
+            actionTypes.push(action.TypeAction.name);
+          }
         }
         var zones: IZone[] = new Array();
         for (var x = 0; x < 4; x++) {
@@ -41,7 +48,7 @@ export function GetData(playerid: number, matchid: number) {
           zone.percentage = +(nbActions/rawData.length).toFixed(2);
           zone.rating = + (rating/nbActions).toFixed(2);
         }
-        const recieve = new Actions.RecieveData(zones)
+        const recieve = new Actions.RecieveData(zones, actionTypes)
         dispatcher.dispatch(recieve);
       })
       .catch(function (error) {
