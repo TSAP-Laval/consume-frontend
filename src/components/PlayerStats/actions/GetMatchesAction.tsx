@@ -31,6 +31,10 @@ export function CreateGetMatchesAction(playerId: number, teamId: number) {
     axios.get(url)
     .then((response) => {
         let matches : Array<IMatch> = response.data.matches as Array<IMatch>;
+        //On récupère le prénom du joueur pour l'affichage.
+        let playerName : string = response.data.firstname;
+        // On y ajoute son nom.
+        playerName = playerName.concat(" ", response.data.lastname);
 
         // TEMPORAIRE: Parse date, serait mieux de faire dans un objet?
         matches = matches.map((match) => {
@@ -39,7 +43,7 @@ export function CreateGetMatchesAction(playerId: number, teamId: number) {
         });
         dispatcher.dispatch(new MatchesReceivedAction(matches.sort((a, b) => {
             return a.date.getTime() - b.date.getTime();
-        })));
+        }), playerName));
     }, 
     (err: Error) => {
         CreateErrorAction(err.toString());
