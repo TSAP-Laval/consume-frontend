@@ -3,6 +3,8 @@ import Store from "../Store"
 import ActionType from "./models/ActionType"
 import * as ActionsCreator from "../ActionsCreator"
 
+require('../../../../sass/ArrowMap.scss');
+
 export interface ILayoutProps {}
 export interface ILayoutState {
     action_types: ActionType[]
@@ -46,7 +48,7 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
         })
 
         return(
-            <div>
+            <div id="ArrowMapFilter">
                 <ul>{ActionTypes}</ul>
             </div>
         );
