@@ -4,3 +4,5 @@ export interface ICoordinate {
     x2: number
     y2: number
 }
+
+export default ICoordinate;
