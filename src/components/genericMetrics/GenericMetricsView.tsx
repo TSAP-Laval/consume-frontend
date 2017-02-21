@@ -65,8 +65,8 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
      render() {
          //Pour afficher le nom et le prénom du joueur.
         let baseCols: Array<String> = ["Prénom", "Nom"];
-        // Pour récupérer ces données.
-        let cols = baseCols.concat(this.state.joueurs.length > 0? 
+        // Pour récupérer les noms des colonnes qui seront afffichées.
+        let cols = baseCols.concat(this.state.joueurs.length > 0?
         this.state.joueurs[0].metrics.map((metric) => {
             return metric.name
         }): []);
@@ -75,7 +75,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
         let data = this.state.joueurs.map((joueur, i) => {
             let baseData: Array<string> = [joueur.first_name, joueur.last_name];
             baseData = baseData.concat(joueur.metrics.map((metric) => {
-                return metric.value.toFixed(2).toString();
+                return metric.value.toFixed(2).toString().concat("  (",metric.last_match.toFixed(2).toString(),")");
             }));
 
             return <MetricRow key={i} playerID={joueur.id} teamID={this.props.teamID} Data={ baseData }/>
@@ -84,7 +84,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
         return (
             this.state.requestState == Status.Idle?
             <div>
-                <h2>Statistiques pour <b>{this.state.nomEquipe}</b></h2>
+                <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
                 <MetricsTable columns={ cols }>
                     { data }
                 </MetricsTable>

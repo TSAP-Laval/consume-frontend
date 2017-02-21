@@ -12,9 +12,11 @@ export class GetData implements IAction {
 export class RecieveData implements IAction {
     type: String;
     zones: IZone[];
+    actionsTypes: string[];
 
-    constructor(zones: IZone[]){
+    constructor(zones: IZone[], actionTypes: string[]){
         this.type = "RECIEVE_ZONES";
         this.zones = zones;
+        this.actionsTypes = actionTypes;
     }
 }

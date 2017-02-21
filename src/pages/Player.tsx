@@ -6,6 +6,10 @@ import {HeatMap} from "../components/HeatMap/Map"
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
 import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
+import StatsTableStore from "../components/PlayerStats/store";
+import { CreateGetMatchesAction } from "../components/PlayerStats/actions/GetMatchesAction";
+import { CreateGetSeasonsAction } from "../components/PlayerStats/actions/GetSeasonsAction";
+import { CreateGetPositionsAction } from "../components/PlayerStats/actions/GetPositionsAction";
 
 import { Panel } from "react-bootstrap";
 
@@ -18,11 +22,38 @@ export interface ILayoutProps {
     }
 }
 
-export interface ILayoutState {}
+export interface ILayoutState {
+    playerName?: string
+}
 
 export default class Player extends React.Component<ILayoutProps, ILayoutState> {
-    constructor() {
+
+    constructor(props: ILayoutProps) {
         super();
+        this.getPlayerName = this.getPlayerName.bind(this);
+
+        this.state = {
+            playerName: 'un joueur'
+        }
+    }
+
+    componentWillMount() {
+        StatsTableStore.on("dataChange", this.getPlayerName);
+
+        CreateGetSeasonsAction();
+        CreateGetPositionsAction(this.props.params.playerID);
+        CreateGetMatchesAction(this.props.params.playerID, this.props.params.teamID);
+    }
+
+    componentWillUnmount() {
+        StatsTableStore.removeListener("dataChange", this.getPlayerName);
+    }
+
+    // Va récupérer les joueurs du store.
+     getPlayerName() {
+        this.setState({
+            playerName: StatsTableStore.getPlayerName()
+        });
     }
 
     render() {
@@ -31,12 +62,23 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         let statsTitle = <h3>Statistiques du joueur</h3>;
         let graphTitle = <h3>Progression du joueur</h3>;
 
+        // Les options de la date.
+        let dateOptions = {
+        weekday: "short",
+        year: "numeric",
+        month:"short",
+        day:"numeric"
+    };
+        // Format local de la date.
+        let dateLocal = "fr-CA";
+
         return (
             <div>
+                <h2 className="text-center">Statistiques pour <b>{this.state.playerName}</b></h2>
                 <Panel header={arrowTitle} className="data-panel"><ActionMap/></Panel>
                 <Panel header={heatmapTitle} className="data-panel"><HeatMap/></Panel>
-                <Panel header={statsTitle} className="data-panel"><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></Panel>
-                <Panel header={graphTitle} className="data-panel"><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></Panel>
+                <Panel header={graphTitle} className="data-panel"><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></Panel>
+                <Panel header={statsTitle} className="data-panel"><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></Panel>
             </div>
         );
     }

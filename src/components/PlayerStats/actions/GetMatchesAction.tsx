@@ -9,6 +9,9 @@ import IMatch from "../models/IMatch";
 
 import { MatchesReceivedAction } from "./MatchesReceivedAction";
 
+import { CreateGetSeasonsAction } from "./GetSeasonsAction";
+import { CreateGetPositionsAction } from "./GetPositionsAction";
+
 import * as Config from 'Config';
 
 export class GetMatchesAction implements IAction {
@@ -23,14 +26,32 @@ export class GetMatchesAction implements IAction {
     }
 }
 
-export function CreateGetMatchesAction(playerId: number, teamId: number) {
+export function CreateGetMatchesAction(playerId: number, teamId: number, seasonID?: number, positionID?: number) {
     dispatcher.dispatch(new GetMatchesAction(playerId, teamId));
 
     var url: string = Config.serverUrl + "/stats/player/" + playerId.toString() + "/team/" + teamId.toString();
 
+    let params = []
+
+    if (seasonID) {
+        params.push("season=" + seasonID.toString());
+    }
+
+    if (positionID) {
+        params.push("position=" + positionID.toString());
+    }
+
+    if (params.length > 0) {
+        url += '?' + params.join('&');
+    }
+
     axios.get(url)
     .then((response) => {
         let matches : Array<IMatch> = response.data.matches as Array<IMatch>;
+        //On récupère le prénom du joueur pour l'affichage.
+        let playerName : string = response.data.firstname;
+        // On y ajoute son nom.
+        playerName = playerName.concat(" ", response.data.lastname);
 
         // TEMPORAIRE: Parse date, serait mieux de faire dans un objet?
         matches = matches.map((match) => {
@@ -39,8 +60,8 @@ export function CreateGetMatchesAction(playerId: number, teamId: number) {
         });
         dispatcher.dispatch(new MatchesReceivedAction(matches.sort((a, b) => {
             return a.date.getTime() - b.date.getTime();
-        })));
-    }, 
+        }), playerName));
+    },
     (err: Error) => {
         CreateErrorAction(err.toString());
     });
