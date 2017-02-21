@@ -16,7 +16,7 @@ export class Header extends React.Component<ILayoutProps, ILayoutState> {
 
     render() {
         return (
-            <AppBar className={"navbar"} title={"TSAP"} />
+            <AppBar className={"navbar"} title={"TSAP"} showMenuIconButton={false} />
         );
     }
 }
