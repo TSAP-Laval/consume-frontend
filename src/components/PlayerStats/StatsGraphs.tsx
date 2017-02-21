@@ -16,7 +16,14 @@ import { ProgressBar } from 'react-bootstrap';
 
 export interface IGraphsProps {
     teamID: number,
-    playerID: number
+    playerID: number,
+    dateOptions: {
+        weekday: string,
+        year: string,
+        month:string,
+        day:string
+    },
+    dateLocal:string
 }
 
 
@@ -28,6 +35,7 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
     }
 
     colors: string[];
+
 
     constructor() {
         super();
@@ -112,12 +120,11 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
         }
         let ctx : CanvasRenderingContext2D = (this.refs.statGraph as HTMLCanvasElement).getContext("2d");
 
-
         let points: {[label: string]: number[]} = {};
         let labels : string[] = [];
         for (let i = 0; i < this.state.matches.length; i++) {
             let match = this.state.matches[i];
-            labels.push(match.date.toDateString());
+            labels.push(match.date.toLocaleDateString(this.props.dateLocal, this.props.dateOptions));
 
             for (let j = 0; j < match.metrics.length; j++) {
                 let metric = match.metrics[j];
@@ -166,7 +173,8 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
         }): []);
 
         let data = this.state.matches.map((match) => {
-            let baseData: Array<String> = [match.opposing.name, match.date.toDateString()];
+            let baseData: Array<String> = [match.opposing.name, match.date.toLocaleDateString(this.props.dateLocal,
+             this.props.dateOptions)];
             return baseData.concat(match.metrics.map((metric) => {
                 return metric.value.toFixed(2).toString();
             }));

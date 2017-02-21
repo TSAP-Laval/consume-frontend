@@ -15,7 +15,14 @@ import { ProgressBar } from 'react-bootstrap';
 
 export interface IStatsProps {
     teamID: number,
-    playerID: number
+    playerID: number,
+    dateOptions: {
+        weekday: string,
+        year: string,
+        month:string,
+        day:string
+    },
+    dateLocal:string
 }
 
 export interface IStatsState {
@@ -107,7 +114,7 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
         }): []);
 
         let data = this.state.matches.map((match) => {
-            let baseData: Array<String> = [match.opposing.name, match.date.toDateString()];
+            let baseData: Array<String> = [match.opposing.name, match.date.toLocaleDateString(this.props.dateLocal, this.props.dateOptions)];
             return baseData.concat(match.metrics.map((metric) => {
                 return metric.value.toFixed(2).toString();
             }));
