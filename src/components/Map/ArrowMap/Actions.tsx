@@ -1,26 +1,41 @@
 import {IAction} from "../../IAction"
 
 import Coordinate from "./models/Coordinate"
-import Arrow from "./models/Arrow"
+import Action from "./models/Action"
+import ActionType from "./Filter/models/ActionType"
 
-export class FetchArrows implements IAction {
-    type: String
+export class FetchActions implements IAction {
+    type: string
 
     constructor() {
-        this.type = "FETCH_ARROWS"
+        this.type = "FETCH_ACTIONS"
     }
 }
 
-export class ReceiveArrows implements IAction {
-    type: String
-    arrows: Arrow[]
+export class ReceiveActions implements IAction {
+    type: string
+    actions: Action[]
 
-    constructor(arrows: Arrow[]) {
-        this.type = "RECEIVE_ARROWS"
-        this.arrows = arrows
+    constructor(actions: Action[]) {
+        this.type = "RECEIVE_ACTIONS"
+        this.actions = actions
     }
 
-    getArrows() {
-        return this.arrows
+    getActions() {
+        return this.actions
+    }
+}
+
+export class FilterActions implements IAction {
+    type: string
+    filter: ActionType
+
+    constructor(action_type: ActionType){
+        this.type = "FILTER_ACTIONS"
+        this.filter = action_type
+    }
+
+    getFilter() {
+        return this.filter
     }
 }

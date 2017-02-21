@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {ArrowMap} from "../components/Map/ArrowMap/Index"
+import {ActionMap} from "../components/Map/ArrowMap/Index"
 import {HeatMap} from "../components/HeatMap/Map"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
@@ -8,6 +8,8 @@ import StatsGraphs from "../components/PlayerStats/StatsGraphs";
 import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
 import StatsTableStore from "../components/PlayerStats/store";
 import { CreateGetMatchesAction } from "../components/PlayerStats/actions/GetMatchesAction";
+import { CreateGetSeasonsAction } from "../components/PlayerStats/actions/GetSeasonsAction";
+import { CreateGetPositionsAction } from "../components/PlayerStats/actions/GetPositionsAction";
 
 import { Panel } from "react-bootstrap";
 
@@ -37,6 +39,9 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
 
     componentWillMount() {
         StatsTableStore.on("dataChange", this.getPlayerName);
+
+        CreateGetSeasonsAction();
+        CreateGetPositionsAction(this.props.params.playerID);
         CreateGetMatchesAction(this.props.params.playerID, this.props.params.teamID);
     }
 
@@ -70,7 +75,11 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         return (
             <div>
                 <h2 className="text-center">Statistiques pour <b>{this.state.playerName}</b></h2>
+<<<<<<< HEAD
                 <Panel header={arrowTitle} className="data-panel"><ArrowMap/></Panel>
+=======
+                <Panel header={arrowTitle} className="data-panel"><ActionMap/></Panel>
+>>>>>>> 0267c1a89fc2edfe355e78210dc7211b1a617376
                 <Panel header={heatmapTitle} className="data-panel"><HeatMap/></Panel>
                 <Panel header={graphTitle} className="data-panel"><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></Panel>
                 <Panel header={statsTitle} className="data-panel"><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></Panel>
