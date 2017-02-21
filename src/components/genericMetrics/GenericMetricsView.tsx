@@ -90,7 +90,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
                     { data }
                 </MetricsTable>
             </div>
-            : <div>
+            : <div className="loading">
                 <h3>{ "Chargement..." }</h3>
                 <CircularProgress size={60} thickness={7} />
               </div>

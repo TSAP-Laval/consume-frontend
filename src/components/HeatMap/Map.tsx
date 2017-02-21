@@ -6,6 +6,8 @@ import { IZone } from "./models/BaseModels"
 import CircularProgress from 'material-ui/CircularProgress';
 import {Layer, Rect, Stage, Circle, Line, Text} from 'react-konva';
 
+import Toggle from 'material-ui/Toggle';
+
 export interface ILayoutProps {
 }
 
@@ -99,7 +101,14 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             var zoneWidth = this.state.width/4;
             var zoneHeight = this.state.height/3;
             const ActionTypes = this.state.actions.map((action, i) => {
-                return <label className="checkbox-inline" key={i} ><input checked={this.state.searchTypes.indexOf(action) != -1} onChange={this.handleCheck.bind(this)} type="checkbox" value={action}/> {action}</label>
+                return (
+                    <li><Toggle
+                        label={action}
+                        checked={this.state.searchTypes.indexOf(action) != -1}
+                        value={action}
+                        onToggle={this.handleCheck.bind(this)}
+                    /></li>
+                )
             })
         const Zones = this.state.zones.map((zone, i)=> {
             var startX = zoneWidth * zone.x;
@@ -120,13 +129,20 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
 
         if(!this.state.loading) {
             return(
-                <div ref="mainStage">
-                    {ActionTypes}
-                    <Stage width={this.state.width} height={this.state.height}>
-                        <Layer>{Zones}</Layer>
-                        <Layer>{Texts}</Layer>
-                        <Map height={this.state.height}/>
-                    </Stage>
+                <div className="container">
+                    <div ref="mainStage" className="left">
+                        <Stage width={this.state.width} height={this.state.height}>
+                            <Layer>{Zones}</Layer>
+                            <Layer>{Texts}</Layer>
+                            <Map height={this.state.height}/>
+                        </Stage>
+                    </div>
+                    <div className="right">
+                        <h3>Types d'Actions</h3>
+                        <ul>
+                        {ActionTypes}
+                        </ul>
+                    </div>
                 </div>
             );
         } else {

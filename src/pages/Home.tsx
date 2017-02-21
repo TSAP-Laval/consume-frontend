@@ -5,6 +5,8 @@ import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
 import RaisedButton from 'material-ui/RaisedButton';
 
+import Paper from 'material-ui/Paper';
+
 import { Link } from 'react-router';
 
 require('../sass/Home.scss');
@@ -21,14 +23,14 @@ export default class Home extends React.Component<IHomeProps, IHomeState> {
 
     render() {
         return (
-            <div className="homeJumbotron">
+            <Paper className="main-content">
                 <h1>Console TSAP</h1>
                 <p>
                     <Link to="/team/3">
-                        <RaisedButton label="Statistiques de l'équipe" />
+                        <RaisedButton primary={true} label="Statistiques de l'équipe" />
                     </Link>
                 </p>
-            </div>
+            </Paper>
         );
     }
 }

@@ -108,11 +108,13 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
 
         if(!this.state.loading) {
             return(
-                <div ref="mainStage">
-                    <Stage width={this.state.width} height={this.state.height}>
-                        <Map height={this.state.height}/>
-                        <Layer>{Actions}</Layer>
-                    </Stage>
+                <div className="container">
+                    <div ref="mainStage" className="left">
+                        <Stage width={this.state.width} height={this.state.height}>
+                            <Map height={this.state.height}/>
+                            <Layer>{Actions}</Layer>
+                        </Stage>
+                    </div>
                     <ActionMapFilter></ActionMapFilter>
                 </div>
             );

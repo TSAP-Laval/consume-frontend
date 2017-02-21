@@ -190,11 +190,18 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
 
         return (
             this.state.requestState == Status.Idle?
-                <div>
-                    <select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select>
-                    <select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select>
-                    <canvas ref={"statGraph"} >
-                    </canvas>
+                <div className="container">
+                    <div className="left">
+                        <canvas ref={"statGraph"} >
+                        </canvas>
+                    </div>
+                    <div className="right">
+                        <h3>Paramètres</h3>
+                        <ul>
+                            <li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></li>
+                            <li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></li>
+                        </ul>
+                    </div>
                 </div>
             : <div>
                 <h3>{ "Chargement..." }</h3>

@@ -75,6 +75,11 @@ module.exports = {
             {
                 test: /\.scss?$/,
                 loader: ExtractTextPlugin.extract('style-loader', sassLoaders.join('!'))
+            },
+            {
+                test: /\.css$/,
+                loader: 'style!css?modules',
+                include: /flexboxgrid/,
             }
         ],
 

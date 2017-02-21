@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import {Table as MTable, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
 export interface ITableProps {
     columns: Array<String>,
     data: Array<Array<String>>
@@ -11,24 +13,24 @@ export default class Table extends React.Component<ITableProps, ITableState> {
 
     render() {
         let headers = this.props.columns.map((h, i) => {
-            return <th key={ i }><span>{ h }</span></th>
+            return <TableHeaderColumn key={ i.toString() }><span>{ h }</span></TableHeaderColumn>
         });
 
         let dataRows = this.props.data.map((r, i) => {
             let boxes = r.map((b, j) => {
-                return <td key={j}><span>{b}</span></td>
+                return <TableRowColumn key={j.toString()}><span>{b}</span></TableRowColumn>
             });
 
-            return <tr key={ i }>{ boxes }</tr>
+            return <TableRow key={ i }>{ boxes }</TableRow>
         });
 
         return (
-            <table>
-                <tbody>
-                    <tr>{ headers }</tr>
+            <MTable>
+                <TableHeader displaySelectAll={false} adjustForCheckbox={false}><TableRow>{ headers } </TableRow></TableHeader>
+                <TableBody displayRowCheckbox={false}>
                     { dataRows }
-                </tbody>
-            </table>
+                </TableBody>
+            </MTable>
         );
     }
 }

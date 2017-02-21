@@ -2,6 +2,10 @@ import * as React from "react";
 
 import { Link } from "react-router"
 
+import { TableRowColumn, TableRow } from 'material-ui/Table';
+
+import FlatButton from 'material-ui/FlatButton';
+
 // Represent the props reveived by the Component GenericMetrics.
 export interface IRowProps {
     playerID: number,
@@ -17,13 +21,15 @@ export default class MetricsRow extends React.Component<IRowProps, IRowState> {
 
     render() {
         let boxes = this.props.Data.map((b, j) => {
-            return <td key={j}><span>{b}</span></td>
+            return <TableRowColumn key={j.toString()}><span>{b}</span></TableRowColumn>
         });
 
         boxes.push(
-            <td key={boxes.length}><Link to={"/team/" + this.props.teamID + "/player/" + this.props.playerID}>{"Voir"}</Link></td>
+            <TableRowColumn key={boxes.length.toString()}>
+                <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.teamID + "/player/" + this.props.playerID}/>} />
+            </TableRowColumn>
         )
 
-        return <tr>{ boxes }</tr>
+        return <TableRow>{ boxes }</TableRow>
     }
 }

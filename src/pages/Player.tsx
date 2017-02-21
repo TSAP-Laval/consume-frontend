@@ -11,6 +11,10 @@ import { CreateGetMatchesAction } from "../components/PlayerStats/actions/GetMat
 import { CreateGetSeasonsAction } from "../components/PlayerStats/actions/GetSeasonsAction";
 import { CreateGetPositionsAction } from "../components/PlayerStats/actions/GetPositionsAction";
 
+import { DataPanel } from "../components/DataPanel";
+
+import Paper from 'material-ui/Paper';
+
 require('../sass/Player.scss');
 
 export interface ILayoutProps {
@@ -55,10 +59,10 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
     }
 
     render() {
-        let arrowTitle = <h3>Tracé des actions</h3>;
-        let heatmapTitle = <h3>Heatmap des actions</h3>
-        let statsTitle = <h3>Statistiques du joueur</h3>;
-        let graphTitle = <h3>Progression du joueur</h3>;
+        let arrowTitle = "Tracé des actions";
+        let heatmapTitle = "Heatmap des actions";
+        let statsTitle = "Statistiques du joueur";
+        let graphTitle = "Progression du joueur";
 
         // Les options de la date.
         let dateOptions = {
@@ -71,12 +75,12 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         let dateLocal = "fr-CA";
 
         return (
-            <div>
-                <h2 className="text-center">Statistiques pour <b>{this.state.playerName}</b></h2>
-                <div className="data-panel"><ActionMap/></div>
-                <div className="data-panel"><HeatMap/></div>
-                <div className="data-panel"><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></div>
-                <div className="data-panel"><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></div>
+            <div className="allContainer">
+                <DataPanel PlayerName={this.state.playerName} Header={arrowTitle}><ActionMap/></DataPanel>
+                <DataPanel PlayerName={this.state.playerName} Header={heatmapTitle} ><HeatMap/></DataPanel>
+
+                <DataPanel PlayerName={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
+                <DataPanel PlayerName={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
             </div>
         );
     }

@@ -7,6 +7,8 @@ import { MuiThemeProvider, getMuiTheme } from "material-ui/styles";
 import  ErrorStore  from "../components/Error/store";
 import ErrorAlert from "../components/Error";
 
+require('../sass/Layout');
+
 
 export interface ILayoutProps {}
 
