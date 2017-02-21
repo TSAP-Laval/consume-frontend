@@ -84,7 +84,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
         return (
             this.state.requestState == Status.Idle?
             <div>
-                <h2>Statistiques pour <b>{this.state.nomEquipe}</b></h2>
+                <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
                 <MetricsTable columns={ cols }>
                     { data }
                 </MetricsTable>
