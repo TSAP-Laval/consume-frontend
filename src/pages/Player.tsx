@@ -11,8 +11,6 @@ import { CreateGetMatchesAction } from "../components/PlayerStats/actions/GetMat
 import { CreateGetSeasonsAction } from "../components/PlayerStats/actions/GetSeasonsAction";
 import { CreateGetPositionsAction } from "../components/PlayerStats/actions/GetPositionsAction";
 
-import { Panel } from "react-bootstrap";
-
 require('../sass/Player.scss');
 
 export interface ILayoutProps {
@@ -75,10 +73,10 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         return (
             <div>
                 <h2 className="text-center">Statistiques pour <b>{this.state.playerName}</b></h2>
-                <Panel header={arrowTitle} className="data-panel"><ActionMap/></Panel>
-                <Panel header={heatmapTitle} className="data-panel"><HeatMap/></Panel>
-                <Panel header={graphTitle} className="data-panel"><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></Panel>
-                <Panel header={statsTitle} className="data-panel"><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></Panel>
+                <div className="data-panel"><ActionMap/></div>
+                <div className="data-panel"><HeatMap/></div>
+                <div className="data-panel"><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></div>
+                <div className="data-panel"><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></div>
             </div>
         );
     }

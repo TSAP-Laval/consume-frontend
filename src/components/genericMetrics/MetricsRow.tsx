@@ -2,8 +2,6 @@ import * as React from "react";
 
 import { Link } from "react-router"
 
-import { Table as T } from 'react-bootstrap';
-
 // Represent the props reveived by the Component GenericMetrics.
 export interface IRowProps {
     playerID: number,

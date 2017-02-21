@@ -8,10 +8,10 @@ import IMatch from "./models/IMatch";
 import { ISeason } from "./models/ISeason";
 import { IPosition } from "./models/IPosition";
 
+import CircularProgress from 'material-ui/CircularProgress';
+
 
 import Table from "./Table";
-
-import { ProgressBar } from 'react-bootstrap';
 
 export interface IStatsProps {
     teamID: number,
@@ -137,7 +137,7 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
             </div>
             : <div>
                 <h3>{ "Chargement..." }</h3>
-                <ProgressBar active now={45} />
+                <CircularProgress size={60} thickness={7} />
               </div>
         )
     }

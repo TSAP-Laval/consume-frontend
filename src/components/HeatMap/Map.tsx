@@ -3,7 +3,7 @@ import * as Actions from "./Actions"
 import Store from "./HeatMapStore"
 import Map from "../Map/Index"
 import { IZone } from "./models/BaseModels"
-import { ProgressBar } from 'react-bootstrap';
+import CircularProgress from 'material-ui/CircularProgress';
 import {Layer, Rect, Stage, Circle, Line, Text} from 'react-konva';
 
 export interface ILayoutProps {
@@ -93,7 +93,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
                 actions: Store.getActions()
             });
     }
-  
+
 
     render() {
             var zoneWidth = this.state.width/4;
@@ -107,7 +107,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             var startY = zoneHeight * ys[zone.y];
             var color = !isNaN(zone.rating) ? "hsl("+ Math.floor((zone.rating * 100) * 120 / 100) +", 50%,50%)" : "white";
             return <Rect key={i} x={startX} y={startY} width={zoneWidth} height={zoneHeight} stroke="black" fill={color}/>
-        }) 
+        })
 
         const Texts = this.state.zones.map((zone,i)=>{
             var text =  (Math.round(zone.percentage * 100)).toString() + '%';
@@ -133,7 +133,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             return(
                 <div>
                     <h3>{ "Chargement... "}</h3>
-                    <ProgressBar active now={45} />
+                    <CircularProgress size={60} thickness={7} />
                 </div>
             )
         }

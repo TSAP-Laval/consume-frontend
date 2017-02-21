@@ -3,8 +3,9 @@ import genericMetricsStore from "../genericMetrics/GenericMetricsStore";
 import MetricsTable from "../genericMetrics/MetricsTable";
 import IJoueur from "./models/IJoueur";
 import Status from "./models/Status";
-import { ProgressBar } from 'react-bootstrap';
 import { CreateGetPlayersAction } from "./actions/genericMetricsActions";
+
+import CircularProgress from 'material-ui/CircularProgress';
 
 import MetricRow from './MetricsRow';
 
@@ -91,7 +92,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
             </div>
             : <div>
                 <h3>{ "Chargement..." }</h3>
-                <ProgressBar active now={45} />
+                <CircularProgress size={60} thickness={7} />
               </div>
         )
     }

@@ -12,7 +12,7 @@ import Table from "./Table";
 
 import { Chart } from 'chart.js';
 
-import { ProgressBar } from 'react-bootstrap';
+import CircularProgress from 'material-ui/CircularProgress';
 
 export interface IGraphsProps {
     teamID: number,
@@ -198,7 +198,7 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
                 </div>
             : <div>
                 <h3>{ "Chargement..." }</h3>
-                <ProgressBar active now={45} />
+                <CircularProgress size={60} thickness={7} />
               </div>
         )
     }

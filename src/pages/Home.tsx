@@ -3,10 +3,9 @@ import { ActionMap } from "../components/Map/ArrowMap/Index"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
+import RaisedButton from 'material-ui/RaisedButton';
 
 import { Link } from 'react-router';
-
-import { Button, Jumbotron } from "react-bootstrap";
 
 require('../sass/Home.scss');
 
@@ -22,14 +21,14 @@ export default class Home extends React.Component<IHomeProps, IHomeState> {
 
     render() {
         return (
-            <Jumbotron className="homeJumbotron">
+            <div className="homeJumbotron">
                 <h1>Console TSAP</h1>
                 <p>
                     <Link to="/team/3">
-                        <Button bsStyle="primary">Statistiques de l'équipe</Button>
+                        <RaisedButton label="Statistiques de l'équipe" />
                     </Link>
                 </p>
-            </Jumbotron>
+            </div>
         );
     }
 }

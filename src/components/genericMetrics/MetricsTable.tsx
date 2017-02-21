@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { Table as T } from 'react-bootstrap';
-
 //require('../../sass/Layout.scss');
 
 // Represent the props reveived by the Component GenericMetrics.
@@ -26,12 +24,12 @@ export default class MetricsTable extends React.Component<IDataProps, IDataState
         )
 
         return (
-            <T striped bordered condensed hover responsive>
+            <table>
                 <tbody>
                     <tr>{ headers }</tr>
                     { this.props.children }
                 </tbody>
-            </T>
+            </table>
         );
     }
 }

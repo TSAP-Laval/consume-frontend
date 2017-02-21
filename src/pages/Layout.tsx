@@ -2,6 +2,7 @@ import * as React from "react";
 import {Link} from "react-router"
 import {Header} from "./Header";
 
+import { MuiThemeProvider, getMuiTheme } from "material-ui/styles";
 
 import  ErrorStore  from "../components/Error/store";
 import ErrorAlert from "../components/Error";
@@ -13,6 +14,12 @@ export interface ILayoutState {
     title?: string,
     Error?: string
 }
+
+const muiTheme = getMuiTheme({
+    palette: {
+        primary1Color: "#2196F3",
+    }
+});
 
 export default class Layout extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
@@ -44,13 +51,15 @@ export default class Layout extends React.Component<ILayoutProps, ILayoutState> 
         null;
 
         return (
-            <div>
-                <Header/>
-                <main>
-                    { errDiv }
-                    {this.props.children}
-                </main>
-            </div>
+            <MuiThemeProvider muiTheme={muiTheme}>
+                <div>
+                    <Header/>
+                    <main>
+                        { errDiv }
+                        {this.props.children}
+                    </main>
+                </div>
+            </MuiThemeProvider>
         );
     }
 }
