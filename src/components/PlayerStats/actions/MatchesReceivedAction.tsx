@@ -9,12 +9,14 @@ export class MatchesReceivedAction implements IAction {
     type = "MATCHES_RECEIVED";
 
     matches: IMatch[];
+    playerName: string;
 
-    constructor(matches: IMatch[]) {
+    constructor(matches: IMatch[], playerName: string) {
         this.matches = matches;
+        this.playerName = playerName;
     }
 }
 
-export function CreateMatchesReceivedAction(matches: IMatch[]) {
-    dispatcher.dispatch(new MatchesReceivedAction(matches));
+export function CreateMatchesReceivedAction(matches: IMatch[], playerName: string) {
+    dispatcher.dispatch(new MatchesReceivedAction(matches, playerName));
 }

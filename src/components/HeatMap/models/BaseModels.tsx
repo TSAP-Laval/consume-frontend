@@ -18,7 +18,7 @@ export interface IRawData {
 
 export interface IAction {
     id: number;
-    type: ITypeAction;
+    TypeAction: ITypeAction;
     is_valid: boolean;
     x1: number;
     y1: number;
@@ -31,6 +31,6 @@ export interface IAction {
 
 export interface ITypeAction {
     id: number;
-    nom: string;
+    name: string;
     description: string;
 }

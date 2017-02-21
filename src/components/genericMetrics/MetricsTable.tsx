@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { Table as T } from 'react-bootstrap';
+import { Table, TableBody, TableRow, TableHeader, TableHeaderColumn } from 'material-ui/Table';
 
-//require('../../sass/Layout.scss');
+require('../../sass/Team');
 
 // Represent the props reveived by the Component GenericMetrics.
 export interface IDataProps {
@@ -18,20 +18,20 @@ export default class MetricsTable extends React.Component<IDataProps, IDataState
 
     render() {
         let headers = this.props.columns.map((h, i) => {
-            return <th key={ i }><span>{ h }</span></th>
+            return <TableHeaderColumn key={ i.toString() }><span>{ h }</span></TableHeaderColumn>
         });
 
         headers.push(
-            <th>{ "Voir Détails" }</th>
+            <TableHeaderColumn>{ "Voir Détails" }</TableHeaderColumn>
         )
 
         return (
-            <T striped bordered condensed hover responsive>
-                <tbody>
-                    <tr>{ headers }</tr>
+            <Table className="metrics-table">
+                <TableHeader displaySelectAll={false} adjustForCheckbox={false}><TableRow>{ headers }</TableRow></TableHeader>
+                <TableBody>
                     { this.props.children }
-                </tbody>
-            </T>
+                </TableBody>
+            </Table>
         );
     }
 }

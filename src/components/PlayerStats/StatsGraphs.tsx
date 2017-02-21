@@ -2,6 +2,7 @@ import * as React from "react";
 import StatsTableStore from "./store";
 
 import { CreateGetMatchesAction } from "./actions/GetMatchesAction";
+import { CreateChangeFilterAction } from './actions/ChangeFilterAction';
 import Status from "./models/Status";
 import IMatch from "./models/IMatch";
 
@@ -11,11 +12,18 @@ import Table from "./Table";
 
 import { Chart } from 'chart.js';
 
-import { ProgressBar } from 'react-bootstrap';
+import CircularProgress from 'material-ui/CircularProgress';
 
 export interface IGraphsProps {
     teamID: number,
-    playerID: number
+    playerID: number,
+    dateOptions: {
+        weekday: string,
+        year: string,
+        month:string,
+        day:string
+    },
+    dateLocal:string
 }
 
 
@@ -28,6 +36,7 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
 
     colors: string[];
 
+
     constructor() {
         super();
 
@@ -36,7 +45,9 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
 
         this.state = {
             requestState: StatsTableStore.getRequestStatus(),
-            matches: StatsTableStore.getMatches()
+            matches: StatsTableStore.getMatches(),
+            seasons: StatsTableStore.getSeasons(),
+            positions: StatsTableStore.getPositions()
         }
 
         this.colors = [
@@ -48,27 +59,58 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
 
     componentWillMount() {
         StatsTableStore.on("dataChange", this.getResults);
-        StatsTableStore.on("requestState", this.getStatus)
-        CreateGetMatchesAction(this.props.playerID, this.props.teamID);
+        StatsTableStore.on("requestState", this.getStatus);
+        StatsTableStore.on("seasons", this.getSeasons.bind(this));
+        StatsTableStore.on("positions", this.getPositions.bind(this));
+        StatsTableStore.on("filter", this.getFilters.bind(this));
     }
 
     componentWillUnmount() {
         StatsTableStore.removeListener("dataChange", this.getResults);
         StatsTableStore.removeListener("requestState", this.getStatus);
+        StatsTableStore.removeListener("seasons", this.getSeasons.bind(this));
+        StatsTableStore.removeListener("positions", this.getPositions.bind(this));
+        StatsTableStore.on("filter", this.getFilters.bind(this));
+    }
+
+    getFilters() {
+        this.setState({
+            selectedSeasonID: StatsTableStore.getSelectedSeason(),
+            selectedPositionID: StatsTableStore.getSelectedPosition()
+        });
+    }
+
+    getPositions() {
+        this.setState({
+            positions: StatsTableStore.getPositions()
+        });
+    }
+
+    getSeasons() {
+        this.setState({
+            seasons: StatsTableStore.getSeasons()
+        });
     }
 
     getResults() {
         this.setState({
             matches: StatsTableStore.getMatches(),
             requestState: StatsTableStore.getRequestStatus()
-        });
-        this.drawGraph();
+        }, this.drawGraph);
     }
 
     getStatus() {
         this.setState({
             requestState: StatsTableStore.getRequestStatus()
         })
+    }
+
+    handleSeasonChange(e: any) {
+        CreateChangeFilterAction(e.target.value, this.state.selectedPositionID, this.props.playerID, this.props.teamID);
+    }
+
+    handlePositionChange(e: any) {
+        CreateChangeFilterAction(this.state.selectedSeasonID, e.target.value, this.props.playerID, this.props.teamID);
     }
 
     drawGraph() {
@@ -78,12 +120,11 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
         }
         let ctx : CanvasRenderingContext2D = (this.refs.statGraph as HTMLCanvasElement).getContext("2d");
 
-
         let points: {[label: string]: number[]} = {};
         let labels : string[] = [];
         for (let i = 0; i < this.state.matches.length; i++) {
             let match = this.state.matches[i];
-            labels.push(match.date.toDateString());
+            labels.push(match.date.toLocaleDateString(this.props.dateLocal, this.props.dateOptions));
 
             for (let j = 0; j < match.metrics.length; j++) {
                 let metric = match.metrics[j];
@@ -126,25 +167,45 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
     render() {
         let baseCols: Array<String> = ["Adversaire", "Date"];
 
-        let cols = baseCols.concat(this.state.matches.length > 0? 
+        let cols = baseCols.concat(this.state.matches.length > 0?
         this.state.matches[0].metrics.map((metric) => {
             return metric.name
         }): []);
 
         let data = this.state.matches.map((match) => {
-            let baseData: Array<String> = [match.opposing.name, match.date.toDateString()];
+            let baseData: Array<String> = [match.opposing.name, match.date.toLocaleDateString(this.props.dateLocal,
+             this.props.dateOptions)];
             return baseData.concat(match.metrics.map((metric) => {
                 return metric.value.toFixed(2).toString();
             }));
         });
 
+        let seasonOptions = [<option selected value="">-- Aucun Filtre --</option>].concat(this.state.seasons.map((season) =>(
+            <option value={season.ID}>{season.Annees}</option>
+        )));
+
+        let positionOptions = [<option selected value="">-- Aucun Filtre --</option>].concat(this.state.positions.map((position) => (
+            <option value={position.ID}>{position.Nom}</option>
+        )));
+
         return (
             this.state.requestState == Status.Idle?
-                <canvas ref={"statGraph"} >
-                </canvas>
+                <div className="container">
+                    <div className="left">
+                        <canvas ref={"statGraph"} >
+                        </canvas>
+                    </div>
+                    <div className="right">
+                        <h3>Paramètres</h3>
+                        <ul>
+                            <li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></li>
+                            <li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></li>
+                        </ul>
+                    </div>
+                </div>
             : <div>
                 <h3>{ "Chargement..." }</h3>
-                <ProgressBar active now={45} />
+                <CircularProgress size={60} thickness={7} />
               </div>
         )
     }

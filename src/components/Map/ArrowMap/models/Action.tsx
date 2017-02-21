@@ -1,12 +1,18 @@
 import Coordinate from "./Coordinate"
 
-export default class Arrow {
+export default class Action {
     start: Coordinate
     end: Coordinate
+    type: string
 
-    constructor(start: Coordinate, end: Coordinate) {
+    constructor(type: string, start: Coordinate, end?: Coordinate) {
+        this.type = type
         this.start = start
         this.end = end
+    }
+
+    getType() {
+        return this.type
     }
 
     getCoordinates() {

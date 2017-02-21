@@ -3,4 +3,5 @@ export default class Metric {
     name: string;
     value: number;
     deviation: number;
+    last_match: number;
 }

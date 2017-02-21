@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import { Navbar, Nav, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import AppBar from 'material-ui/AppBar';
 
 import { Link } from "react-router"
 
@@ -17,15 +16,7 @@ export class Header extends React.Component<ILayoutProps, ILayoutState> {
 
     render() {
         return (
-            <Navbar>
-                <Navbar.Header>
-                    <Navbar.Brand>
-                        <Link to="/">
-                            <a href="#">TSAP</a>
-                        </Link>
-                    </Navbar.Brand>
-                </Navbar.Header>
-            </Navbar>
+            <AppBar className={"navbar"} title={"TSAP"} showMenuIconButton={false} />
         );
     }
 }
