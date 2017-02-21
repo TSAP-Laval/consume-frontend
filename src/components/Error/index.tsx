@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Alert, Button } from "react-bootstrap";
+import Snackbar from 'material-ui/Snackbar';
 
 require('../../sass/Error.scss');
 
@@ -9,7 +9,7 @@ export interface IErrorProps {
 };
 export interface IErrorState {
     alertVisible: boolean
-}; 
+};
 
 export default class ErrorAlert extends React.Component<IErrorProps, IErrorState> {
 
@@ -23,16 +23,15 @@ export default class ErrorAlert extends React.Component<IErrorProps, IErrorState
     }
 
     render() {
-        if (this.state.alertVisible) {
-            return (
-                <Alert className="errorDiv" bsStyle="danger" onDismiss={this.handleAlertDismiss}>
-                    <h4> Une erreur est survenue! </h4>
-                    <p>{ this.props.Message.toString() }</p>
-                </Alert>
-            );
-        }
 
-        return null;
+        return (
+            <Snackbar
+                open={this.state.alertVisible}
+                message={"Une erreur est survenue: " + this.props.Message.toString()}
+                autoHideDuration={4000}
+                onRequestClose={this.handleAlertDismiss.bind(this)}
+            />
+        )
     }
 
     handleAlertDismiss() {

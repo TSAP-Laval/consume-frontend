@@ -1,12 +1,13 @@
 import * as React from "react";
 import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
-import { ProgressBar } from 'react-bootstrap';
 import * as ActionsCreator from "./ActionsCreator"
 import ActionModel from "./models/Action"
 import Map from "../Index"
 import Store from "./Store"
 import ActionType from "./Filter/models/ActionType"
 import ActionMapFilter from "./Filter/Index"
+
+import CircularProgress from 'material-ui/CircularProgress';
 
 export interface ILayoutProps {
 }
@@ -20,9 +21,9 @@ export interface ILayoutState {
 }
 
 export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
-    
+
     readonly mainColor = "green";
-    readonly actionColor = "black"   
+    readonly actionColor = "black"
     readonly strokeWidth = 3;
 
     constructor(props: ILayoutProps) {
@@ -81,7 +82,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
 
     render() {
         const Actions = this.state.actions.map((action, i) => {
-            
+
             let types = this.state.action_types.map((type) => {
                 return type.getType();
             })
@@ -107,11 +108,13 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
 
         if(!this.state.loading) {
             return(
-                <div ref="mainStage">
-                    <Stage width={this.state.width} height={this.state.height}>
-                        <Map height={this.state.height}/>
-                        <Layer>{Actions}</Layer>
-                    </Stage>
+                <div className="container">
+                    <div ref="mainStage" className="left">
+                        <Stage width={this.state.width} height={this.state.height}>
+                            <Map height={this.state.height}/>
+                            <Layer>{Actions}</Layer>
+                        </Stage>
+                    </div>
                     <ActionMapFilter></ActionMapFilter>
                 </div>
             );
@@ -119,7 +122,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
             return(
                 <div>
                     <h3>{ "Chargement... "}</h3>
-                    <ProgressBar active now={45} />
+                    <CircularProgress size={60} thickness={7} />
                 </div>
             )
         }

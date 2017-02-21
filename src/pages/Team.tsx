@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { Panel } from 'react-bootstrap';
-
 import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
+
+import Paper from 'material-ui/Paper';
 
 require('../sass/Team.scss');
 
@@ -23,7 +23,9 @@ export default class Team extends React.Component<ITeamProps, ITeamState> {
     render() {
         let teamStatsTitle = <h3>Satistiques de la saison en cours</h3>
         return (
-            <Panel header={teamStatsTitle} className="data-panel"><GenericMetricsView teamID={this.props.params.teamID}/></Panel>
+            <Paper className="main-content">
+                <GenericMetricsView teamID={this.props.params.teamID}/>
+            </Paper>
         );
     }
 }

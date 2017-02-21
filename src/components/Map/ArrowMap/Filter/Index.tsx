@@ -3,6 +3,8 @@ import Store from "../Store"
 import ActionType from "./models/ActionType"
 import * as ActionsCreator from "../ActionsCreator"
 
+import Toggle from 'material-ui/Toggle';
+
 require('../../../../sass/ArrowMap.scss');
 
 export interface ILayoutProps {}
@@ -20,7 +22,7 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
         this.setActionTypes.bind(this)
     }
 
-    onCheckboxClick(e: React.FormEvent<HTMLInputElement>){
+    onCheckboxClick(e: any){
         ActionsCreator.filterActions(new ActionType(e.currentTarget.value, e.currentTarget.checked))
     }
 
@@ -48,11 +50,16 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
                 color: 'rgb(' + action_type.getColor().r + ", " + action_type.getColor().g + ", " + action_type.getColor().b + ")"
             }
 
-            return <li style={style}key={i}><input type="checkbox" value={action_type.getType()} checked={action_type.isUsed()} onClick={this.onCheckboxClick}/>{action_type.getType()}</li>
+            return (
+                <li style={style}key={i}>
+                    <Toggle labelStyle={style} value={action_type.getType()} toggled={action_type.isUsed()} onToggle={this.onCheckboxClick} label={action_type.getType()} />
+                </li>
+            )
         })
 
         return(
-            <div id="ArrowMapFilter">
+            <div id="ArrowMapFilter" className="right">
+                <h3>Types d'Actions</h3>
                 <ul>{ActionTypes}</ul>
             </div>
         );
