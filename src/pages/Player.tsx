@@ -8,6 +8,8 @@ import StatsGraphs from "../components/PlayerStats/StatsGraphs";
 import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
 import StatsTableStore from "../components/PlayerStats/store";
 import { CreateGetMatchesAction } from "../components/PlayerStats/actions/GetMatchesAction";
+import { CreateGetSeasonsAction } from "../components/PlayerStats/actions/GetSeasonsAction";
+import { CreateGetPositionsAction } from "../components/PlayerStats/actions/GetPositionsAction";
 
 import { Panel } from "react-bootstrap";
 
@@ -35,6 +37,9 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
 
     componentWillMount() {
         StatsTableStore.on("dataChange", this.getPlayerName);
+
+        CreateGetSeasonsAction();
+        CreateGetPositionsAction(this.props.params.playerID);
         CreateGetMatchesAction(this.props.params.playerID, this.props.params.teamID);
     }
 

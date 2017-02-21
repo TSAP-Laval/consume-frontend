@@ -9,6 +9,7 @@ import Status from "./models/Status";
 import { MatchesReceivedAction } from './actions/MatchesReceivedAction';
 import { SeasonsReceivedAction } from './actions/SeasonsReceivedAction';
 import { PositionsReceivedAction } from './actions/PositionsReceivedActions';
+import { ChangeFilterAction } from './actions/ChangeFilterAction';
 
 class StatsTableStore extends EventEmitter {
     data: Array<IMatch>;
@@ -21,6 +22,9 @@ class StatsTableStore extends EventEmitter {
     seasonsReceived: boolean;
     positionsReceived: boolean;
 
+    selectedSeason: number;
+    selectedPosition: number;
+
     constructor() {
         super();
         this.data = [];
@@ -31,6 +35,9 @@ class StatsTableStore extends EventEmitter {
         this.matchesReceived = false;
         this.seasonsReceived = false;
         this.positionsReceived = false;
+
+        this.selectedSeason = null;
+        this.selectedPosition = null;
     }
 
     getMatches(): Array<IMatch> {
@@ -42,7 +49,10 @@ class StatsTableStore extends EventEmitter {
     }
 
     getPositions(): Array<IPosition> {
-        return this.positions;
+        // HACK parce qu'on a pas le temps de fix le bug de duplicates en backend
+        // TODO: FIX
+        let posValues = this.positions.map((p) => p.Nom);
+        return this.positions.filter((v, i, a) => posValues.indexOf(v.Nom) === i);
     }
 
     getRequestStatus(): Status {
@@ -51,6 +61,20 @@ class StatsTableStore extends EventEmitter {
 
     getPlayerName(): string {
         return this.pName;
+    }
+
+    getSelectedSeason(): number {
+        return this.selectedSeason;
+    }
+
+    getSelectedPosition(): number {
+        return this.selectedPosition;
+    }
+
+    tryEmitFilter() {
+        if (this.getRequestStatus() === Status.Idle) {
+            this.emit("filter")
+        }
     }
 
 
@@ -74,13 +98,28 @@ class StatsTableStore extends EventEmitter {
             case "SEASONS_RECEIVED":
                 this.seasonsReceived = true;
                 this.seasons = (action as SeasonsReceivedAction).Seasons;
+                this.selectedSeason = this.seasons[0].ID;
+
                 this.emit("seasons");
+                this.tryEmitFilter();
                 break;
 
             case "POSITIONS_RECEIVED":
                 this.positionsReceived = true;
                 this.positions = (action as PositionsReceivedAction).Positions;
+                this.selectedPosition = this.getPositions()[0].ID;
+
                 this.emit('positions');
+                this.tryEmitFilter();
+                break;
+
+            case "FILTER_SELECT":
+                this.matchesReceived = false;
+                this.emit('requestState');
+                let act = action as ChangeFilterAction;
+                this.selectedPosition = act.SelectedPosition;
+                this.selectedSeason = act.SelectedSeason;
+                this.emit('filter');
                 break;
         }
     }

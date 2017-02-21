@@ -26,13 +26,24 @@ export class GetMatchesAction implements IAction {
     }
 }
 
-export function CreateGetMatchesAction(playerId: number, teamId: number) {
+export function CreateGetMatchesAction(playerId: number, teamId: number, seasonID?: number, positionID?: number) {
     dispatcher.dispatch(new GetMatchesAction(playerId, teamId));
 
     var url: string = Config.serverUrl + "/stats/player/" + playerId.toString() + "/team/" + teamId.toString();
 
-    CreateGetSeasonsAction();
-    CreateGetPositionsAction(playerId);
+    let params = []
+
+    if (seasonID) {
+        params.push("season=" + seasonID.toString());
+    }
+
+    if (positionID) {
+        params.push("position=" + positionID.toString());
+    }
+
+    if (params.length > 0) {
+        url += '?' + params.join('&');
+    }
 
     axios.get(url)
     .then((response) => {

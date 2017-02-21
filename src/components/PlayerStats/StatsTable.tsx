@@ -2,8 +2,12 @@ import * as React from "react";
 import StatsTableStore from "./store";
 
 import { CreateGetMatchesAction } from "./actions/GetMatchesAction";
+import { CreateChangeFilterAction } from "./actions/ChangeFilterAction";
 import Status from "./models/Status";
 import IMatch from "./models/IMatch";
+import { ISeason } from "./models/ISeason";
+import { IPosition } from "./models/IPosition";
+
 
 import Table from "./Table";
 
@@ -16,7 +20,11 @@ export interface IStatsProps {
 
 export interface IStatsState {
     requestState?: Status,
-    matches?: IMatch[]
+    matches?: IMatch[],
+    seasons?: ISeason[],
+    positions?: IPosition[]
+    selectedSeasonID?: number
+    selectedPositionID?: number
 }
 
 export default class StatsTable extends React.Component<IStatsProps, IStatsState> {
@@ -29,18 +37,45 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
 
         this.state = {
             requestState: StatsTableStore.getRequestStatus(),
-            matches: StatsTableStore.getMatches()
+            matches: StatsTableStore.getMatches(),
+            seasons: StatsTableStore.getSeasons(),
+            positions: StatsTableStore.getPositions()
         }
     }
 
     componentWillMount() {
         StatsTableStore.on("dataChange", this.getResults);
         StatsTableStore.on("requestState", this.getStatus)
+        StatsTableStore.on("seasons", this.getSeasons.bind(this));
+        StatsTableStore.on("positions", this.getPositions.bind(this));
+        StatsTableStore.on("filter", this.getFilters.bind(this));
     }
 
     componentWillUnmount() {
         StatsTableStore.removeListener("dataChange", this.getResults);
         StatsTableStore.removeListener("requestState", this.getStatus);
+        StatsTableStore.removeListener("seasons", this.getSeasons.bind(this));
+        StatsTableStore.removeListener("positions", this.getPositions.bind(this));
+        StatsTableStore.removeListener("filter", this.getFilters.bind(this));
+    }
+
+    getFilters() {
+        this.setState({
+            selectedSeasonID: StatsTableStore.getSelectedSeason(),
+            selectedPositionID: StatsTableStore.getSelectedPosition()
+        });
+    }
+
+    getPositions() {
+        this.setState({
+            positions: StatsTableStore.getPositions()
+        });
+    }
+
+    getSeasons() {
+        this.setState({
+            seasons: StatsTableStore.getSeasons()
+        });
     }
 
     getResults() {
@@ -53,6 +88,14 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
         this.setState({
             requestState: StatsTableStore.getRequestStatus()
         })
+    }
+
+    handleSeasonChange(e: any) {
+        CreateChangeFilterAction(e.target.value, this.state.selectedPositionID, this.props.playerID, this.props.teamID);
+    }
+
+    handlePositionChange(e: any) {
+        CreateChangeFilterAction(this.state.selectedSeasonID, e.target.value, this.props.playerID, this.props.teamID);
     }
 
     render() {
@@ -70,9 +113,19 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
             }));
         });
 
+        let seasonOptions = this.state.seasons.map((season) =>(
+            <option value={season.ID}>{season.Annees}</option>
+        ));
+
+        let positionOptions = this.state.positions.map((position) => (
+            <option value={position.ID}>{position.Nom}</option>
+        ));
+
         return (
             this.state.requestState == Status.Idle?
             <div>
+                <select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select>
+                <select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select>
                 <Table columns={ cols } data={ data }/>
             </div>
             : <div>
