@@ -172,13 +172,13 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
             }));
         });
 
-        let seasonOptions = this.state.seasons.map((season) =>(
+        let seasonOptions = [<option selected value="">-- Aucun Filtre --</option>].concat(this.state.seasons.map((season) =>(
             <option value={season.ID}>{season.Annees}</option>
-        ));
+        )));
 
-        let positionOptions = this.state.positions.map((position) => (
+        let positionOptions = [<option selected value="">-- Aucun Filtre --</option>].concat(this.state.positions.map((position) => (
             <option value={position.ID}>{position.Nom}</option>
-        ));
+        )));
 
         return (
             this.state.requestState == Status.Idle?
