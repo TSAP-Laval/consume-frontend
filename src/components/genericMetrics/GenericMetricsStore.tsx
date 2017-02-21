@@ -31,11 +31,12 @@ class GenericMetricsStore extends EventEmitter{
     getRequestStatus(): Status {
         return this.requestStatus;
     }
-
+    
+    // Retourne le nom de l'équipe.
     getTeamName(): string {
         return this.teamName;
     }
-
+    
     // Permet de controler les actions qui vont être
     // émises.
     handleActions(action: IAction){
