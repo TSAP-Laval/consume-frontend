@@ -13,6 +13,7 @@ export interface ILayoutProps {
 
 export interface ILayoutState {
     actions ? : ActionModel[],
+    action_types ? : ActionType[],
     loading ? : boolean,
     height?: number,
     width?: number
@@ -45,7 +46,8 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
     setActions() {
         this.setState({
             actions: Store.getActions(),
-            loading: Store.fetching
+            loading: Store.fetching,
+            action_types: Store.getActionTypes()
         })
     }
 
@@ -79,17 +81,27 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
 
     render() {
         const Actions = this.state.actions.map((action, i) => {
-            var x1 = action.start.x * this.state.width
-            var y1 = (1 - action.start.y) * this.state.height
+            
+            let types = this.state.action_types.map((type) => {
+                return type.getType();
+            })
+
+            var typeIndex = types.indexOf(action.getType());
+            var arrowColor = this.state.action_types[typeIndex].getColor();
+
+            const style = 'rgb(' + arrowColor.r + ", " + arrowColor.g + ", " + arrowColor.b + ")"
+
+            var x1 = action.start.x * this.state.width;
+            var y1 = (1 - action.start.y) * this.state.height;
 
             if(action.end != null) {
                 var x2 = action.end.x * this.state.width
                 var y2 = (1 - action.end.y) * this.state.height
 
-                return <Arrow key={i} points={[x1, y1, x2, y2]} stroke={this.actionColor} strokeWidth={this.strokeWidth}/>
+                return <Arrow fill={style} key={i} points={[x1, y1, x2, y2]} stroke={style} strokeWidth={this.strokeWidth}/>
             } else {
                 var radius = this.state.height / 50
-                return <Circle key={i} x={x1} y={y1} radius={radius} fill={this.actionColor} stroke={this.actionColor} strokeWidth={this.strokeWidth}/>
+                return <Circle fill={style} key={i} x={x1} y={y1} radius={radius} stroke={style} strokeWidth={this.strokeWidth}/>
             }
         })
 

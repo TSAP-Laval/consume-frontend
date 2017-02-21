@@ -3,6 +3,7 @@ import { IAction } from "../../IAction"
 import * as Actions from "./Actions"
 import Action from "./models/Action"
 import ActionType from "./Filter/models/ActionType"
+import RGBColor from "./Filter/models/RGBColor"
 import dispatcher from "../../dispatcher";
 
 class ActionMapStore extends EventEmitter {
@@ -55,6 +56,46 @@ class ActionMapStore extends EventEmitter {
             }
             return acc;
         }, new Array<string>()).map((type) => (new ActionType(type, true)));
+
+        this.setActionTypesColors(this.action_types);
+    }
+
+    setActionTypesColors(types: ActionType[]) {
+        var colorValue = 255;
+        var index = 1;
+
+        var switchIndex = 2;
+        var switchValue = false;
+
+        for(var i = 0; i < types.length; i++) {
+            if(colorValue % 2 != 0)
+                colorValue--;
+            
+            switch(index) {
+                case 1:
+                    types[i].setColor(new RGBColor(colorValue, 0, 0));
+                    index = 2;
+                    break;
+                case 2:
+                    types[i].setColor(new RGBColor(0, colorValue, 0));
+                    index = 3;
+                    break;
+                case 3:
+                    types[i].setColor(new RGBColor(0, 0, colorValue));
+                    index = 1;
+                    break;
+            }
+
+            if(i === switchIndex){
+                if(switchValue)
+                    colorValue = colorValue + (colorValue / 2);
+                else
+                    colorValue /= 2;
+
+                switchValue = !switchValue;
+                switchIndex += 3;
+            }
+        }
     }
 
     receiveActions(actions: Action[]){

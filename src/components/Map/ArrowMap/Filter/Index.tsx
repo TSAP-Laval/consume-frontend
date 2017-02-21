@@ -44,7 +44,11 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
 
     render() {
         const ActionTypes = this.state.action_types.map((action_type, i) => {
-            return <li key={i}><input type="checkbox" value={action_type.getType()} checked={action_type.isUsed()} onClick={this.onCheckboxClick}/>{action_type.getType()}</li>
+            const style = {
+                color: 'rgb(' + action_type.getColor().r + ", " + action_type.getColor().g + ", " + action_type.getColor().b + ")"
+            }
+
+            return <li style={style}key={i}><input type="checkbox" value={action_type.getType()} checked={action_type.isUsed()} onClick={this.onCheckboxClick}/>{action_type.getType()}</li>
         })
 
         return(
