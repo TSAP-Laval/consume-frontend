@@ -2,8 +2,6 @@ import { expect } from 'chai';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 
-require('../sass/Team.scss');
-
 import GenericMetricsView from '../GenericMetricsView';
 import MetricsTable from "../MetricsTable";
 import Team from "../../../pages/Team";
