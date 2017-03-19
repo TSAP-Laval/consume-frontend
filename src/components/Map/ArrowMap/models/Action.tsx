@@ -4,15 +4,13 @@ export default class Action {
     start: Coordinate
     end: Coordinate
     type: string
+    is_positive: boolean
 
-    constructor(type: string, start: Coordinate, end?: Coordinate) {
+    constructor(type: string, is_positive: boolean, start: Coordinate, end?: Coordinate) {
         this.type = type
+        this.is_positive = is_positive
         this.start = start
         this.end = end
-    }
-
-    getType() {
-        return this.type
     }
 
     getCoordinates() {

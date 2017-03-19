@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
-import { ProgressBar } from 'react-bootstrap';
 import * as ActionsCreator from "./ActionsCreator"
 import ActionModel from "./models/Action"
 import Map from "../Index"
@@ -8,7 +7,11 @@ import Store from "./Store"
 import ActionType from "./Filter/models/ActionType"
 import ActionMapFilter from "./Filter/Index"
 
+import CircularProgress from 'material-ui/CircularProgress';
+
 export interface ILayoutProps {
+    playerID: number,
+    teamID: number
 }
 
 export interface ILayoutState {
@@ -20,9 +23,9 @@ export interface ILayoutState {
 }
 
 export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
-    
+
     readonly mainColor = "green";
-    readonly actionColor = "black"   
+    readonly actionColor = "black"
     readonly strokeWidth = 3;
 
     constructor(props: ILayoutProps) {
@@ -47,20 +50,22 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
         this.setState({
             actions: Store.getActions(),
             loading: Store.fetching,
-            action_types: Store.getActionTypes()
+            action_types: Store.action_types
         })
     }
 
     componentWillMount() {
         Store.on("FETCH_ACTIONS", this.setLoadingStatus)
         Store.on("RECEIVE_ACTIONS", this.setActions)
-        Store.on("FILTER_ACTIONS", this.setActions)
+        Store.on("FILTER_ACTIONS_BY_TYPE", this.setActions)
+        Store.on("FILTER_ACTIONS_BY_IMPACT", this.setActions)
     }
 
     componentWillUnmount() {
         Store.removeListener("FETCH_ACTIONS", this.setLoadingStatus)
         Store.removeListener("RECEIVE_ACTIONS", this.setActions)
-        Store.removeListener("FILTER_ACTIONS", this.setActions)
+        Store.removeListener("FILTER_ACTIONS_BY_TYPE", this.setActions)
+        Store.removeListener("FILTER_ACTIONS_BY_IMPACT", this.setActions)
     }
 
     refs: {
@@ -76,18 +81,19 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
             height: h,
             width: w
         });
-        ActionsCreator.getActions(1, 116)
+
+        ActionsCreator.getActions(this.props.teamID, this.props.playerID)
     }
 
     render() {
         const Actions = this.state.actions.map((action, i) => {
-            
+
             let types = this.state.action_types.map((type) => {
-                return type.getType();
+                return type.type;
             })
 
-            var typeIndex = types.indexOf(action.getType());
-            var arrowColor = this.state.action_types[typeIndex].getColor();
+            var typeIndex = types.indexOf(action.type);
+            var arrowColor = this.state.action_types[typeIndex].color;
 
             const style = 'rgb(' + arrowColor.r + ", " + arrowColor.g + ", " + arrowColor.b + ")"
 
@@ -107,11 +113,13 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
 
         if(!this.state.loading) {
             return(
-                <div ref="mainStage">
-                    <Stage width={this.state.width} height={this.state.height}>
-                        <Map height={this.state.height}/>
-                        <Layer>{Actions}</Layer>
-                    </Stage>
+                <div className="container">
+                    <div ref="mainStage" className="left">
+                        <Stage width={this.state.width} height={this.state.height}>
+                            <Map height={this.state.height}/>
+                            <Layer>{Actions}</Layer>
+                        </Stage>
+                    </div>
                     <ActionMapFilter></ActionMapFilter>
                 </div>
             );
@@ -119,7 +127,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
             return(
                 <div>
                     <h3>{ "Chargement... "}</h3>
-                    <ProgressBar active now={45} />
+                    <CircularProgress size={60} thickness={7} />
                 </div>
             )
         }

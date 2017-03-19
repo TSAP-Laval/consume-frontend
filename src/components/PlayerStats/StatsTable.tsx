@@ -8,10 +8,10 @@ import IMatch from "./models/IMatch";
 import { ISeason } from "./models/ISeason";
 import { IPosition } from "./models/IPosition";
 
+import CircularProgress from 'material-ui/CircularProgress';
+
 
 import Table from "./Table";
-
-import { ProgressBar } from 'react-bootstrap';
 
 export interface IStatsProps {
     teamID: number,
@@ -130,14 +130,21 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
 
         return (
             this.state.requestState == Status.Idle?
-            <div>
-                <select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select>
-                <select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select>
-                <Table columns={ cols } data={ data }/>
+            <div className="container">
+                <div className="left">
+                    <Table columns={ cols } data={ data }/>
+                </div>
+                <div className="right">
+                    <h3>Paramètres</h3>
+                    <ul>
+                        <li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></li>
+                        <li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></li>
+                    </ul>
+                </div>
             </div>
             : <div>
                 <h3>{ "Chargement..." }</h3>
-                <ProgressBar active now={45} />
+                <CircularProgress size={60} thickness={7} />
               </div>
         )
     }
