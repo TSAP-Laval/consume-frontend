@@ -76,8 +76,9 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
 
         return(
             <div id="ArrowMapFilter" className="right">
-                <h3>Types d'Actions</h3>
+                <h3>Impact de l'action</h3>
                 <ul>{ActionImpacts}</ul>
+                <h3>Type d'action</h3>
                 <ul>{ActionTypes}</ul>
             </div>
         );

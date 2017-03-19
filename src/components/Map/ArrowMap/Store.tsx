@@ -72,8 +72,8 @@ class ActionMapStore extends EventEmitter {
     }
 
     setActionImpacts(){
-        this.action_impacts.push(new ActionImpact("Positive", true))
-        this.action_impacts.push(new ActionImpact("Négative", true))
+        this.action_impacts.push(new ActionImpact("Positif", true))
+        this.action_impacts.push(new ActionImpact("Négatif", true))
     }
 
     setActionTypesColors(types: ActionType[]) {
