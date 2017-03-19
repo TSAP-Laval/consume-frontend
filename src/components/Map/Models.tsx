@@ -1,9 +1,10 @@
-import Coordinate from "./Coordinate"
+import IAction from "../IAction"
 
-export default class Action {
+export class Action implements IAction {
+    type: string
+
     start: Coordinate
     end: Coordinate
-    type: string
     is_positive: boolean
 
     constructor(type: string, is_positive: boolean, start: Coordinate, end?: Coordinate) {
@@ -15,5 +16,15 @@ export default class Action {
 
     getCoordinates() {
         return [this.start.x, this.start.y, this.end.x, this.end.y]
+    }
+}
+
+export class Coordinate {
+    x: number
+    y: number
+
+    constructor(x: number, y: number) {
+        this.x = x
+        this.y = y
     }
 }

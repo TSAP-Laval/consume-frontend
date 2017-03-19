@@ -1,11 +1,13 @@
 import * as React from "react";
 import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
-import * as ActionsCreator from "./ActionsCreator"
-import ActionModel from "./models/Action"
+import * as ActionsCreator from "../ActionsCreator"
+import {Action} from "./Models"
 import Map from "../Index"
-import Store from "./Store"
-import ActionType from "./Filter/models/ActionType"
-import ActionMapFilter from "./Filter/Index"
+import MapStore from "../Store"
+import ActionMapFilter from "../Filter/Index"
+
+import FilterStore from "../Filter/Store"
+import * as FilterModels from "../Filter/Models"
 
 import CircularProgress from 'material-ui/CircularProgress';
 
@@ -15,8 +17,8 @@ export interface ILayoutProps {
 }
 
 export interface ILayoutState {
-    actions ? : ActionModel[],
-    action_types ? : ActionType[],
+    actions ? : Action[],
+    action_types ? : FilterModels.ActionType[],
     loading ? : boolean,
     height?: number,
     width?: number
@@ -32,7 +34,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
         super(props)
 
         this.state = {
-            actions: new Array<ActionModel>(),
+            actions: new Array<Action>(),
             loading: false
         }
 
@@ -42,30 +44,30 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
 
     setLoadingStatus() {
         this.setState({
-            loading: Store.fetching
+            loading: MapStore.fetching
         })
     }
 
     setActions() {
         this.setState({
-            actions: Store.getActions(),
-            loading: Store.fetching,
-            action_types: Store.action_types
+            actions: FilterStore.getAllFilteredActions(),
+            loading: MapStore.fetching,
+            action_types: FilterStore.action_types
         })
     }
 
     componentWillMount() {
-        Store.on("FETCH_ACTIONS", this.setLoadingStatus)
-        Store.on("RECEIVE_ACTIONS", this.setActions)
-        Store.on("FILTER_ACTIONS_BY_TYPE", this.setActions)
-        Store.on("FILTER_ACTIONS_BY_IMPACT", this.setActions)
+        MapStore.on("FETCH_ACTIONS", this.setLoadingStatus)
+        MapStore.on("RECEIVE_ACTIONS", this.setActions)
+        FilterStore.on("FILTER_ACTIONS_BY_TYPE", this.setActions)
+        FilterStore.on("FILTER_ACTIONS_BY_IMPACT", this.setActions)
     }
 
     componentWillUnmount() {
-        Store.removeListener("FETCH_ACTIONS", this.setLoadingStatus)
-        Store.removeListener("RECEIVE_ACTIONS", this.setActions)
-        Store.removeListener("FILTER_ACTIONS_BY_TYPE", this.setActions)
-        Store.removeListener("FILTER_ACTIONS_BY_IMPACT", this.setActions)
+        MapStore.removeListener("FETCH_ACTIONS", this.setLoadingStatus)
+        MapStore.removeListener("RECEIVE_ACTIONS", this.setActions)
+        FilterStore.removeListener("FILTER_ACTIONS_BY_TYPE", this.setActions)
+        FilterStore.removeListener("FILTER_ACTIONS_BY_IMPACT", this.setActions)
     }
 
     refs: {
