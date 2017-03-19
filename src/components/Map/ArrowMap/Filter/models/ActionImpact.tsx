@@ -5,7 +5,7 @@ export default class ActionImpact {
 
     constructor(name: string, used: boolean) {
         this.name = name
-        this.is_positive = (name === "Positive")
+        this.is_positive = (name === "Positif")
         this.used = used
     }
 }
