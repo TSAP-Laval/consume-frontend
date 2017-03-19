@@ -9,24 +9,4 @@ export default class ActionType {
         this.type = type
         this.used = used
     }
-
-    getColor(){
-        return this.color
-    }
-
-    setColor(color: RGBColor){
-        this.color = color
-    }
-
-    getType(){
-        return this.type
-    }
-
-    setUse(used: boolean){
-        this.used = used
-    }
-
-    isUsed(){
-        return this.used
-    }
 }

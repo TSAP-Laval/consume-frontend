@@ -3,12 +3,14 @@ import { IAction } from "../../IAction"
 import * as Actions from "./Actions"
 import Action from "./models/Action"
 import ActionType from "./Filter/models/ActionType"
+import ActionImpact from "./Filter/models/ActionImpact"
 import RGBColor from "./Filter/models/RGBColor"
 import dispatcher from "../../dispatcher";
 
 class ActionMapStore extends EventEmitter {
     actions: Action[]
     action_types: ActionType[]
+    action_impacts: ActionImpact[]
     filtered: Action[]
     fetching: boolean
 
@@ -16,48 +18,62 @@ class ActionMapStore extends EventEmitter {
         super();
         this.actions = new Array<Action>()
         this.action_types = new Array<ActionType>()
+        this.action_impacts = new Array<ActionImpact>()
         this.fetching = false
-    }
-
-    setActions(actions: Action[]){
-        this.actions = actions
     }
     
     getActions() {
         let used_types = this.action_types.filter((x) => {
-            return x.isUsed() == true
+            return x.used == true
         }).map((y) => {
-            return y.getType()
+            return y.type
+        })
+
+        let used_impacts = this.action_impacts.filter((x) => {
+            return x.used == true
+        }).map((y) => {
+            return y.is_positive
         })
 
         return this.actions.filter((action) => {
-            return used_types.indexOf(action.getType()) != -1
+            return used_types.indexOf(action.type) != -1 && used_impacts.indexOf(action.is_positive) != -1
         })
     }
 
-    getActionTypes(){
-        return this.action_types;
-    }
-
-    updateActions(action_type: ActionType){
+    updateActionsByType(action_type: ActionType){
         let index = this.action_types.map((type) => {
-            return type.getType()
-        }).indexOf(action_type.getType())
+            return type.type
+        }).indexOf(action_type.type)
 
         if(index != -1) {
-            this.action_types[index].setUse(action_type.isUsed())
+            this.action_types[index].used = action_type.used
+        }
+    }
+
+    updateActionsByImpact(action_impact: ActionImpact){
+        let index = this.action_impacts.map((impact) => {
+            return impact.is_positive
+        }).indexOf(action_impact.is_positive)
+
+        if(index != -1) {
+            this.action_impacts[index].used = action_impact.used
         }
     }
 
     setActionTypes(actions: Action[]) {
         this.action_types =  actions.reduce((acc, action) => {
-            if(acc.indexOf(action.getType()) == -1) {
-                acc.push(action.getType())
+            if(acc.indexOf(action.type) == -1) {
+                acc.push(action.type)
             }
             return acc;
         }, new Array<string>()).map((type) => (new ActionType(type, true)));
 
         this.setActionTypesColors(this.action_types);
+    }
+
+    setActionImpacts(){
+        this.action_impacts.push(new ActionImpact("Positive", true))
+        this.action_impacts.push(new ActionImpact("Négative", true))
     }
 
     setActionTypesColors(types: ActionType[]) {
@@ -73,15 +89,15 @@ class ActionMapStore extends EventEmitter {
             
             switch(index) {
                 case 1:
-                    types[i].setColor(new RGBColor(colorValue, 0, 0));
+                    types[i].color = new RGBColor(colorValue, 0, 0);
                     index = 2;
                     break;
                 case 2:
-                    types[i].setColor(new RGBColor(0, colorValue, 0));
+                    types[i].color = new RGBColor(0, colorValue, 0);
                     index = 3;
                     break;
                 case 3:
-                    types[i].setColor(new RGBColor(0, 0, colorValue));
+                    types[i].color = new RGBColor(0, 0, colorValue);
                     index = 1;
                     break;
             }
@@ -99,8 +115,9 @@ class ActionMapStore extends EventEmitter {
     }
 
     receiveActions(actions: Action[]){
-        this.setActions(actions)
+        this.actions = actions
         this.setActionTypes(this.actions)
+        this.setActionImpacts()
     }
 
     handleActions(action: IAction) {
@@ -110,13 +127,17 @@ class ActionMapStore extends EventEmitter {
                 this.emit("FETCH_ACTIONS")
                 break;
             case "RECEIVE_ACTIONS":
-                this.receiveActions((action as Actions.ReceiveActions).getActions())
+                this.receiveActions((action as Actions.ReceiveActions).actions)
                 this.fetching = false
                 this.emit("RECEIVE_ACTIONS")
                 break;
-            case "FILTER_ACTIONS":
-                this.updateActions((action as Actions.FilterActions).getFilter())
-                this.emit("FILTER_ACTIONS")
+            case "FILTER_ACTIONS_BY_TYPE":
+                this.updateActionsByType((action as Actions.FilterActionsByType).filter)
+                this.emit("FILTER_ACTIONS_BY_TYPE")
+                break;
+            case "FILTER_ACTIONS_BY_IMPACT":
+                this.updateActionsByImpact((action as Actions.FilterActionsByImpact).filter)
+                this.emit("FILTER_ACTIONS_BY_IMPACT")
                 break;
         }
     }
