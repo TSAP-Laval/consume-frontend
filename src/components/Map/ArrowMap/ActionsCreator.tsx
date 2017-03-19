@@ -6,6 +6,7 @@ import {serverUrl} from "Config"
 import IPlayerAction from "../../IPlayerAction"
 import axios from "axios"
 import ActionType from "./Filter/models/ActionType"
+import ActionImpact from "./Filter/models/ActionImpact"
 
 import { CreateErrorAction } from "../../Error/ErrorAction";
 
@@ -20,9 +21,9 @@ export function getActions(match_id: number, player_id: number) {
         var data = response.data.actions
         var actions = data.map((action: any) => {
             if(action.x2 != -1 && action.y2 != -1) {
-                return new Action(action.TypeAction.name, new Coordinate(action.x1, action.y1), new Coordinate(action.x2, action.y2))
+                return new Action(action.TypeAction.name, action.is_valid, new Coordinate(action.x1, action.y1), new Coordinate(action.x2, action.y2))
             } else {
-                return new Action(action.TypeAction.name, new Coordinate(action.x1, action.y1))
+                return new Action(action.TypeAction.name, action.is_valid, new Coordinate(action.x1, action.y1))
             }
         })
 
@@ -33,7 +34,12 @@ export function getActions(match_id: number, player_id: number) {
     })
 }
 
-export function filterActions(action_type: ActionType){
-    const filter_action = new Actions.FilterActions(action_type)
+export function filterActionsByType(action_type: ActionType){
+    const filter_action = new Actions.FilterActionsByType(action_type)
     dispatcher.dispatch(filter_action)
-}   
+}
+
+export function filterActionsByImpact(action_impact: ActionImpact){
+    const filter_action = new Actions.FilterActionsByImpact(action_impact)
+    dispatcher.dispatch(filter_action)
+}      
