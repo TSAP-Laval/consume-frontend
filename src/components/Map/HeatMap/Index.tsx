@@ -1,8 +1,10 @@
 import * as React from "react";
-import * as Actions from "./Actions"
-import Store from "./HeatMapStore"
-import Map from "../Map/Index"
-import { IZone, IHeatMapSize } from "./models/BaseModels"
+import * as Actions from "../Actions"
+import MapStore from "../Store"
+import HeatMapStore from "./Store"
+import Map from "../Index"
+import {Zone, Size} from "../models"
+import * as ActionsCreator from "../ActionsCreator"
 import CircularProgress from 'material-ui/CircularProgress';
 import {Layer, Rect, Stage, Circle, Line, Text} from 'react-konva';
 
@@ -11,60 +13,53 @@ import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
 
 export interface ILayoutProps {
+    playerID: number,
+    teamID: number
 }
 
 export interface ILayoutState {
-    zones? : IZone[];
+    zones? : Zone[];
     loading? : boolean,
-    height?: number,
-    width?: number,
     filters?: string[],
     actionTypes?: {[type: string]: number},
-    mapSize?: IHeatMapSize;
+    size?: Size,
+    width?: number,
+    height?: number
 }
 
 export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
-    height: number;
-    width: number;
-    playerid: number;
-    matchid: number;
     constructor(props: ILayoutProps) {
         var injectTapEventPlugin = require("react-tap-event-plugin");
         injectTapEventPlugin();
         super(props);
+
+        this.state = {
+            loading: false,
+            filters: [],
+            size: new Size(10, 6),
+            zones: HeatMapStore.getZones(10, 6, []),
+            actionTypes: HeatMapStore.getActionTypes()
+        }
+
         this.getZones = this.getZones.bind(this);
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
         this.handleChangeHeight = this.handleChangeHeight.bind(this);
         this.handleChangeWidth = this.handleChangeWidth.bind(this);
-        var mapSize: IHeatMapSize = {
-            height: 6,
-            width: 10
-        }
-        this.state = {
-            loading: Store.isFetching(),
-            filters: [],
-            mapSize: mapSize,
-            zones: Store.getZones(mapSize.width,mapSize.height,[]),
-            actionTypes: Store.getActionTypes()
-        }
-        this.height = this.state.height;
-        this.width = this.height * 2;
-        this.playerid = 116;
-        this.matchid = 1;
     }
+
     componentWillMount() {
-        Store.on("GET_ZONES", this.setLoadingStatus);
-        Store.on("RECIEVE_ZONES", this.getZones);
+        MapStore.on("FETCH_ACTIONS", this.setLoadingStatus)
+        MapStore.on("RECEIVE_ACTIONS", this.getZones)
     }
 
     componentWillUnmount() {
-        Store.removeListener("GET_ZONES", this.setLoadingStatus);
-        Store.removeListener("RECIEVE_ZONES", this.getZones);
+        MapStore.removeListener("FETCH_ACTIONS", this.setLoadingStatus)
+        MapStore.removeListener("RECEIVE_ACTIONS", this.getZones)
     }
 
     setLoadingStatus() {
         this.setState({
-            loading: Store.isFetching()
+            loading: MapStore.fetching
         })
     }
 
@@ -72,8 +67,8 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         [string: string]: (Element);
         mainStage: (HTMLElement);
     }
-    componentDidMount() {
 
+    componentDidMount() {
         let w = this.refs.mainStage.clientWidth;
         let h = w / 2;
 
@@ -81,79 +76,80 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             height: h,
             width: w
         });
-        Actions.GetData(this.playerid, this.matchid);
+
+        ActionsCreator.getActions(this.props.teamID, this.props.playerID)
     }
+
     handleChangeHeight(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
-        var mapSize : IHeatMapSize = {
-            height: menuItemValue,
-            width: this.state.mapSize.width
-        }
         this.setState({
-            mapSize: mapSize,
-            zones: Store.getZones(mapSize.width,mapSize.height, this.state.filters)
+            size: new Size(this.state.width, menuItemValue),
+            zones: HeatMapStore.getZones(this.state.width, menuItemValue, this.state.filters)
         });
     }
+
     handleChangeWidth(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
-        var mapSize : IHeatMapSize = {
-            height: this.state.mapSize.height,
-            width: menuItemValue
-        }
         this.setState({
-            mapSize: mapSize,
-            zones: Store.getZones(mapSize.width,mapSize.height, this.state.filters)
+            size: new Size(menuItemValue, this.state.height),
+            zones: HeatMapStore.getZones(menuItemValue, this.state.height, this.state.filters)
         });
     }
 
     handleCheck(event: React.FormEvent<HTMLInputElement>) {
-        var checked: string = event.currentTarget.value;
-        var allTypes : string[] = this.state.filters;
-        var index = allTypes.indexOf(checked);
-        if (index == -1){
-            allTypes.push(checked);
-        } else {
-            allTypes.splice(index,1);
-        }
+        let checked = event.currentTarget.value;
+        let index = this.state.filters.indexOf(checked);
+
+        if (index == -1)
+            this.state.filters.push(checked);
+        else
+            this.state.filters.splice(index, 1);
+        
         this.setState({
-            filters: allTypes,
-            zones: Store.getZones(this.state.mapSize.width,this.state.mapSize.height, allTypes)
+            zones: HeatMapStore.getZones(this.state.size.width, this.state.size.height, this.state.filters)
         });
     }
 
     getZones() {
         this.setState({
-            loading: Store.isFetching(),
-            zones: Store.getZones(this.state.mapSize.width,this.state.mapSize.height, []),
-            actionTypes: Store.getActionTypes()
+            loading: MapStore.fetching,
+            zones: HeatMapStore.getZones(this.state.size.width, this.state.size.height, []),
+            actionTypes: HeatMapStore.getActionTypes()
         });
     }
 
 
     render() {
-            var zoneWidth = this.state.width/this.state.mapSize.width;
-            var zoneHeight = this.state.height/this.state.mapSize.height;
-            var choicesWidth: number[] = [2,3,4,5,6,7,8,9,10,11,12];
-            var choicesHeight: number[] = [1,2,3,4,5,6,7,8];
-            var types = new Array();
+            let zoneWidth = this.state.width/this.state.size.width;
+            let zoneHeight = this.state.height/this.state.size.height;
+
+            let widthChoices = [2,3,4,5,6,7,8,9,10,11,12];
+            let heightChoices = [1,2,3,4,5,6,7,8];
+
+            let types = new Array();
+
             for(var type in this.state.actionTypes){
                 types.push(type);
             }
+
             const styles = {
                 customWidth: {
                     width: 200,
                 },
             };
-            const TextWidth = this.state.mapSize.width;
-            const WidthDropDown = choicesWidth.map((val,i) => {
+
+            const TextWidth = this.state.size.width;
+            const WidthDropDown = widthChoices.map((val,i) => {
                 return (
                     <MenuItem value={val} primaryText={val + " Zones"} />
                 )
             })
-            const TextHeight = this.state.mapSize.height;
-            const HeightDropDown = choicesHeight.map((val,i) => {
+
+            const TextHeight = this.state.size.height;
+            const HeightDropDown = heightChoices.map((val,i) => {
                 return (
                     <MenuItem value={val} primaryText={val + " Zones"} />
                 )
             })
+
             const ActionTypes = types.map((action, i) => {
                 return (
                     <li>
@@ -165,13 +161,16 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
                     /></li>
                 )
             })
+
         const Zones = this.state.zones.map((zone, i)=> {
-            var startX = zoneWidth * zone.x;
+            var startX = zoneWidth * zone.coordinate.x;
             var ys: number[] = new Array();
-            for(var _i = this.state.mapSize.height - 1; _i > -1; _i--) {
+
+            for(var _i = this.state.size.height - 1; _i > -1; _i--) {
                 ys.push(_i);
             }
-            var startY = zoneHeight * ys[zone.y];
+            
+            var startY = zoneHeight * ys[zone.coordinate.y];
             var color = !isNaN(zone.rating) ? "hsl("+ Math.floor((zone.rating * 100) * 120 / 100) +", 50%,50%)" : "white";
             return <Rect key={i} x={startX} y={startY} width={zoneWidth} height={zoneHeight} stroke="black" fill={color}/>
         })
@@ -180,7 +179,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             var text =  (Math.round(zone.percentage * 100)).toString() + '%';
             var startX = (zoneWidth * zone.x) + (zoneWidth/2);
             var ys: number[] = new Array();
-            for(var _i = this.state.mapSize.height - 1; _i > -1; _i--) {
+            for(var _i = this.state.size.height - 1; _i > -1; _i--) {
                 ys.push(_i);
             }
             var startY = (zoneHeight * ys[zone.y]) + (zoneHeight/2);

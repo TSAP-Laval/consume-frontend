@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
 import * as ActionsCreator from "../ActionsCreator"
-import {Action} from "./Models"
+import {Action} from "../Models"
 import Map from "../Index"
 import MapStore from "../Store"
 import ActionMapFilter from "../Filter/Index"
@@ -90,11 +90,11 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
     render() {
         const Actions = this.state.actions.map((action, i) => {
 
-            let types = this.state.action_types.map((type) => {
-                return type.type;
+            let types = this.state.action_types.map((action_type) => {
+                return action_type.type;
             })
 
-            var typeIndex = types.indexOf(action.type);
+            var typeIndex = types.indexOf(action.type.name);
             var arrowColor = this.state.action_types[typeIndex].color;
 
             const style = 'rgb(' + arrowColor.r + ", " + arrowColor.g + ", " + arrowColor.b + ")"
