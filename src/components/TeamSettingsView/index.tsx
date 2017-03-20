@@ -26,8 +26,6 @@ export interface IMetricEditorState {
 
 export default class MetricEditor extends React.Component<IMetricEditorProps, IMetricEditorState> {
 
-    // TODO: Ajouter la capacité de passer un objet métrique existant (question de pouvoir edit ET créer)
-
     constructor() {
         super();
         this.state = {
