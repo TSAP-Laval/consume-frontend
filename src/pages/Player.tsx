@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {ActionMap} from "../components/Map/ArrowMap/Index"
+import {ActionMap} from "../components/Map/ActionMap/Index"
 import {HeatMap} from "../components/HeatMap/Map"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
