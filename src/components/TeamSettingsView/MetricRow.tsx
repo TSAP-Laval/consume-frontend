@@ -13,7 +13,10 @@ export interface IMetricRowProps {
 }
 
 export interface IMetricRowState {
-    metric: Metric
+    metric?: Metric;
+    nameError?: string;
+    descError?: string;
+    formulaError?: string;
 }
 
 
@@ -22,16 +25,84 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
     constructor(props: IMetricRowProps) {
         super(props);
 
-        if (this.props.metric) {
-            // Metric to edit
-            this.state = {
-                metric: this.props.metric
-            };
+        let metric = this.props.metric? this.props.metric: new Metric();
+
+        this.state = {
+            metric: metric,
+            nameError: "",
+            descError: "",
+            formulaError: ""
+        };
+
+        this.handleSave = this.handleSave.bind(this);
+        this.changeName = this.changeName.bind(this);
+        this.changeDesc = this.changeDesc.bind(this);
+        this.changeFormula = this.changeFormula.bind(this);
+    }
+
+    changeName(e: any) {
+        let oldMetric = this.state.metric;
+        oldMetric.name = e.target.value;
+
+        this.setState({
+            metric: oldMetric
+        });
+    }
+
+    changeDesc(e: any) {
+        let oldMetric = this.state.metric;
+        oldMetric.description = e.target.value
+
+        this.setState({
+            metric: oldMetric
+        });
+    }
+
+    changeFormula(e: any) {
+        let oldMetric = this.state.metric;
+        oldMetric.formula = e.target.value;
+
+        this.setState({
+            metric: oldMetric
+        });
+    }
+
+    handleSave(e: React.FocusEvent<any>) {
+
+        let metric = this.state.metric;
+
+        let valid = true;
+        let nameError = "";
+        let descError = "";
+        let formulaError = "";
+
+        if (!metric.name) {
+            nameError = "Nom est obligatoire"
+        }
+        if (!metric.description) {
+            descError = "Description est obligatoire"
+        }
+
+        if (!metric.formula) {
+            formulaError = "Équation est obligatoire"
+        }
+
+        this.setState({
+            nameError: nameError,
+            descError: descError,
+            formulaError: formulaError
+        });
+
+        if (!metric.isValid()) {
+            return;
+        }
+
+        if (this.state.metric.id) {
+            // Update the metric
+            // TODO: Geb: Code update de métrique ici
         } else {
-            // Metric to create
-            this.state = {
-                metric: new Metric()
-            };
+            // Create the metric
+            // TODO: Will: Code création de métrique ici
         }
     }
 
@@ -42,21 +113,29 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
                     className="form-input"
                     floatingLabelText="Nom"
                     value={this.state.metric.name}
+                    onChange={this.changeName}
+                    onBlur={this.handleSave}
+                    errorText={this.state.nameError}
                 />
 
                 <TextField
                     className="form-input"
                     floatingLabelText="Description"
                     value={this.state.metric.description}
+                    onChange={this.changeDesc}
+                    onBlur={this.handleSave}
+                    errorText={this.state.descError}
                 />
 
                 <TextField
                     className="form-input"
                     floatingLabelText="Équation"
                     value={this.state.metric.formula}
+                    onChange={this.changeFormula}
+                    onBlur={this.handleSave}
+                    errorText={this.state.formulaError}
                 />
             </div>
-
         );
     }
 }
