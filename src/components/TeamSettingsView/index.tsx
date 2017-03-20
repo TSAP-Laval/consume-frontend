@@ -66,7 +66,7 @@ export default class MetricEditor extends React.Component<IMetricEditorProps, IM
     render() {
 
         let existingRows = this.state.metrics.map((m) => (
-            <MetricRow metric={m} />
+            <MetricRow metric={m} teamID={this.props.teamId} />
         ))
 
         return(
@@ -81,7 +81,7 @@ export default class MetricEditor extends React.Component<IMetricEditorProps, IM
                 <div>
                     <h3>Métriques</h3>
                     {existingRows}
-                    <MetricRow />
+                    <MetricRow teamID={this.props.teamId} />
                 </div>
             </div>
         );

@@ -3,6 +3,8 @@ import * as React from "react";
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+import { CreateCreateMetricAction } from "./actions/CreateMetric";
+
 import { Metric } from './MetricModel';
 
 require('../../sass/MetricEditor');
@@ -10,6 +12,7 @@ require('../../sass/MetricEditor');
 
 export interface IMetricRowProps {
     metric?: Metric
+    teamID: number
 }
 
 export interface IMetricRowState {
@@ -102,7 +105,7 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
             // TODO: Geb: Code update de métrique ici
         } else {
             // Create the metric
-            // TODO: Will: Code création de métrique ici
+            CreateCreateMetricAction(this.state.metric, this.props.teamID);
         }
     }
 

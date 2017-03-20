@@ -4,11 +4,13 @@ import dispatcher from "../dispatcher";
 
 import { Metric } from './MetricModel';
 
+import { CreateMetricAction } from "./actions/CreateMetric";
 import { MetricsReceived } from './actions/MetricsReceived';
 
 
 class MetricStore extends EventEmitter {
     metrics: Metric[];
+
     fetching: boolean;
 
     constructor() {
