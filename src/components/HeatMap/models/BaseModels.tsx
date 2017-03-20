@@ -15,6 +15,10 @@ export interface IRawData {
     x: number;
     y: number;
 }
+export interface IHeatMapSize {
+    width: number;
+    height: number;
+}
 
 export interface IAction {
     id: number;

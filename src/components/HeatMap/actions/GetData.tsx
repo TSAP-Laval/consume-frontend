@@ -1,5 +1,5 @@
 import {IAction} from "../../IAction"
-import {IZone} from "../models/BaseModels"
+import * as BaseModels from "../models/BaseModels"
 
 export class GetData implements IAction {
     type: String;
@@ -11,12 +11,10 @@ export class GetData implements IAction {
 
 export class RecieveData implements IAction {
     type: String;
-    zones: IZone[];
-    actionsTypes: string[];
+    actions: BaseModels.IAction[];
 
-    constructor(zones: IZone[], actionTypes: string[]){
+    constructor(actions: BaseModels.IAction[]){
         this.type = "RECIEVE_ZONES";
-        this.zones = zones;
-        this.actionsTypes = actionTypes;
+        this.actions = actions;
     }
 }
