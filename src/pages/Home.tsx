@@ -5,11 +5,10 @@ import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Paper from 'material-ui/Paper';
-
 import { Link } from 'react-router';
 
-require('../sass/Home.scss');
+import BigContent from "../components/Elements/BigContent";
+
 
 export interface IHomeProps {}
 
@@ -23,14 +22,14 @@ export default class Home extends React.Component<IHomeProps, IHomeState> {
 
     render() {
         return (
-            <Paper className="main-content">
+            <BigContent>
                 <h1>Console TSAP</h1>
                 <p>
                     <Link to="/team/3">
                         <RaisedButton primary={true} label="Statistiques de l'équipe" />
                     </Link>
                 </p>
-            </Paper>
+            </BigContent>
         );
     }
 }

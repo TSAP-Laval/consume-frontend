@@ -7,7 +7,6 @@ import { Li } from '../../Elements';
 
 import Toggle from 'material-ui/Toggle';
 
-require('../../../sass/ArrowMap.scss');
 
 export interface ILayoutProps {}
 export interface ILayoutState {
