@@ -10,7 +10,7 @@ import MetricsRow from "../MetricsRow";
 
 function setup(){
     const muiTheme = getMuiTheme();
-
+    //No need to past MUI in context.
     return mount(<GenericMetricsView teamID={3}/>, {context: {muiTheme}, childContextTypes:{muiTheme: React.PropTypes.object}});
 }
 
