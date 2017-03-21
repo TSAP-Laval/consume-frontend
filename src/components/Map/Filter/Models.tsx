@@ -1,5 +1,3 @@
-import {ActionType} from "../Models"
-
 export class ActionImpact {
     name: string
     is_positive: boolean
@@ -12,12 +10,12 @@ export class ActionImpact {
     }
 }
 
-export class ActionTypeFilter {
-    type: ActionType
+export class ActionType {
+    type: string
     used: boolean
     color: RGBColor
 
-    constructor(type: ActionType, used: boolean) {
+    constructor(type: string, used: boolean) {
         this.type = type
         this.used = used
     }

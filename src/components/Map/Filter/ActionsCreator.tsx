@@ -5,7 +5,7 @@ import * as Models from "./Models"
 
 import { CreateErrorAction } from "../../Error/ErrorAction";
 
-export function filterActionsByType(action_type: Models.ActionTypeFilter){
+export function filterActionsByType(action_type: Models.ActionType){
     const filter_action = new Actions.FilterActionsByType(action_type)
     dispatcher.dispatch(filter_action)
 }

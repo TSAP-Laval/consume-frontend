@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as Actions from "../Actions"
 import MapStore from "../Store"
-import FilterStore from "../Filter/Store"
 import Map from "../Index"
 import {Zone, Size} from "../models"
 import * as ActionsCreator from "../ActionsCreator"
@@ -38,7 +37,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             filters: [],
             size: new Size(10, 6),
             zones: MapStore.getZones(10, 6, []),
-            actionTypes: FilterStore.action_types_count
+            actionTypes: MapStore.getActionTypes()
         }
 
         this.getZones = this.getZones.bind(this);
@@ -112,7 +111,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         this.setState({
             loading: MapStore.fetching,
             zones: MapStore.getZones(this.state.size.width, this.state.size.height, []),
-            actionTypes: FilterStore.action_types_count
+            actionTypes: MapStore.getActionTypes()
         });
     }
 
@@ -225,5 +224,6 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             )
         }
     }
+
 }
 

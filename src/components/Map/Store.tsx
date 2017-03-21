@@ -9,12 +9,14 @@ class MapStore extends EventEmitter {
     actions: Action[];
     fetching: boolean;
     zones: Zone[];
+    actionTypes: {[type: string]: number};
 
     constructor() {
         super();
         this.actions = new Array<Action>();
         this.fetching = false;
         this.zones = new Array<Zone>();
+        this.actionTypes = {};
     }
 
     receiveActions(actions: Action[]){
@@ -39,7 +41,7 @@ class MapStore extends EventEmitter {
 
     getZones(sizeX: number, sizeY: number, filters: string[]){
       let zonesData = new Array<ZoneData>()
-
+      console.log(sizeX, sizeY);
       for (let action of this.actions) {
         if(filters.length == 0 || filters.indexOf(action.type.name) != -1)
         {
@@ -77,6 +79,19 @@ class MapStore extends EventEmitter {
       this.zones = zones;
 
       return this.zones;
+    }
+
+    getActionTypes() {
+      for(let action of this.actions) {
+
+        if(this.actionTypes[action.type.name] == undefined) {
+          this.actionTypes[action.type.name] = 0
+        }
+
+        this.actionTypes[action.type.name]++;
+      }
+
+      return this.actionTypes;
     }
 }
 

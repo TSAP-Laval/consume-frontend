@@ -18,7 +18,7 @@ export interface ILayoutProps {
 
 export interface ILayoutState {
     actions ? : Action[],
-    action_types ? : FilterModels.ActionTypeFilter[],
+    action_types ? : FilterModels.ActionType[],
     loading ? : boolean,
     height?: number,
     width?: number
@@ -94,7 +94,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
                 return action_type.type;
             })
 
-            var typeIndex = types.indexOf(action.type);
+            var typeIndex = types.indexOf(action.type.name);
             var arrowColor = this.state.action_types[typeIndex].color;
 
             const style = 'rgb(' + arrowColor.r + ", " + arrowColor.g + ", " + arrowColor.b + ")"
