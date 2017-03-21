@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as Actions from "../Actions"
 import MapStore from "../Store"
-import HeatMapStore from "./Store"
 import Map from "../Index"
 import {Zone, Size} from "../models"
 import * as ActionsCreator from "../ActionsCreator"
@@ -37,8 +36,8 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             loading: false,
             filters: [],
             size: new Size(10, 6),
-            zones: HeatMapStore.getZones(10, 6, []),
-            actionTypes: HeatMapStore.getActionTypes()
+            zones: MapStore.getZones(10, 6, []),
+            actionTypes: MapStore.getActionTypes()
         }
 
         this.getZones = this.getZones.bind(this);
@@ -83,14 +82,14 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
     handleChangeHeight(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
         this.setState({
             size: new Size(this.state.width, menuItemValue),
-            zones: HeatMapStore.getZones(this.state.width, menuItemValue, this.state.filters)
+            zones: MapStore.getZones(this.state.width, menuItemValue, this.state.filters)
         });
     }
 
     handleChangeWidth(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
         this.setState({
             size: new Size(menuItemValue, this.state.height),
-            zones: HeatMapStore.getZones(menuItemValue, this.state.height, this.state.filters)
+            zones: MapStore.getZones(menuItemValue, this.state.height, this.state.filters)
         });
     }
 
@@ -104,15 +103,15 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             this.state.filters.splice(index, 1);
         
         this.setState({
-            zones: HeatMapStore.getZones(this.state.size.width, this.state.size.height, this.state.filters)
+            zones: MapStore.getZones(this.state.size.width, this.state.size.height, this.state.filters)
         });
     }
 
     getZones() {
         this.setState({
             loading: MapStore.fetching,
-            zones: HeatMapStore.getZones(this.state.size.width, this.state.size.height, []),
-            actionTypes: HeatMapStore.getActionTypes()
+            zones: MapStore.getZones(this.state.size.width, this.state.size.height, []),
+            actionTypes: MapStore.getActionTypes()
         });
     }
 
@@ -177,12 +176,12 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
 
         const Texts = this.state.zones.map((zone,i)=>{
             var text =  (Math.round(zone.percentage * 100)).toString() + '%';
-            var startX = (zoneWidth * zone.x) + (zoneWidth/2);
+            var startX = (zoneWidth * zone.coordinate.x) + (zoneWidth/2);
             var ys: number[] = new Array();
             for(var _i = this.state.size.height - 1; _i > -1; _i--) {
                 ys.push(_i);
             }
-            var startY = (zoneHeight * ys[zone.y]) + (zoneHeight/2);
+            var startY = (zoneHeight * ys[zone.coordinate.y]) + (zoneHeight/2);
 
             return <Text key={i} x={startX} y={startY} text={text} fontSize={32}/>
         })

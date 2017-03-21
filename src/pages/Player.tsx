@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {ActionMap} from "../components/Map/ActionMap/Index"
-import {HeatMap} from "../components/HeatMap/Map"
+import {HeatMap} from "../components/Map/HeatMap/Index"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
