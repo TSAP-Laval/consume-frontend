@@ -41,7 +41,7 @@ class MapStore extends EventEmitter {
 
     getZones(sizeX: number, sizeY: number, filters: string[]){
       let zonesData = new Array<ZoneData>()
-
+      console.log(sizeX, sizeY);
       for (let action of this.actions) {
         if(filters.length == 0 || filters.indexOf(action.type.name) != -1)
         {
