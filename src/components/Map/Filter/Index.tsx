@@ -9,7 +9,7 @@ require('../../../sass/ArrowMap.scss');
 
 export interface ILayoutProps {}
 export interface ILayoutState {
-    action_types: Models.ActionType[]
+    action_types: Models.ActionTypeFilter[]
     action_impacts: Models.ActionImpact[]
 }
 
@@ -17,7 +17,7 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
     constructor(props: ILayoutProps) {
         super(props)
         this.state = {
-            action_types: new Array<Models.ActionType>(),
+            action_types: new Array<Models.ActionTypeFilter>(),
             action_impacts: new Array<Models.ActionImpact>()
         }
         this.onActionTypeFilterClick.bind(this)
@@ -26,7 +26,7 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
     }
 
     onActionTypeFilterClick(e: any){
-        ActionsCreator.filterActionsByType(new Models.ActionType(e.currentTarget.value, e.currentTarget.checked))
+        ActionsCreator.filterActionsByType(new Models.ActionTypeFilter(e.currentTarget.value, e.currentTarget.checked))
     }
 
     onActionImpactFilterClick(e: any){
@@ -68,7 +68,7 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
 
             return (
                 <li style={style}>
-                    <Toggle labelStyle={style} value={action_type.type} toggled={action_type.used} onToggle={this.onActionTypeFilterClick.bind(this)} label={action_type.type} />
+                    <Toggle labelStyle={style} value={action_type.type.name} toggled={action_type.used} onToggle={this.onActionTypeFilterClick.bind(this)} label={action_type.type.description} />
                 </li>
             )
         })

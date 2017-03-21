@@ -3,9 +3,9 @@ import * as Models from "./Models"
 
 export class FilterActionsByType implements IAction {
     type: string
-    filter: Models.ActionType
+    filter: Models.ActionTypeFilter
 
-    constructor(action_type: Models.ActionType){
+    constructor(action_type: Models.ActionTypeFilter){
         this.type = "FILTER_ACTIONS_BY_TYPE"
         this.filter = action_type
     }
