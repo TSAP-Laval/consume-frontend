@@ -92,6 +92,8 @@ class FilterStore extends EventEmitter {
                 this.action_types_count[actions[i].type.name]++
             }
         }
+
+        this.setActionTypesColors(this.action_types)
     }
 
     setActionImpacts(){
