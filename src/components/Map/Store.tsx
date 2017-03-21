@@ -41,7 +41,6 @@ class MapStore extends EventEmitter {
             case "RECEIVE_PARAMETERS":
                 this.mapParameters = ((action as Actions.ReceiveMapParameters).parameters);
                 this.emit("RECEIVE_PARAMETERS");
-                console.log("emit");
         }
     }
 
