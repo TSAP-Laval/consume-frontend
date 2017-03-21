@@ -20,7 +20,7 @@ export function getActions(match_id: number, player_id: number) {
             if(action.x2 != -1 && action.y2 != -1) {
                 return new Models.Action(action_type, new Models.Coordinate(action.x1, action.y1), new Models.Coordinate(action.x2, action.y2), action.is_valid)
             } else {
-                return new Models.Action(action_type, action.is_valid, new Models.Coordinate(action.x1, action.y1), action.is_valid)
+                return new Models.Action(action_type, new Models.Coordinate(action.x1, action.y1), null, action.is_valid)
             }
         })
 

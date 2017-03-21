@@ -75,8 +75,6 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             height: h,
             width: w
         });
-
-        ActionsCreator.getActions(this.props.teamID, this.props.playerID)
     }
 
     handleChangeHeight(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
