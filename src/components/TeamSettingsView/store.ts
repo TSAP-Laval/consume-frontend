@@ -31,15 +31,15 @@ class MetricStore extends EventEmitter {
         switch(action.type) {
             case "FETCH_METRICS":
                 this.fetching = true;
-                this.emit("fetchMetrics");
+                this.emit("fetchStatusChanged");
                 break;
 
             case "METRICS_RECEIVED":
                 this.fetching = false;
                 let act = action as MetricsReceived;
                 this.metrics = act.metrics;
-                this.emit('metricsReceived');
-                this.emit('fetchMetrics');
+                this.emit('metricsChanged');
+                this.emit('fetchStatusChanged');
                 break;
         }
     }

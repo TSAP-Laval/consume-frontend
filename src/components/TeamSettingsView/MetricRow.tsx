@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 
 import { CreateUpdateMetricAction } from "./actions/UpdateMetric";
 import { CreateCreateMetricAction } from "./actions/CreateMetric";
@@ -9,7 +8,7 @@ import { CreateDeleteMetricAction } from "./actions/DeleteMetric";
 
 import { Metric } from './MetricModel';
 
-require('../../sass/MetricEditor');
+import FormInput from "../Elements/FormInput";
 
 
 export interface IMetricRowProps {
@@ -119,8 +118,7 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
     render() {
         return(
             <div className="metric-row">
-                <TextField
-                    className="form-input"
+                <FormInput
                     floatingLabelText="Nom"
                     value={this.state.metric.name}
                     onChange={this.changeName}
@@ -128,8 +126,7 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
                     errorText={this.state.nameError}
                 />
 
-                <TextField
-                    className="form-input"
+                <FormInput
                     floatingLabelText="Description"
                     value={this.state.metric.description}
                     onChange={this.changeDesc}
@@ -137,8 +134,7 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
                     errorText={this.state.descError}
                 />
 
-                <TextField
-                    className="form-input"
+                <FormInput
                     floatingLabelText="Équation"
                     value={this.state.metric.formula}
                     onChange={this.changeFormula}

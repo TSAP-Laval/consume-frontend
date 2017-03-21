@@ -12,7 +12,12 @@ import Table from "./Table";
 
 import { Chart } from 'chart.js';
 
-import CircularProgress from 'material-ui/CircularProgress';
+import Li from "../Elements/Li";
+import LeftDiv from "../Elements/LeftDiv";
+import RightDiv from "../Elements/RightDiv";
+import SmallContainer from "../Elements/SmallContainer";
+import Spinner from "../Elements/Spinner";
+
 
 export interface IGraphsProps {
     teamID: number,
@@ -190,23 +195,20 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
 
         return (
             this.state.requestState == Status.Idle?
-                <div className="container">
-                    <div className="left">
+                <SmallContainer>
+                    <LeftDiv>
                         <canvas ref={"statGraph"} >
                         </canvas>
-                    </div>
-                    <div className="right">
+                    </LeftDiv>
+                    <RightDiv>
                         <h3>Paramètres</h3>
                         <ul>
-                            <li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></li>
-                            <li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></li>
+                            <Li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></Li>
+                            <Li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></Li>
                         </ul>
-                    </div>
-                </div>
-            : <div>
-                <h3>{ "Chargement..." }</h3>
-                <CircularProgress size={60} thickness={7} />
-              </div>
+                    </RightDiv>
+                </SmallContainer>
+            : <Spinner />
         )
     }
 

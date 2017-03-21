@@ -4,9 +4,16 @@ import AppBar from 'material-ui/AppBar';
 
 import { Link } from "react-router"
 
+import styled from 'styled-components';
+
 export interface ILayoutProps {}
 
 export interface ILayoutState {}
+
+const AppTitle = styled(Link)`
+    color: inherit;
+    text-decoration: inherit;
+`;
 
 export class Header extends React.Component<ILayoutProps, ILayoutState> {
 
@@ -16,7 +23,7 @@ export class Header extends React.Component<ILayoutProps, ILayoutState> {
 
     render() {
         return (
-            <AppBar className={"navbar"} title={"TSAP"} showMenuIconButton={false} />
+            <AppBar className={"navbar"} title={<AppTitle to="/">TSAP</AppTitle>} showMenuIconButton={false} />
         );
     }
 }

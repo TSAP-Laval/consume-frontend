@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Link } from 'react-router';
 
+import BigContent from "../components/Elements/BigContent";
 import FlatButton from 'material-ui/FlatButton';
-import Paper from 'material-ui/Paper';
 
 import TeamSettingsView from "../components/TeamSettingsView";
 
@@ -22,9 +22,9 @@ export default class Team extends React.Component<ITeamProps, ITeamState> {
 
     render() {
         return (
-            <Paper className="main-content">
+            <BigContent>
                 <TeamSettingsView teamId={this.props.params.teamID} />
-            </Paper>
+            </BigContent>
         );
     }
 }
