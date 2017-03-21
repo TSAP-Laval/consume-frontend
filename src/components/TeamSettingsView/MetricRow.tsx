@@ -5,6 +5,7 @@ import TextField from 'material-ui/TextField';
 
 import { CreateUpdateMetricAction } from "./actions/UpdateMetric";
 import { CreateCreateMetricAction } from "./actions/CreateMetric";
+import { CreateDeleteMetricAction } from "./actions/DeleteMetric";
 
 import { Metric } from './MetricModel';
 
@@ -42,6 +43,11 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
         this.changeName = this.changeName.bind(this);
         this.changeDesc = this.changeDesc.bind(this);
         this.changeFormula = this.changeFormula.bind(this);
+        this.delete = this.delete.bind(this);
+    }
+
+    delete() {
+        CreateDeleteMetricAction(this.state.metric.id, this.props.teamID)
     }
 
     changeName(e: any) {
@@ -138,6 +144,11 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
                     onChange={this.changeFormula}
                     onBlur={this.handleSave}
                     errorText={this.state.formulaError}
+                />
+
+                <RaisedButton
+                    label="Supprimer"
+                    onClick={this.delete}
                 />
             </div>
         );
