@@ -9,7 +9,7 @@ import ActionMapFilter from "../Filter/Index"
 import FilterStore from "../Filter/Store"
 import * as FilterModels from "../Filter/Models"
 
-import CircularProgress from 'material-ui/CircularProgress';
+import { Spinner } from "../../Elements/spinner";
 
 export interface ILayoutProps {
     playerID: number,
@@ -127,10 +127,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
             );
         } else {
             return(
-                <div>
-                    <h3>{ "Chargement... "}</h3>
-                    <CircularProgress size={60} thickness={7} />
-                </div>
+                <Spinner />
             )
         }
     }

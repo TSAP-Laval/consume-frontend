@@ -3,6 +3,8 @@ import FilterStore from "./Store"
 import * as Models from "./Models"
 import * as ActionsCreator from "./ActionsCreator"
 
+import { Li } from '../../Elements';
+
 import Toggle from 'material-ui/Toggle';
 
 require('../../../sass/ArrowMap.scss');
@@ -57,7 +59,7 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
     render() {
         const ActionImpacts = this.state.action_impacts.map((action_impact) => {
             return (
-                <li><Toggle value={action_impact.name} toggled={action_impact.used} onToggle={this.onActionImpactFilterClick.bind(this)} label={action_impact.name} /></li>
+                <Li><Toggle value={action_impact.name} toggled={action_impact.used} onToggle={this.onActionImpactFilterClick.bind(this)} label={action_impact.name} /></Li>
             )
         })
 
@@ -67,9 +69,9 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
             }
 
             return (
-                <li style={style}>
+                <Li style={style}>
                     <Toggle labelStyle={style} value={action_type.type} toggled={action_type.used} onToggle={this.onActionTypeFilterClick.bind(this)} label={action_type.type} />
-                </li>
+                </Li>
             )
         })
 

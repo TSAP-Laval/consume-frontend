@@ -9,6 +9,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import MetricRow from './MetricsRow';
 
+import { Spinner } from "../Elements/spinner";
+
 import { Link } from 'react-router';
 
 import FlatButton from 'material-ui/FlatButton';
@@ -95,10 +97,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
                     { data }
                 </MetricsTable>
             </div>
-            : <div className="loading">
-                <h3>{ "Chargement..." }</h3>
-                <CircularProgress size={60} thickness={7} />
-              </div>
+            : <Spinner />
         )
     }
 }

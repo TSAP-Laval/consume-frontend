@@ -3,10 +3,13 @@ import * as Actions from "./Actions"
 import Store from "./HeatMapStore"
 import Map from "../Map/Index"
 import { IZone } from "./models/BaseModels"
-import CircularProgress from 'material-ui/CircularProgress';
 import {Layer, Rect, Stage, Circle, Line, Text} from 'react-konva';
 
 import Toggle from 'material-ui/Toggle';
+
+import { Li } from "../Elements";
+
+import { Spinner } from "../Elements/spinner";
 
 export interface ILayoutProps {
 }
@@ -102,12 +105,12 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             var zoneHeight = this.state.height/3;
             const ActionTypes = this.state.actions.map((action, i) => {
                 return (
-                    <li><Toggle
+                    <Li><Toggle
                         label={action}
                         checked={this.state.searchTypes.indexOf(action) != -1}
                         value={action}
                         onToggle={this.handleCheck.bind(this)}
-                    /></li>
+                    /></Li>
                 )
             })
         const Zones = this.state.zones.map((zone, i)=> {
@@ -147,10 +150,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             );
         } else {
             return(
-                <div>
-                    <h3>{ "Chargement... "}</h3>
-                    <CircularProgress size={60} thickness={7} />
-                </div>
+                <Spinner />
             )
         }
     }

@@ -9,7 +9,7 @@ import MetricStore from './store';
 
 import { CreateFetchMetricsAction } from './actions/FetchMetrics';
 
-import CircularProgress from 'material-ui/CircularProgress';
+import { Spinner } from "../Elements/spinner";
 
 require('../../sass/MetricEditor');
 
@@ -38,15 +38,15 @@ export default class MetricEditor extends React.Component<IMetricEditorProps, IM
     }
 
     componentWillMount() {
-        MetricStore.on("fetchMetrics", this.getFetching);
-        MetricStore.on("metricsReceived", this.getMetrics);
+        MetricStore.on("fetchStatusChanged", this.getFetching);
+        MetricStore.on("metricsChanged", this.getMetrics);
 
         CreateFetchMetricsAction(this.props.teamId);
     }
 
     componentWillUnmount() {
-        MetricStore.removeListener("fetchMetrics", this.getFetching);
-        MetricStore.removeListener("metricsReceived", this.getMetrics);
+        MetricStore.removeListener("fetchStatusChanged", this.getFetching);
+        MetricStore.removeListener("metricsChanged", this.getMetrics);
     }
 
     getFetching() {
@@ -69,10 +69,7 @@ export default class MetricEditor extends React.Component<IMetricEditorProps, IM
 
         return(
             this.state.fetching?
-            <div className="loading">
-                <h3>{ "Chargement..." }</h3>
-                <CircularProgress size={60} thickness={7} />
-            </div>
+            <Spinner />
             :
             <div className="main-form">
                 <h2>Paramètres de l'équipe</h2>

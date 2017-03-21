@@ -8,10 +8,12 @@ import IMatch from "./models/IMatch";
 import { ISeason } from "./models/ISeason";
 import { IPosition } from "./models/IPosition";
 
-import CircularProgress from 'material-ui/CircularProgress';
+import { Li } from "../Elements";
+import { Spinner } from "../Elements/spinner";
 
 
 import Table from "./Table";
+
 
 export interface IStatsProps {
     teamID: number,
@@ -137,15 +139,12 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
                 <div className="right">
                     <h3>Paramètres</h3>
                     <ul>
-                        <li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></li>
-                        <li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></li>
+                        <Li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></Li>
+                        <Li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></Li>
                     </ul>
                 </div>
             </div>
-            : <div>
-                <h3>{ "Chargement..." }</h3>
-                <CircularProgress size={60} thickness={7} />
-              </div>
+            : <Spinner />
         )
     }
 

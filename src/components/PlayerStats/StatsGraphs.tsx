@@ -12,7 +12,9 @@ import Table from "./Table";
 
 import { Chart } from 'chart.js';
 
-import CircularProgress from 'material-ui/CircularProgress';
+import { Li } from "../Elements";
+import { Spinner } from "../Elements/spinner";
+
 
 export interface IGraphsProps {
     teamID: number,
@@ -198,15 +200,12 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
                     <div className="right">
                         <h3>Paramètres</h3>
                         <ul>
-                            <li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></li>
-                            <li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></li>
+                            <Li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></Li>
+                            <Li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></Li>
                         </ul>
                     </div>
                 </div>
-            : <div>
-                <h3>{ "Chargement..." }</h3>
-                <CircularProgress size={60} thickness={7} />
-              </div>
+            : <Spinner />
         )
     }
 

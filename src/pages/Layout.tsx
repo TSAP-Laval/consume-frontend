@@ -2,12 +2,12 @@ import * as React from "react";
 import {Link} from "react-router"
 import {Header} from "./Header";
 
+import { injectGlobal } from 'styled-components';
+
 import { MuiThemeProvider, getMuiTheme } from "material-ui/styles";
 
 import  ErrorStore  from "../components/Error/store";
 import ErrorAlert from "../components/Error";
-
-require('../sass/Layout');
 
 
 export interface ILayoutProps {}
@@ -22,6 +22,23 @@ const muiTheme = getMuiTheme({
         primary1Color: "#2196F3",
     }
 });
+
+// Global Styling
+injectGlobal`
+    @font-face {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    html, body, #root, #root > div, main {
+        position: relative;
+        height: 100%;
+        max-height: 100%;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+`;
 
 export default class Layout extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
