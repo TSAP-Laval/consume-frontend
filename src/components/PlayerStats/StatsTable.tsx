@@ -10,6 +10,7 @@ import { IPosition } from "./models/IPosition";
 
 import Li from "../Elements/Li";
 import LeftDiv from "../Elements/LeftDiv";
+import RightDiv from "../Elements/RightDiv";
 import SmallContainer from "../Elements/SmallContainer";
 import Spinner from "../Elements/Spinner";
 
@@ -138,13 +139,13 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
                 <LeftDiv>
                     <Table columns={ cols } data={ data }/>
                 </LeftDiv>
-                <div className="right">
+                <RightDiv>
                     <h3>Paramètres</h3>
                     <ul>
                         <Li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></Li>
                         <Li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></Li>
                     </ul>
-                </div>
+                </RightDiv>
             </SmallContainer>
             : <Spinner />
         )
