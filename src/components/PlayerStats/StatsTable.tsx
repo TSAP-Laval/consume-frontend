@@ -9,6 +9,8 @@ import { ISeason } from "./models/ISeason";
 import { IPosition } from "./models/IPosition";
 
 import { Li } from "../Elements";
+import LeftDiv from "../Elements/LeftDiv";
+import SmallContainer from "../Elements/SmallContainer";
 import { Spinner } from "../Elements/spinner";
 
 
@@ -132,10 +134,10 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
 
         return (
             this.state.requestState == Status.Idle?
-            <div className="container">
-                <div className="left">
+            <SmallContainer>
+                <LeftDiv>
                     <Table columns={ cols } data={ data }/>
-                </div>
+                </LeftDiv>
                 <div className="right">
                     <h3>Paramètres</h3>
                     <ul>
@@ -143,7 +145,7 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
                         <Li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></Li>
                     </ul>
                 </div>
-            </div>
+            </SmallContainer>
             : <Spinner />
         )
     }

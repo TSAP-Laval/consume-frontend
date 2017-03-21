@@ -9,6 +9,9 @@ import Toggle from 'material-ui/Toggle';
 
 import { Li } from "../Elements";
 
+import LeftDiv from "../Elements/LeftDiv";
+import RightDiv from "../Elements/RightDiv";
+import SmallContainer from "../Elements/SmallContainer";
 import { Spinner } from "../Elements/spinner";
 
 export interface ILayoutProps {
@@ -132,21 +135,23 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
 
         if(!this.state.loading) {
             return(
-                <div className="container">
-                    <div ref="mainStage" className="left">
-                        <Stage width={this.state.width} height={this.state.height}>
-                            <Layer>{Zones}</Layer>
-                            <Layer>{Texts}</Layer>
-                            <Map height={this.state.height}/>
-                        </Stage>
-                    </div>
-                    <div className="right">
+                <SmallContainer>
+                    <LeftDiv>
+                        <div ref="mainStage">
+                            <Stage width={this.state.width} height={this.state.height}>
+                                <Layer>{Zones}</Layer>
+                                <Layer>{Texts}</Layer>
+                                <Map height={this.state.height}/>
+                            </Stage>
+                        </div>
+                    </LeftDiv>
+                    <RightDiv>
                         <h3>Types d'Actions</h3>
                         <ul>
                         {ActionTypes}
                         </ul>
-                    </div>
-                </div>
+                    </RightDiv>
+                </SmallContainer>
             );
         } else {
             return(

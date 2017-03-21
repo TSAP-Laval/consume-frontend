@@ -9,9 +9,8 @@ import MetricStore from './store';
 
 import { CreateFetchMetricsAction } from './actions/FetchMetrics';
 
+import Form from "../Elements/Form";
 import { Spinner } from "../Elements/spinner";
-
-require('../../sass/MetricEditor');
 
 
 export interface IMetricEditorProps {
@@ -71,14 +70,14 @@ export default class MetricEditor extends React.Component<IMetricEditorProps, IM
             this.state.fetching?
             <Spinner />
             :
-            <div className="main-form">
+            <Form>
                 <h2>Paramètres de l'équipe</h2>
                 <div>
                     <h3>Métriques</h3>
                     {existingRows}
                     <MetricRow teamID={this.props.teamId} />
                 </div>
-            </div>
+            </Form>
         );
     }
 }

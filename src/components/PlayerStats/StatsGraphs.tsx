@@ -13,6 +13,9 @@ import Table from "./Table";
 import { Chart } from 'chart.js';
 
 import { Li } from "../Elements";
+import LeftDiv from "../Elements/LeftDiv";
+import RightDiv from "../Elements/RightDiv";
+import SmallContainer from "../Elements/SmallContainer";
 import { Spinner } from "../Elements/spinner";
 
 
@@ -192,19 +195,19 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
 
         return (
             this.state.requestState == Status.Idle?
-                <div className="container">
-                    <div className="left">
+                <SmallContainer>
+                    <LeftDiv>
                         <canvas ref={"statGraph"} >
                         </canvas>
-                    </div>
-                    <div className="right">
+                    </LeftDiv>
+                    <RightDiv>
                         <h3>Paramètres</h3>
                         <ul>
                             <Li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></Li>
                             <Li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></Li>
                         </ul>
-                    </div>
-                </div>
+                    </RightDiv>
+                </SmallContainer>
             : <Spinner />
         )
     }

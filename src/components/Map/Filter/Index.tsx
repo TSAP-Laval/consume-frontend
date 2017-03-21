@@ -4,6 +4,7 @@ import * as Models from "./Models"
 import * as ActionsCreator from "./ActionsCreator"
 
 import { Li } from '../../Elements';
+import RightDiv from "../../Elements/RightDiv";
 
 import Toggle from 'material-ui/Toggle';
 
@@ -75,12 +76,12 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
         })
 
         return(
-            <div id="ArrowMapFilter" className="right">
+            <RightDiv>
                 <h3>Impact de l'action</h3>
                 <ul>{ActionImpacts}</ul>
                 <h3>Type d'action</h3>
                 <ul>{ActionTypes}</ul>
-            </div>
+            </RightDiv>
         );
     }
 }

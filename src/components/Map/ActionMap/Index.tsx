@@ -9,6 +9,8 @@ import ActionMapFilter from "../Filter/Index"
 import FilterStore from "../Filter/Store"
 import * as FilterModels from "../Filter/Models"
 
+import LeftDiv from "../../Elements/LeftDiv";
+import SmallContainer from "../../Elements/SmallContainer";
 import { Spinner } from "../../Elements/spinner";
 
 export interface ILayoutProps {
@@ -115,15 +117,17 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
 
         if(!this.state.loading) {
             return(
-                <div className="container">
-                    <div ref="mainStage" className="left">
-                        <Stage width={this.state.width} height={this.state.height}>
-                            <Map height={this.state.height}/>
-                            <Layer>{Actions}</Layer>
-                        </Stage>
-                    </div>
+                <SmallContainer>
+                    <LeftDiv>
+                        <div ref="mainStage">
+                            <Stage width={this.state.width} height={this.state.height}>
+                                <Map height={this.state.height}/>
+                                <Layer>{Actions}</Layer>
+                            </Stage>
+                        </div>
+                    </LeftDiv>
                     <ActionMapFilter></ActionMapFilter>
-                </div>
+                </SmallContainer>
             );
         } else {
             return(
