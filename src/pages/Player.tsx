@@ -77,7 +77,7 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         return (
             <div className="allContainer">
                 <DataPanel PlayerName={this.state.playerName} Header={arrowTitle}><ActionMap playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></DataPanel>
-                <DataPanel PlayerName={this.state.playerName} Header={heatmapTitle} ><HeatMap/></DataPanel>
+                <DataPanel PlayerName={this.state.playerName} Header={heatmapTitle} ><HeatMap playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></DataPanel>
 
                 <DataPanel PlayerName={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
                 <DataPanel PlayerName={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
