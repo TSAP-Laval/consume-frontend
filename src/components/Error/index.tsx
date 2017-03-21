@@ -2,8 +2,6 @@ import * as React from "react";
 
 import Snackbar from 'material-ui/Snackbar';
 
-require('../../sass/Error.scss');
-
 export interface IErrorProps {
     Message: string
 };

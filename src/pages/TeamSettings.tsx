@@ -1,8 +1,10 @@
 import * as React from "react";
+import { Link } from 'react-router';
 
-import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
+import BigContent from "../components/Elements/BigContent";
+import FlatButton from 'material-ui/FlatButton';
 
-import BigContent from '../components/Elements/BigContent';
+import TeamSettingsView from "../components/TeamSettingsView";
 
 export interface ITeamProps {
     params?: {
@@ -19,10 +21,9 @@ export default class Team extends React.Component<ITeamProps, ITeamState> {
     }
 
     render() {
-        let teamStatsTitle = <h3>Satistiques de la saison en cours</h3>
         return (
             <BigContent>
-                <GenericMetricsView teamID={this.props.params.teamID}/>
+                <TeamSettingsView teamId={this.props.params.teamID} />
             </BigContent>
         );
     }
