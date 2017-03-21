@@ -9,6 +9,8 @@ export class Metric {
         this.name = name;
         this.description = description;
         this.formula = formula;
+
+        this.isValid = this.isValid.bind(this);
     }
 
     isValid(): boolean {

@@ -2,7 +2,9 @@ import * as React from "react";
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { CreateUpdateMetricAction } from "./actions/UpdateMetric";
 import { CreateCreateMetricAction } from "./actions/CreateMetric";
+import { CreateDeleteMetricAction } from "./actions/DeleteMetric";
 
 import { Metric } from './MetricModel';
 
@@ -40,6 +42,11 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
         this.changeName = this.changeName.bind(this);
         this.changeDesc = this.changeDesc.bind(this);
         this.changeFormula = this.changeFormula.bind(this);
+        this.delete = this.delete.bind(this);
+    }
+
+    delete() {
+        CreateDeleteMetricAction(this.state.metric.id, this.props.teamID)
     }
 
     changeName(e: any) {
@@ -95,13 +102,13 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
             formulaError: formulaError
         });
 
-        if (!metric.isValid()) {
+        if (![metric.name, metric.description, metric.formula].every((x) => (x != undefined && x != ""))) {
             return;
         }
 
         if (this.state.metric.id) {
             // Update the metric
-            // TODO: Geb: Code update de métrique ici
+            CreateUpdateMetricAction(this.state.metric, this.props.teamID);
         } else {
             // Create the metric
             CreateCreateMetricAction(this.state.metric, this.props.teamID);
@@ -133,6 +140,11 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
                     onChange={this.changeFormula}
                     onBlur={this.handleSave}
                     errorText={this.state.formulaError}
+                />
+
+                <RaisedButton
+                    label="Supprimer"
+                    onClick={this.delete}
                 />
             </div>
         );
