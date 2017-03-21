@@ -3,7 +3,7 @@ import * as Actions from "../Actions"
 import MapStore from "../Store"
 import FilterStore from "../Filter/Store"
 import Map from "../Index"
-import {Zone, Size} from "../models"
+import {Zone, Size} from "../Models"
 import * as ActionsCreator from "../ActionsCreator"
 import CircularProgress from 'material-ui/CircularProgress';
 import {Layer, Rect, Stage, Circle, Line, Text} from 'react-konva';
