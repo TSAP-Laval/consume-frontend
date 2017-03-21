@@ -1,7 +1,9 @@
 import * as React from "react";
 
-import {ActionMap} from "../components/Map/ArrowMap/Index"
-import {HeatMap} from "../components/HeatMap/Map"
+import styled from 'styled-components';
+
+import {ActionMap} from "../components/Map/ActionMap/Index"
+import {HeatMap} from "../components/Map/HeatMap/Index"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
@@ -15,8 +17,6 @@ import { DataPanel } from "../components/DataPanel";
 
 import Paper from 'material-ui/Paper';
 
-require('../sass/Player.scss');
-
 export interface ILayoutProps {
     params: {
         teamID: number,
@@ -27,6 +27,10 @@ export interface ILayoutProps {
 export interface ILayoutState {
     playerName?: string
 }
+
+const AllContainer = styled.div`
+    margin-top: 2em;
+`;
 
 export default class Player extends React.Component<ILayoutProps, ILayoutState> {
 
@@ -75,13 +79,13 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         let dateLocal = "fr-CA";
 
         return (
-            <div className="allContainer">
-                <DataPanel PlayerName={this.state.playerName} Header={arrowTitle}><ActionMap/></DataPanel>
-                <DataPanel PlayerName={this.state.playerName} Header={heatmapTitle} ><HeatMap/></DataPanel>
+            <AllContainer>
+                <DataPanel PlayerName={this.state.playerName} Header={arrowTitle}><ActionMap playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></DataPanel>
+                <DataPanel PlayerName={this.state.playerName} Header={heatmapTitle} ><HeatMap playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></DataPanel>
 
                 <DataPanel PlayerName={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
                 <DataPanel PlayerName={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
-            </div>
+            </AllContainer>
         );
     }
 }

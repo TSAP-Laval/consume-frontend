@@ -9,6 +9,12 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import MetricRow from './MetricsRow';
 
+import Spinner from "../Elements/Spinner";
+
+import { Link } from 'react-router';
+
+import FlatButton from 'material-ui/FlatButton';
+
 // Represent the props reveived by the Component GenericMetrics.
 export interface IDataProps {
     teamID: number
@@ -86,14 +92,12 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
             this.state.requestState == Status.Idle?
             <div>
                 <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
+                <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.teamID + "/settings"} />} />
                 <MetricsTable columns={ cols }>
                     { data }
                 </MetricsTable>
             </div>
-            : <div className="loading">
-                <h3>{ "Chargement..." }</h3>
-                <CircularProgress size={60} thickness={7} />
-              </div>
+            : <Spinner />
         )
     }
 }
