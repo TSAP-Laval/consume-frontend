@@ -7,12 +7,12 @@ import {Layer, Rect, Stage, Circle, Line, Text} from 'react-konva';
 
 import Toggle from 'material-ui/Toggle';
 
-import { Li } from "../Elements";
+import Li from "../Elements/Li";
 
 import LeftDiv from "../Elements/LeftDiv";
 import RightDiv from "../Elements/RightDiv";
 import SmallContainer from "../Elements/SmallContainer";
-import { Spinner } from "../Elements/spinner";
+import Spinner from "../Elements/Spinner";
 
 export interface ILayoutProps {
 }

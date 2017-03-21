@@ -10,7 +10,7 @@ const SpinnerContainer = styled.div`
     text-align: center;
 `
 
-export class Spinner extends React.Component<any, any> {
+export default class Spinner extends React.Component<any, any> {
     render() {
         return (
             <SpinnerContainer>

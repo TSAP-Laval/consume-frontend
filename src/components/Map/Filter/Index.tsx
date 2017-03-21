@@ -3,7 +3,7 @@ import FilterStore from "./Store"
 import * as Models from "./Models"
 import * as ActionsCreator from "./ActionsCreator"
 
-import { Li } from '../../Elements';
+import Li from '../../Elements/Li';
 import RightDiv from "../../Elements/RightDiv";
 
 import Toggle from 'material-ui/Toggle';

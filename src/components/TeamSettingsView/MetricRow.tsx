@@ -8,8 +8,6 @@ import { Metric } from './MetricModel';
 
 import FormInput from "../Elements/FormInput";
 
-require('../../sass/MetricEditor');
-
 
 export interface IMetricRowProps {
     metric?: Metric

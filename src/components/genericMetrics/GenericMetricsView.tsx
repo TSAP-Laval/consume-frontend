@@ -9,7 +9,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import MetricRow from './MetricsRow';
 
-import { Spinner } from "../Elements/spinner";
+import Spinner from "../Elements/Spinner";
 
 import { Link } from 'react-router';
 

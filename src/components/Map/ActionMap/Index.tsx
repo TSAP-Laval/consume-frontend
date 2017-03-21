@@ -11,7 +11,7 @@ import * as FilterModels from "../Filter/Models"
 
 import LeftDiv from "../../Elements/LeftDiv";
 import SmallContainer from "../../Elements/SmallContainer";
-import { Spinner } from "../../Elements/spinner";
+import Spinner from "../../Elements/Spinner";
 
 export interface ILayoutProps {
     playerID: number,

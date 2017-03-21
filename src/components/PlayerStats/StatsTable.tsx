@@ -8,10 +8,10 @@ import IMatch from "./models/IMatch";
 import { ISeason } from "./models/ISeason";
 import { IPosition } from "./models/IPosition";
 
-import { Li } from "../Elements";
+import Li from "../Elements/Li";
 import LeftDiv from "../Elements/LeftDiv";
 import SmallContainer from "../Elements/SmallContainer";
-import { Spinner } from "../Elements/spinner";
+import Spinner from "../Elements/Spinner";
 
 
 import Table from "./Table";

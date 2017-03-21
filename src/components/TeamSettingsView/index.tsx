@@ -10,7 +10,7 @@ import MetricStore from './store';
 import { CreateFetchMetricsAction } from './actions/FetchMetrics';
 
 import Form from "../Elements/Form";
-import { Spinner } from "../Elements/spinner";
+import Spinner from "../Elements/Spinner";
 
 
 export interface IMetricEditorProps {
