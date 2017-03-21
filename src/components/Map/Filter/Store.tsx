@@ -38,13 +38,13 @@ class FilterStore extends EventEmitter {
     
     getAllFilteredActions() {
         return MapStore.actions.filter((action: Action) => {
-            return this.getUsedTypeFilters().indexOf(action.type) != -1 && this.getUsedImpactFilters().indexOf(action.is_positive) != -1
+            return this.getUsedTypeFilters().indexOf(action.type.name) != -1 && this.getUsedImpactFilters().indexOf(action.is_positive) != -1
         })
     }
 
     getActionsFilteredByType(){
         return MapStore.actions.filter((action: Action) => {
-            return this.getUsedTypeFilters().indexOf(action.type) != -1
+            return this.getUsedTypeFilters().indexOf(action.type.name) != -1
         })
     }
 
@@ -76,8 +76,8 @@ class FilterStore extends EventEmitter {
 
     setActionTypes(actions: Action[]) {
         this.action_types =  actions.reduce((acc, action) => {
-            if(acc.indexOf(action.type) == -1) {
-                acc.push(action.type)
+            if(acc.indexOf(action.type.name) == -1) {
+                acc.push(action.type.name)
             }
             return acc;
         }, new Array<string>()).map((type: string) => (new Models.ActionType(type, true)));
