@@ -8,6 +8,12 @@ import * as ActionsCreator from "../ActionsCreator"
 import CircularProgress from 'material-ui/CircularProgress';
 import {Layer, Rect, Stage, Circle, Line, Text} from 'react-konva';
 
+import LeftDiv from "../../Elements/LeftDiv";
+import Li from "../../Elements/Li";
+import RightDiv from "../../Elements/RightDiv";
+import SmallContainer from "../../Elements/SmallContainer";
+import Spinner from "../../Elements/Spinner";
+
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
@@ -170,13 +176,13 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
 
             const ActionTypes = types.map((action, i) => {
                 return (
-                    <li>
+                    <Li>
                         <Toggle
                         label={action + " (" + this.state.actionTypes[action] + " actions)"}
                         checked={this.state.filters.indexOf(action) != -1}
                         value={action}
                         onToggle={this.handleCheck.bind(this)}
-                    /></li>
+                    /></Li>
                 )
             })
 
@@ -207,15 +213,17 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
 
         if(!this.state.loading) {
             return(
-                <div className="container">
-                    <div ref="mainStage" className="left">
-                        <Stage width={this.state.width} height={this.state.height}>
-                            <Layer>{Zones}</Layer>
-                            <Layer>{Texts}</Layer>
-                            <Map height={this.state.height}/>
-                        </Stage>
-                    </div>
-                    <div className="right">
+                <SmallContainer>
+                    <LeftDiv>
+                        <div ref="mainStage">
+                            <Stage width={this.state.width} height={this.state.height}>
+                                <Layer>{Zones}</Layer>
+                                <Layer>{Texts}</Layer>
+                                <Map height={this.state.height}/>
+                            </Stage>
+                        </div>
+                    </LeftDiv>
+                    <RightDiv>
                         <h3>Types d'Actions</h3>
                         <ul>
                         {ActionTypes}
@@ -231,15 +239,12 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
                                 {WidthDropDown}
                             </DropDownMenu>
                         </div>
-                    </div>
-                </div>
+                    </RightDiv>
+                </SmallContainer>
             );
         } else {
             return(
-                <div>
-                    <h3>{ "Chargement... "}</h3>
-                    <CircularProgress size={60} thickness={7} />
-                </div>
+                <Spinner />
             )
         }
     }
