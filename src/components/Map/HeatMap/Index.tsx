@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as Actions from "../Actions"
 import MapStore from "../Store"
+import FilterStore from "../Filter/Store"
 import Map from "../Index"
 import {Zone, Size} from "../models"
 import * as ActionsCreator from "../ActionsCreator"
@@ -35,8 +36,8 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         this.state = {
             loading: false,
             filters: [],
-            size: new Size(10, 6),
-            zones: MapStore.getZones(10, 6, []),
+            size: new Size(4,3),
+            zones: MapStore.getZones([]),
             actionTypes: MapStore.getActionTypes()
         }
 
@@ -44,22 +45,28 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
         this.handleChangeHeight = this.handleChangeHeight.bind(this);
         this.handleChangeWidth = this.handleChangeWidth.bind(this);
+        this.getMapParameters = this.getMapParameters.bind(this);
+        this.setLoadingStatus = this.setLoadingStatus.bind(this);
     }
 
     componentWillMount() {
         MapStore.on("FETCH_ACTIONS", this.setLoadingStatus)
         MapStore.on("RECEIVE_ACTIONS", this.getZones)
+        MapStore.on("RECEIVE_PARAMETERS", this.getMapParameters)
     }
 
     componentWillUnmount() {
         MapStore.removeListener("FETCH_ACTIONS", this.setLoadingStatus)
         MapStore.removeListener("RECEIVE_ACTIONS", this.getZones)
+        MapStore.removeListener("RECEIVE_PARAMETERS", this.getMapParameters)
     }
 
     setLoadingStatus() {
         this.setState({
             loading: MapStore.fetching
         })
+
+        ActionsCreator.getMapParameters(this.props.teamID);
     }
 
     refs: {
@@ -78,17 +85,25 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
     }
 
     handleChangeHeight(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
+        MapStore.setMapParameters(new Size(this.state.size.width,menuItemValue));
+
         this.setState({
-            size: new Size(this.state.width, menuItemValue),
-            zones: MapStore.getZones(this.state.width, menuItemValue, this.state.filters)
+            size: MapStore.getMapParameters(),
+            zones: MapStore.getZones(this.state.filters)
         });
+
+        ActionsCreator.setMapParameters(this.props.teamID, MapStore.getMapParameters());
     }
 
     handleChangeWidth(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
+        MapStore.setMapParameters(new Size(menuItemValue, this.state.size.height));
+
         this.setState({
-            size: new Size(menuItemValue, this.state.height),
-            zones: MapStore.getZones(menuItemValue, this.state.height, this.state.filters)
+            size: MapStore.getMapParameters(),
+            zones: MapStore.getZones(this.state.filters)
         });
+
+        ActionsCreator.setMapParameters(this.props.teamID, MapStore.getMapParameters());
     }
 
     handleCheck(event: React.FormEvent<HTMLInputElement>) {
@@ -101,14 +116,20 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             this.state.filters.splice(index, 1);
         
         this.setState({
-            zones: MapStore.getZones(this.state.size.width, this.state.size.height, this.state.filters)
+            zones: MapStore.getZones(this.state.filters)
         });
     }
+
+    getMapParameters() {
+         this.setState({
+             size: MapStore.getMapParameters()
+          });
+      }
 
     getZones() {
         this.setState({
             loading: MapStore.fetching,
-            zones: MapStore.getZones(this.state.size.width, this.state.size.height, []),
+            zones: MapStore.getZones([]),
             actionTypes: MapStore.getActionTypes()
         });
     }
