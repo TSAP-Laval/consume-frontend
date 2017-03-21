@@ -3,6 +3,7 @@ import * as React from "react";
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+import { CreateUpdateMetricAction } from "./actions/UpdateMetric";
 import { CreateCreateMetricAction } from "./actions/CreateMetric";
 
 import { Metric } from './MetricModel';
@@ -96,13 +97,13 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
             formulaError: formulaError
         });
 
-        if (!metric.isValid()) {
+        if (![metric.name, metric.description, metric.formula].every((x) => (x != undefined && x != ""))) {
             return;
         }
 
         if (this.state.metric.id) {
             // Update the metric
-            // TODO: Geb: Code update de métrique ici
+            CreateUpdateMetricAction(this.state.metric, this.props.teamID);
         } else {
             // Create the metric
             CreateCreateMetricAction(this.state.metric, this.props.teamID);
