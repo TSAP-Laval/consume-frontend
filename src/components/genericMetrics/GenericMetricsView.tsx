@@ -1,19 +1,18 @@
 import * as React from "react";
 import genericMetricsStore from "../genericMetrics/GenericMetricsStore";
-import MetricsTable from "../genericMetrics/MetricsTable";
 import IJoueur from "./models/IJoueur";
 import Status from "./models/Status";
 import { CreateGetPlayersAction } from "./actions/genericMetricsActions";
 
 import CircularProgress from 'material-ui/CircularProgress';
 
-import MetricRow from './MetricsRow';
-
 import Spinner from "../Elements/Spinner";
 
 import { Link } from 'react-router';
 
 import FlatButton from 'material-ui/FlatButton';
+import CustomTable from "../CustomTable/CustomTable"
+import CustomRow from "../CustomTable/CustomRow"
 
 // Represent the props reveived by the Component GenericMetrics.
 export interface IDataProps {
@@ -32,13 +31,15 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
     constructor(props: IDataProps) {
         super();
 
-         this.getStatus = this.getStatus.bind(this);
-        this.getResults = this.getResults.bind(this);
-
         this.state = {
             requestState: genericMetricsStore.getRequestStatus(),
             joueurs: genericMetricsStore.getAllPlayers()
         }
+
+        this.getStatus = this.getStatus.bind(this);
+        this.getResults = this.getResults.bind(this);
+        this.getTableColumns = this.getTableColumns.bind(this)
+        this.getTableData = this.getTableData.bind(this)
     }
 
     // Will fetch and load the data.
@@ -69,35 +70,58 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
         })
     }
 
+    getTableColumns() {
+        let columns = new Array<String>()
+
+         if(this.state.joueurs.length > 0) {
+            columns = ["Prénom", "Nom"]
+
+            columns = columns.concat(this.state.joueurs[0].metrics.map((metric) => {
+                return metric.name
+            }))
+
+            columns.push("Voir Détails")
+         }
+
+        return columns
+    }
+
+    getTableData() {
+        let data = new Array<any>()
+
+        if(this.state.joueurs.length > 0) {
+            data = this.state.joueurs.map((joueur, i) => {
+                let rowData = new Array<any>()
+
+                rowData = [joueur.first_name, joueur.last_name]
+                rowData = rowData.concat(joueur.metrics.map((metric) => {
+                    return metric.value.toFixed(2).toString().concat("  (",metric.last_match.toFixed(2).toString(),")")
+                }))
+                rowData.push(<FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.teamID + "/player/" + joueur.id}/>} />)
+
+                return <CustomRow key={i} data={rowData}></CustomRow>
+            })
+        }
+
+        return data
+    }
+
      render() {
-         //Pour afficher le nom et le prénom du joueur.
-        let baseCols: Array<String> = ["Prénom", "Nom"];
-        // Pour récupérer les noms des colonnes qui seront afffichées.
-        let cols = baseCols.concat(this.state.joueurs.length > 0?
-        this.state.joueurs[0].metrics.map((metric) => {
-            return metric.name
-        }): []);
+        let columns = this.getTableColumns()
+        let data = this.getTableData()
 
-        // Pour récupérer les metrics.
-        let data = this.state.joueurs.map((joueur, i) => {
-            let baseData: Array<string> = [joueur.first_name, joueur.last_name];
-            baseData = baseData.concat(joueur.metrics.map((metric) => {
-                return metric.value.toFixed(2).toString().concat("  (",metric.last_match.toFixed(2).toString(),")");
-            }));
-
-            return <MetricRow key={i} playerID={joueur.id} teamID={this.props.teamID} Data={ baseData }/>
-        });
-
-        return (
-            this.state.requestState == Status.Idle?
-            <div>
+        if(this.state.requestState == Status.Idle) {
+            return(
+                <div>
                 <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
                 <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.teamID + "/settings"} />} />
-                <MetricsTable columns={ cols }>
-                    { data }
-                </MetricsTable>
+                <CustomTable columns={columns}>
+                    {data}
+                </CustomTable>
             </div>
-            : <Spinner />
-        )
+            )
+        } else {
+            return(<Spinner />)
+        }
     }
 }

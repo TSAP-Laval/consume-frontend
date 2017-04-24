@@ -8,6 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router';
 
 import BigContent from "../components/Elements/BigContent";
+import Li from "../components/Elements/Li";
 
 
 export interface IHomeProps {}
@@ -24,11 +25,10 @@ export default class Home extends React.Component<IHomeProps, IHomeState> {
         return (
             <BigContent>
                 <h1>Console TSAP</h1>
-                <p>
-                    <Link to="/team/3">
-                        <RaisedButton primary={true} label="Statistiques de l'équipe" />
-                    </Link>
-                </p>
+                <ul>
+                    <Li><Link to="/team/3"><RaisedButton primary={true} label="Statistiques de l'équipe" /></Link></Li>
+                    <Li><Link to="/team/3/matches"><RaisedButton primary={true} label="Matchs de l'équipe" /></Link></Li>
+                </ul>
             </BigContent>
         );
     }

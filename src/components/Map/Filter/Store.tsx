@@ -42,18 +42,6 @@ class FilterStore extends EventEmitter {
         })
     }
 
-    getActionsFilteredByType(){
-        return MapStore.actions.filter((action: Action) => {
-            return this.getUsedTypeFilters().indexOf(action.type.name) != -1
-        })
-    }
-
-    getActionsFilteredByImpact(){
-        return MapStore.actions.filter((action: Action) => {
-            return this.getUsedImpactFilters().indexOf(action.is_positive) != -1
-        })
-    }
-
     updateActionsByType(action_type: Models.ActionType){
         let index = this.action_types.map((type) => {
             return type.type

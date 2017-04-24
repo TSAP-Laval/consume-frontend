@@ -6,6 +6,7 @@ import Layout from "./pages/Layout"
 import Player from "./pages/Player"
 import Home from "./pages/Home";
 import Team from "./pages/Team";
+import Matches from "./pages/Matches";
 import TeamSettings from './pages/TeamSettings';
 
 const root = document.getElementById("root");
@@ -19,7 +20,7 @@ ReactDOM.render(
       <IndexRoute component={Home}></IndexRoute>
       <Route path="team/:teamID" component={Team}></Route>
       <Route path="team/:teamID/player/:playerID" component={Player}></Route>
-
+      <Route path="team/:teamID/matches" component={Matches}></Route>
       <Route path="team/:teamID/settings" component={TeamSettings}></Route>
     </Route>
   </Router>,

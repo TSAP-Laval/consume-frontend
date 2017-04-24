@@ -4,12 +4,14 @@ import * as ActionsCreator from "../ActionsCreator"
 import {Action} from "../Models"
 import Map from "../Index"
 import MapStore from "../Store"
-import ActionMapFilter from "../Filter/Index"
+import ActionTypeFilter from "../Filter/ActionTypeFilter"
+import ActionImpactFilter from "../Filter/ActionImpactFilter"
 
 import FilterStore from "../Filter/Store"
 import * as FilterModels from "../Filter/Models"
 
 import LeftDiv from "../../Elements/LeftDiv";
+import RightDiv from "../../Elements/RightDiv";
 import SmallContainer from "../../Elements/SmallContainer";
 import Spinner from "../../Elements/Spinner";
 
@@ -42,6 +44,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this)
         this.setActions = this.setActions.bind(this)
+        this.renderActions = this.renderActions.bind(this)
     }
 
     setLoadingStatus() {
@@ -56,6 +59,35 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
             loading: MapStore.fetching,
             action_types: FilterStore.action_types
         })
+    }
+
+    renderActions() {
+        let radius = this.state.height / 50
+
+        const actions = this.state.actions.map((action, i) => {
+
+            let types = this.state.action_types.map((action_type) => {
+                return action_type.type;
+            })
+            var typeIndex = types.indexOf(action.type.name);
+            var arrowColor = this.state.action_types[typeIndex].color;
+
+            const style = 'rgb(' + arrowColor.r + ", " + arrowColor.g + ", " + arrowColor.b + ")"
+
+            var x1 = action.start.x * this.state.width;
+            var y1 = (1 - action.start.y) * this.state.height;
+
+            if(action.end != null) {
+                var x2 = action.end.x * this.state.width
+                var y2 = (1 - action.end.y) * this.state.height
+
+                return <Arrow fill={style} key={i} points={[x1, y1, x2, y2]} stroke={style} strokeWidth={this.strokeWidth}/>
+            } else {
+                return <Circle fill={style} key={i} x={x1} y={y1} radius={radius} stroke={style} strokeWidth={this.strokeWidth}/>
+            }
+        })
+
+        return actions
     }
 
     componentWillMount() {
@@ -90,43 +122,23 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
     }
 
     render() {
-        const Actions = this.state.actions.map((action, i) => {
-
-            let types = this.state.action_types.map((action_type) => {
-                return action_type.type;
-            })
-
-            var typeIndex = types.indexOf(action.type.name);
-            var arrowColor = this.state.action_types[typeIndex].color;
-
-            const style = 'rgb(' + arrowColor.r + ", " + arrowColor.g + ", " + arrowColor.b + ")"
-
-            var x1 = action.start.x * this.state.width;
-            var y1 = (1 - action.start.y) * this.state.height;
-
-            if(action.end != null) {
-                var x2 = action.end.x * this.state.width
-                var y2 = (1 - action.end.y) * this.state.height
-
-                return <Arrow fill={style} key={i} points={[x1, y1, x2, y2]} stroke={style} strokeWidth={this.strokeWidth}/>
-            } else {
-                var radius = this.state.height / 50
-                return <Circle fill={style} key={i} x={x1} y={y1} radius={radius} stroke={style} strokeWidth={this.strokeWidth}/>
-            }
-        })
-
         if(!this.state.loading) {
+            let actions = this.renderActions()
+
             return(
                 <SmallContainer>
                     <LeftDiv>
                         <div ref="mainStage">
                             <Stage width={this.state.width} height={this.state.height}>
                                 <Map height={this.state.height}/>
-                                <Layer>{Actions}</Layer>
+                                <Layer>{actions}</Layer>
                             </Stage>
                         </div>
                     </LeftDiv>
-                    <ActionMapFilter></ActionMapFilter>
+                    <RightDiv>
+                        <ActionImpactFilter></ActionImpactFilter>
+                        <ActionTypeFilter></ActionTypeFilter>
+                    </RightDiv>
                 </SmallContainer>
             );
         } else {

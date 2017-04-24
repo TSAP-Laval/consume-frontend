@@ -18,19 +18,14 @@ const StyledTable = styled(Table)`
 `;
 
 //This component will display all metrics from a team.
-export default class MetricsTable extends React.Component<IDataProps, IDataStates> {
-
+export default class CustomTable extends React.Component<IDataProps, IDataStates> {
     render() {
         let headers = this.props.columns.map((h, i) => {
             return <TableHeaderColumn key={ i.toString() }><span>{ h }</span></TableHeaderColumn>
         });
 
-        headers.push(
-            <TableHeaderColumn>{ "Voir Détails" }</TableHeaderColumn>
-        )
-
         return (
-            <StyledTable className="metrics-table">
+            <StyledTable className="custom-table">
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false}><TableRow>{ headers }</TableRow></TableHeader>
                 <TableBody>
                     { this.props.children }
