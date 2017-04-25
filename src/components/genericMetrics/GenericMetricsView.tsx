@@ -107,19 +107,29 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
     }
 
      render() {
-        let columns = this.getTableColumns()
-        let data = this.getTableData()
-
         if(this.state.requestState == Status.Idle) {
-            return(
-                <div>
-                <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
-                <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.teamID + "/settings"} />} />
-                <CustomTable columns={columns}>
-                    {data}
-                </CustomTable>
-            </div>
-            )
+            let columns = this.getTableColumns()
+            let data = this.getTableData()
+
+            if((columns.length + data.length) == 0) {
+                return(
+                    <div>
+                        <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
+                        <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.teamID + "/settings"} />} />
+                        <h3 className="text-center"><b>Aucun joueur trouvé</b></h3>
+                    </div>
+                )
+            } else {
+                return(
+                    <div>
+                        <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
+                        <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.teamID + "/settings"} />} />
+                        <CustomTable columns={columns}>
+                            {data}
+                        </CustomTable>
+                    </div>
+                )
+            }
         } else {
             return(<Spinner />)
         }

@@ -8,11 +8,11 @@ export interface ILayoutProps {
 export interface ILayoutState {}
 
 export default class Map extends React.Component<ILayoutProps, ILayoutState> {
-    height: number;
-    width: number;
+    height: number
+    width: number
     
-    readonly mainColor = "green";
-    readonly strokeWidth = 3;
+    readonly mainColor = "green"
+    readonly strokeWidth = 3
 
     constructor(props: ILayoutProps) {
         super(props)
@@ -46,6 +46,6 @@ export default class Map extends React.Component<ILayoutProps, ILayoutState> {
                     strokeWidth={this.strokeWidth}
                 />
             </Layer>
-        );
+        )
     } 
 }

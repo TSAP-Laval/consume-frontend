@@ -24,6 +24,9 @@ export interface Player {
     player_id: number
     first_name: string
     last_name: string
+    number: number
+    position: string
+    actions: Action[]
 }
 
 export interface Context {
@@ -39,12 +42,6 @@ export interface Metric {
     deviation: number;
     team: Team
     last_match: Match;
-}
-
-export interface PlayerPosition {
-    position_id: number
-    name: string
-    context: Context
 }
 
 export interface Coordinate {

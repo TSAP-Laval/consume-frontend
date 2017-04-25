@@ -93,14 +93,18 @@ export default class Matches extends React.Component<ILayoutProps, ILayoutState>
             let columns = this.getTableColumns()
             let data = this.getTableData()
 
-            return(
-                <div>
-                    <h2 className="text-center"><b>Parties Jouées</b></h2>
-                    <CustomTable columns={columns}>
-                        {data}
-                    </CustomTable>
-                </div>
-            )
+            if((columns.length + data.length) == 0) {
+                return(<h2 className="text-center"><b>Aucune partie trouvée</b></h2>)
+            } else {
+                return(
+                    <div>
+                        <h2 className="text-center"><b>Parties jouées</b></h2>
+                        <CustomTable columns={columns}>
+                            {data}
+                        </CustomTable>
+                    </div>
+                )
+            }
         } else {
             return(<Spinner />)
         }
