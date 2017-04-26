@@ -16,8 +16,9 @@ import SmallContainer from "../../Elements/SmallContainer";
 import Spinner from "../../Elements/Spinner";
 
 export interface ILayoutProps {
-    playerID: number,
-    teamID: number
+    params: {
+        actions: Action[]
+    }
 }
 
 export interface ILayoutState {
@@ -37,27 +38,10 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
         super(props)
 
         this.state = {
-            actions: new Array<Action>(),
             loading: false
         }
 
-        this.setLoadingStatus = this.setLoadingStatus.bind(this)
-        this.setActions = this.setActions.bind(this)
         this.renderActions = this.renderActions.bind(this)
-    }
-
-    setLoadingStatus() {
-        this.setState({
-            loading: MapStore.fetching
-        })
-    }
-
-    setActions() {
-        this.setState({
-            actions: FilterStore.getAllFilteredActions(),
-            loading: MapStore.fetching,
-            action_types: FilterStore.action_types
-        })
     }
 
     renderActions() {
@@ -90,17 +74,11 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
     }
 
     componentWillMount() {
-        MapStore.on("FETCH_ACTIONS", this.setLoadingStatus)
-        MapStore.on("RECEIVE_ACTIONS", this.setActions)
-        FilterStore.on("FILTER_ACTIONS_BY_TYPE", this.setActions)
-        FilterStore.on("FILTER_ACTIONS_BY_IMPACT", this.setActions)
+
     }
 
     componentWillUnmount() {
-        MapStore.removeListener("FETCH_ACTIONS", this.setLoadingStatus)
-        MapStore.removeListener("RECEIVE_ACTIONS", this.setActions)
-        FilterStore.removeListener("FILTER_ACTIONS_BY_TYPE", this.setActions)
-        FilterStore.removeListener("FILTER_ACTIONS_BY_IMPACT", this.setActions)
+
     }
 
     refs: {
@@ -116,8 +94,6 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
             height: h,
             width: w
         });
-
-        ActionsCreator.getMatchActionsByPlayer(this.props.teamID, this.props.playerID)
     }
 
     render() {

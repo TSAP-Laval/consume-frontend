@@ -24,10 +24,6 @@ export interface ILayoutState {
 export default class MatchDetails extends React.Component<ILayoutProps, ILayoutState> {
     constructor(props: ILayoutProps) {
         super(props)
-
-        this.state = {
-            match: null
-        }
     }
 
     componentWillMount() {

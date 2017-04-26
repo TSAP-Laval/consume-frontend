@@ -1,48 +1,48 @@
 import * as React from "react";
-import FilterStore from "./Store"
 import * as Models from "./Models"
-import * as ActionsCreator from "./ActionsCreator"
+import {Action} from "../../Matches/Models"
 
 import Li from '../../Elements/Li';
 
 import Toggle from 'material-ui/Toggle';
 
 
-export interface ILayoutProps {}
+export interface ILayoutProps {
+    params: {
+        actions: Action[]
+    }
+}
 export interface ILayoutState {
     action_types: Models.ActionType[]
+    filter: Models.ActionTypeFilter
 }
 
-export default class ActionMapFilter extends React.Component<ILayoutProps, ILayoutState> {
+export default class ActionTypeFilter extends React.Component<ILayoutProps, ILayoutState> {
     constructor(props: ILayoutProps) {
         super(props)
+
         this.state = {
             action_types: new Array<Models.ActionType>(),
+            filter: new Models.ActionTypeFilter(this.props.params.actions)
         }
-        this.onActionTypeFilterClick.bind(this)
-        this.setActionsFilter.bind(this)
+        this.onToggleClick.bind(this)
     }
 
-    onActionTypeFilterClick(e: any){
-        ActionsCreator.filterActionsByType(new Models.ActionType(e.currentTarget.value, e.currentTarget.checked))
-    }
-
-    setActionsFilter(){
-        this.setState({
-            action_types: FilterStore.action_types,
-        })
+    onToggleClick(e: any){
+        let action_type = new Models.ActionType(e.currentTarget.value, e.currentTarget.checked)
+        this.state.action_types = this.state.filter.updateActionTypes(action_type)
     }
 
     componentWillMount() {
-        FilterStore.on("FILTER_ACTIONS_BY_TYPE", this.setActionsFilter.bind(this))
+        this.state.action_types = this.state.filter.action_types
     }
 
     componentDidMount() {
-        this.setActionsFilter()
+
     }
 
     componentWillUnmount() {
-        FilterStore.removeListener("FILTER_ACTIONS_BY_TYPE", this.setActionsFilter.bind(this))
+
     }
 
     render() {
@@ -53,7 +53,7 @@ export default class ActionMapFilter extends React.Component<ILayoutProps, ILayo
 
             return (
                 <Li style={style}>
-                    <Toggle labelStyle={style} value={action_type.type} toggled={action_type.used} onToggle={this.onActionTypeFilterClick.bind(this)} label={action_type.type} />
+                    <Toggle labelStyle={style} value={action_type.type} toggled={action_type.used} onToggle={this.onToggleClick.bind(this)} label={action_type.type} />
                 </Li>
             )
         })
