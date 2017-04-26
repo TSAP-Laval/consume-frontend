@@ -29,7 +29,6 @@ export interface ILayoutState {
 }
 
 export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
-
     readonly mainColor = "green";
     readonly actionColor = "black"
     readonly strokeWidth = 3;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import BigContent from '../components/Elements/BigContent';
-import Matches from '../components/Matches/Index';
+import MatchList from '../components/Matches/Index';
 
 export interface IMatchesProps {
     params?: {
@@ -10,7 +10,7 @@ export interface IMatchesProps {
 
 export interface IMatchesState {}
 
-export default class Team extends React.Component<IMatchesProps, IMatchesState> {
+export default class Matches extends React.Component<IMatchesProps, IMatchesState> {
 
     constructor() {
         super();
@@ -20,7 +20,7 @@ export default class Team extends React.Component<IMatchesProps, IMatchesState> 
         let teamMatchesTitle = <h3>Parties jouées</h3>
         return (
             <BigContent>
-                <Matches teamID={this.props.params.teamID}/>
+                <MatchList teamID={this.props.params.teamID}/>
             </BigContent>
         );
     }

@@ -19,7 +19,7 @@ export interface ILayoutState {
     matches?: Array<Match>
 }
 
-export default class Matches extends React.Component<ILayoutProps, ILayoutState> {
+export default class MatchList extends React.Component<ILayoutProps, ILayoutState> {
     constructor(props: ILayoutProps) {
         super(props)
 
