@@ -3,7 +3,6 @@ import IAction from "../IAction"
 import * as Actions from "./Actions"
 import {Action, ZoneData, Coordinate, Zone, Size} from "./Models"
 import dispatcher from "../dispatcher"
-import FilterStore from "./Filter/Store"
 
 class MapStore extends EventEmitter {
     actions: Action[];
@@ -23,8 +22,6 @@ class MapStore extends EventEmitter {
 
     receiveActions(actions: Action[]){
         this.actions = actions;
-        FilterStore.setActionTypes(actions);
-        FilterStore.setActionImpacts();
     }
 
     handleActions(action: IAction) {

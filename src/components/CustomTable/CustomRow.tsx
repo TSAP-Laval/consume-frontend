@@ -4,8 +4,6 @@ import { Link } from "react-router"
 
 import { TableRowColumn, TableRow } from 'material-ui/Table';
 
-import FlatButton from 'material-ui/FlatButton';
-
 // Represent the props reveived by the Component GenericMetrics.
 export interface IRowProps {
     data: any[]

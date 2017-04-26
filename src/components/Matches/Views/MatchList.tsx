@@ -27,7 +27,6 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
         super(props)
 
         this.state = {
-            loading: false,
             matches : new Array<Match>()
         }
 
@@ -71,9 +70,11 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
                 match.location, 
                 match.date,
                 <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.teamID + "/matches/" + match.match_id}/>} />]
+
+                return <CustomRow key={i} data={rowData}></CustomRow>
             })
         }
-
+        
         return data
     }
 
@@ -106,9 +107,7 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
                 return(
                     <BigContent>
                         <h2 className="text-center"><b>Parties jouées</b></h2>
-                        <CustomTable columns={columns}>
-                            {data}
-                        </CustomTable>
+                        <CustomTable columns={columns}> {data} </CustomTable>
                     </BigContent>
                 )
             }

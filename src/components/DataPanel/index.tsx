@@ -21,7 +21,6 @@ const StyledPaper = styled(Paper)`
 
 export class DataPanel extends React.Component<IDataPanelProps, any> {
 
-
     render() {
         return (
             <StyledPaper zDepth={3}>

@@ -1,10 +1,10 @@
 //Database Models
-export interface Season {
+export class Season {
     start_year: number
     end_year: number
 }
 
-export interface Match {
+export class Match {
     match_id: number
     home_team: Team
     away_team: Team
@@ -12,7 +12,7 @@ export interface Match {
     location: String
 }
 
-export interface Team {
+export class Team {
     team_id: number
     name: string
     season: Season
@@ -20,7 +20,7 @@ export interface Team {
     metrics: Metric[]
 }
 
-export interface Player {
+export class Player {
     player_id: number
     first_name: string
     last_name: string
@@ -29,13 +29,13 @@ export interface Player {
     actions: Action[]
 }
 
-export interface Context {
+export class Context {
     team: Team
     match: Match
     player: Player
 }
 
-export interface Metric {
+export class Metric {
     metric_id: number;
     name: string;
     formula: number;
@@ -44,12 +44,12 @@ export interface Metric {
     last_match: Match;
 }
 
-export interface Coordinate {
+export class Coordinate {
     x: number
     y: number
 }
 
-export interface Action {
+export class Action {
     action_id: string
     description: string
     start: Coordinate
@@ -59,7 +59,7 @@ export interface Action {
 }
 
 //View models
-export interface ActionImpact {
+export class ActionImpact {
     description: string
     is_positive: boolean
     used: boolean
@@ -77,13 +77,13 @@ export class RGBColor {
     b: number
 }
 
-export interface Field {
+export class Field {
     x_zones: number
     y_zones: number
     zones: Zone[]
 }
 
-export interface Zone {
+export class Zone {
     x_zone: number
     y_zone: number
     actions: Action[]

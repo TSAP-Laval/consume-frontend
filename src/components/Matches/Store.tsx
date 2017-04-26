@@ -22,6 +22,7 @@ class MatchStore extends EventEmitter {
                 break;
             case "RECEIVE_MATCHES":
                 this.matches = (action as Actions.ReceiveMatches).matches
+                this.fetching = false
                 this.emit("RECEIVE_MATCHES")
                 break;
         }
