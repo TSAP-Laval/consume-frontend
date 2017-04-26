@@ -4,7 +4,7 @@ import IAction from "../IAction"
 import {Match} from "./Models"
 import * as Actions from "./Actions"
 
-class MatchesStore extends EventEmitter {
+class MatchStore extends EventEmitter {
     fetching: boolean
     matches: Match[]
 
@@ -28,7 +28,7 @@ class MatchesStore extends EventEmitter {
     }
 }
 
-const store = new MatchesStore();
+const store = new MatchStore();
 export default store;
 
 dispatcher.register(store.handleActions.bind(store));

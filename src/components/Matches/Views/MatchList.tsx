@@ -1,17 +1,20 @@
 import * as React from "react";
 import { Link } from 'react-router';
 
-import Spinner from "../Elements/Spinner";
-import CustomTable from "../CustomTable/CustomTable"
-import CustomRow from "../CustomTable/CustomRow"
+import Spinner from "../../Elements/Spinner";
+import BigContent from "../../Elements/BigContent"
+import CustomTable from "../../CustomTable/CustomTable"
+import CustomRow from "../../CustomTable/CustomRow"
 import FlatButton from 'material-ui/FlatButton';
 
-import MatchesStore from "./Store"
-import {Match} from "./Models"
-import * as ActionsCreator from "./ActionsCreator"
+import MatchStore from "../Store"
+import {Match} from "../Models"
+import * as ActionsCreator from "../ActionsCreator"
 
 export interface ILayoutProps {
-    teamID: number
+    params: {
+        teamID: number
+    }
 }
 
 export interface ILayoutState {
@@ -36,14 +39,14 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
 
     setLoadingStatus() {
         this.setState({
-            loading: MatchesStore.fetching
+            loading: MatchStore.fetching
         })
     }
 
     setMatches() {
         this.setState({
-            loading: MatchesStore.fetching,
-            matches: MatchesStore.matches
+            loading: MatchStore.fetching,
+            matches: MatchStore.matches
         })
     }
 
@@ -67,7 +70,7 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
                 match.away_team.name, 
                 match.location, 
                 match.date,
-                <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.teamID + "/matches/" + match.match_id}/>} />]
+                <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.teamID + "/matches/" + match.match_id}/>} />]
             })
         }
 
@@ -75,17 +78,17 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
     }
 
     componentWillMount() {
-        MatchesStore.on("FETCH_MATCHES", this.setLoadingStatus)
-        MatchesStore.on("RECEIVE_MATCHES", this.setMatches)
+        MatchStore.on("FETCH_MATCHES", this.setLoadingStatus)
+        MatchStore.on("RECEIVE_MATCHES", this.setMatches)
     }
 
     componentWillUnmount() {
-        MatchesStore.removeListener("FETCH_MATCHES", this.setLoadingStatus)
-        MatchesStore.removeListener("RECEIVE_MATCHES", this.setMatches)
+        MatchStore.removeListener("FETCH_MATCHES", this.setLoadingStatus)
+        MatchStore.removeListener("RECEIVE_MATCHES", this.setMatches)
     }
 
     componentDidMount() {
-        ActionsCreator.getAllTeamMatches(this.props.teamID)
+        ActionsCreator.getAllTeamMatches(this.props.params.teamID)
     }
 
     render() {
@@ -94,19 +97,23 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
             let data = this.getTableData()
 
             if((columns.length + data.length) == 0) {
-                return(<h2 className="text-center"><b>Aucune partie trouvée</b></h2>)
+                return(
+                    <BigContent>
+                        <h2 className="text-center"><b>Aucune partie trouvée</b></h2>
+                    </BigContent>
+                )
             } else {
                 return(
-                    <div>
+                    <BigContent>
                         <h2 className="text-center"><b>Parties jouées</b></h2>
                         <CustomTable columns={columns}>
                             {data}
                         </CustomTable>
-                    </div>
+                    </BigContent>
                 )
             }
         } else {
-            return(<Spinner />)
+            return(<BigContent><Spinner /></BigContent>)
         }
     }
 }
