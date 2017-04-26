@@ -6,7 +6,7 @@ import axios from "axios"
 
 import { CreateErrorAction } from "../Error/ErrorAction";
 
-export function getActions(match_id: number, player_id: number) {
+export function getMatchActionsByPlayer(match_id: number, player_id: number) {
     const fetch_actions = new Actions.FetchActions()
     dispatcher.dispatch(fetch_actions)
 

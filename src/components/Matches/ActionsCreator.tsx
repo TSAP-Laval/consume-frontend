@@ -2,11 +2,15 @@ import dispatcher from "../dispatcher"
 import {serverUrl} from "Config"
 import axios from "axios"
 
+import * as Actions from "./Actions"
 import * as Models from "./Models"
 
 import { CreateErrorAction } from "../Error/ErrorAction";
 
 export function getAllTeamMatches(team_id: number) {
+    const fetch_matches = new Actions.FetchMatches()
+    dispatcher.dispatch(fetch_matches)
+
     let url = serverUrl + "teams/" + team_id + "/matches"
 
     axios.get(url).then((response) => {
@@ -22,6 +26,9 @@ export function getAllTeamMatches(team_id: number) {
 
             return match_info
         })
+
+        const receive_matches = new Actions.ReceiveMatches(matches)
+        dispatcher.dispatch(receive_matches)
     }).catch((error) => {
         CreateErrorAction(error);
     })

@@ -2,6 +2,7 @@ import { EventEmitter } from "events"
 import dispatcher from "../dispatcher"
 import IAction from "../IAction"
 import {Match} from "./Models"
+import * as Actions from "./Actions"
 
 class MatchesStore extends EventEmitter {
     fetching: boolean
@@ -15,7 +16,14 @@ class MatchesStore extends EventEmitter {
 
     handleActions(action: IAction) {
         switch(action.type) {
-
+            case "FETCH_MATCHES":
+                this.fetching = true
+                this.emit("FETCH_MATCHES")
+                break;
+            case "RECEIVE_MATCHES":
+                this.matches = (action as Actions.ReceiveMatches).matches
+                this.emit("RECEIVE_MATCHES")
+                break;
         }
     }
 }

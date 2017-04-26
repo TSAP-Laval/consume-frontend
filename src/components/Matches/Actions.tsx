@@ -4,7 +4,7 @@ import {Match, Team} from "./Models"
 export class FetchMatches implements IAction {
     type: string
 
-    constructor(matches: Match[]) {
+    constructor() {
         this.type = "FETCH_MATCHES"
     }
 }

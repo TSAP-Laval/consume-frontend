@@ -118,7 +118,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
             width: w
         });
 
-        ActionsCreator.getActions(this.props.teamID, this.props.playerID)
+        ActionsCreator.getMatchActionsByPlayer(this.props.teamID, this.props.playerID)
     }
 
     render() {
