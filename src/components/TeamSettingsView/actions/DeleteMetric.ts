@@ -21,8 +21,7 @@ export class DeleteMetricAction implements IAction {
 export function CreateDeleteMetricAction(metricID: number, teamID: number) {
     dispatcher.dispatch(new DeleteMetricAction());
 
-    // TODO: Remove hardcoded team number when we have login
-    var url: string = Config.serverUrl + "/teams/" + '0' + "/metrics/" + metricID.toString();
+    var url: string = Config.serverUrl + "/teams/" + teamID + "/metrics/" + metricID.toString();
 
     if (!metricID) {
         // Don't do anything if metric is bad
