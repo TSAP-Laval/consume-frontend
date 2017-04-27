@@ -4,10 +4,10 @@ import * as ActionsCreator from "../ActionsCreator"
 import {Action} from "../../Matches/Models"
 import Map from "../Index"
 import MapStore from "../Store"
-import ActionTypeFilter from "../Filter/ActionTypeFilter"
-import ActionImpactFilter from "../Filter/ActionImpactFilter"
+import ActionTypeFilter from "../Filters/Views/ActionTypeFilter"
+import ActionImpactFilter from "../Filters/Views/ActionImpactFilter"
 
-import * as FilterModels from "../Filter/Models"
+import * as FilterModels from "../Filters/Models"
 
 import LeftDiv from "../../Elements/LeftDiv";
 import RightDiv from "../../Elements/RightDiv";
