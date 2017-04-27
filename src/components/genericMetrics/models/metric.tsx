@@ -4,4 +4,5 @@ export default class Metric {
     value: number;
     deviation: number;
     last_match: number;
+    standard: number;
 }

@@ -22,7 +22,7 @@ export function CreateFetchMetricsAction(teamId: number) {
     dispatcher.dispatch(new FetchMetrics());
 
     // TODO: Enlever le hardcoding quand on se loggera pour vrai (et qu'on aura pas de data seedé)
-    var url: string = Config.serverUrl + "/teams/" + '0' + "/metrics";
+    var url: string = Config.serverUrl + "/teams/" + teamId + "/metrics";
 
     axios.get(url).then(
         (resp) => {

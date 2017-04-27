@@ -6,7 +6,7 @@ import { Table, TableBody, TableRow, TableHeader, TableHeaderColumn } from 'mate
 
 // Represent the props reveived by the Component GenericMetrics.
 export interface IDataProps {
-    columns: Array<String>
+    columns: Array<Array<String>>
 }
 
 export interface IDataStates {
@@ -22,7 +22,7 @@ export default class MetricsTable extends React.Component<IDataProps, IDataState
 
     render() {
         let headers = this.props.columns.map((h, i) => {
-            return <TableHeaderColumn key={ i.toString() }><span>{ h }</span></TableHeaderColumn>
+            return <TableHeaderColumn key={ i.toString() }><span>{ h[0] }</span><br/>{h[1]}</TableHeaderColumn>
         });
 
         headers.push(

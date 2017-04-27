@@ -25,8 +25,7 @@ export class CreateMetricAction implements IAction {
 export function CreateCreateMetricAction(metric: Metric, teamID: number) {
     dispatcher.dispatch(new CreateMetricAction(metric));
 
-    // TODO: Remove hardcoded team number when we have login
-    var url: string = Config.serverUrl + "/teams/" + '0' + "/metrics";
+    var url: string = Config.serverUrl + "/teams/" + teamID + "/metrics";
 
     axios.post(url, metric)
     .then(
