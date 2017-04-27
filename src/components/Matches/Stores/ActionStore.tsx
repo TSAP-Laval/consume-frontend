@@ -17,6 +17,14 @@ class ActionStore extends EventEmitter {
         this.team_actions = new TeamActions()
     }
 
+    getActionTypes(component: string) {
+        return this.filters[component].action_types
+    }
+
+    getActionImpacts(component: string) {
+        return this.filters[component].action_impacts
+    }
+
     getFilteredActions(component: string) {
         
     }

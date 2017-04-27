@@ -3,16 +3,17 @@ import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
 import * as ActionsCreator from "../ActionsCreator"
 import {Action} from "../../Matches/Models"
 import Map from "../Index"
-import MapStore from "../Store"
+
 import ActionTypeFilter from "../Filters/Views/ActionTypeFilter"
 import ActionImpactFilter from "../Filters/Views/ActionImpactFilter"
-
 import * as FilterModels from "../Filters/Models"
 
 import LeftDiv from "../../Elements/LeftDiv";
 import RightDiv from "../../Elements/RightDiv";
 import SmallContainer from "../../Elements/SmallContainer";
 import Spinner from "../../Elements/Spinner";
+
+import ActionStore from "../../Matches/Stores/ActionStore"
 
 export interface ILayoutProps {
     params: {
@@ -38,7 +39,8 @@ export default class ActionMap extends React.Component<ILayoutProps, ILayoutStat
 
         this.state = {
             loading: false,
-            actions: this.props.params.actions
+            actions: this.props.params.actions,
+            action_types: ActionStore.getActionTypes("ACTION_MAP")
         }
 
         this.renderActions = this.renderActions.bind(this)

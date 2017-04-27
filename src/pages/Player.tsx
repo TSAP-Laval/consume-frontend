@@ -2,7 +2,7 @@ import * as React from "react";
 
 import styled from 'styled-components';
 
-import {ActionMap} from "../components/Map/ActionMap/Index"
+import ActionMap from "../components/Map/ActionMap/Index"
 import {HeatMap} from "../components/Map/HeatMap/Index"
 
 import StatsTable from "../components/PlayerStats/StatsTable";

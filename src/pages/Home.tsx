@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ActionMap } from "../components/Map/ActionMap/Index"
+import ActionMap from "../components/Map/ActionMap/Index"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
