@@ -51,7 +51,7 @@ export default class ActionMap extends React.Component<ILayoutProps, ILayoutStat
             let types = this.state.action_types.map((action_type) => {
                 return action_type.type;
             })
-            var typeIndex = types.indexOf(action.type.name);
+            var typeIndex = types.indexOf(action.description);
             var arrowColor = this.state.action_types[typeIndex].color;
 
             const style = 'rgb(' + arrowColor.r + ", " + arrowColor.g + ", " + arrowColor.b + ")"
@@ -110,8 +110,7 @@ export default class ActionMap extends React.Component<ILayoutProps, ILayoutStat
                         </div>
                     </LeftDiv>
                     <RightDiv>
-                        <ActionImpactFilter></ActionImpactFilter>
-                        <ActionTypeFilter></ActionTypeFilter>
+                        <ActionImpactFilter params={{component: "ACTION_MAP", actions: this.state.actions}}></ActionImpactFilter>
                     </RightDiv>
                 </SmallContainer>
             );
