@@ -35,8 +35,6 @@ export interface ILayoutState {
 
 export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
     constructor(props: ILayoutProps) {
-        var injectTapEventPlugin = require("react-tap-event-plugin");
-        injectTapEventPlugin();
         super(props);
 
         this.state = {
@@ -120,7 +118,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             this.state.filters.push(checked);
         else
             this.state.filters.splice(index, 1);
-        
+
         this.setState({
             zones: MapStore.getZones(this.state.filters)
         });
@@ -193,7 +191,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
             for(var _i = this.state.size.height - 1; _i > -1; _i--) {
                 ys.push(_i);
             }
-            
+
             var startY = zoneHeight * ys[zone.coordinate.y];
             var color = !isNaN(zone.rating) ? "hsl("+ Math.floor((zone.rating * 100) * 120 / 100) +", 50%,50%)" : "white";
             return <Rect key={i} x={startX} y={startY} width={zoneWidth} height={zoneHeight} stroke="black" fill={color}/>
