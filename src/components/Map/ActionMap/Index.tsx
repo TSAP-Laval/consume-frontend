@@ -37,7 +37,8 @@ export default class ActionMap extends React.Component<ILayoutProps, ILayoutStat
         super(props)
 
         this.state = {
-            loading: false
+            loading: false,
+            actions: this.props.params.actions
         }
 
         this.renderActions = this.renderActions.bind(this)
@@ -45,6 +46,9 @@ export default class ActionMap extends React.Component<ILayoutProps, ILayoutStat
 
     renderActions() {
         let radius = this.state.height / 50
+
+        console.log("Actions: ", this.state.actions);
+        console.log('Action types: ', this.state.action_types);
 
         const actions = this.state.actions.map((action, i) => {
 

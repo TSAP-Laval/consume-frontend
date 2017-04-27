@@ -65,16 +65,16 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
         if(this.state.matches.length > 0) {
             data = this.state.matches.map((match, i) => {
                 let rowData = new Array<any>()
-                rowData = [match.home_team.name, 
-                match.away_team.name, 
-                match.location, 
+                rowData = [match.home_team.name,
+                match.away_team.name,
+                match.location,
                 match.date.toDateString(),
                 <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.teamID + "/matches/" + match.match_id}/>} />]
 
                 return <CustomRow key={i} data={rowData}></CustomRow>
             })
         }
-        
+
         return data
     }
 
@@ -94,8 +94,6 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
         if(!this.state.loading) {
             let columns = this.getTableColumns()
             let data = this.getTableData()
-
-            console.log(data)
 
             if((columns.length + data.length) == 0) {
                 return(

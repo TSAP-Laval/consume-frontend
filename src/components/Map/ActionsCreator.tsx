@@ -46,7 +46,7 @@ export function getMapParameters(team_id: number) {
          CreateErrorAction(error);
      })
  }
- 
+
  export function setMapParameters(team_id: number, params: Models.Size) {
      let url = serverUrl + "/teams/" + team_id + "/map";
      axios.post(url, {height:params.height, width: params.width}).then((response) => {

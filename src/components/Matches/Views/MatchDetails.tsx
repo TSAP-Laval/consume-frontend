@@ -10,9 +10,6 @@ import ActionStore from "../Stores/ActionStore"
 import {TeamActions, Action} from "../Models"
 import * as ActionsCreator from "../ActionsCreator"
 
-import ActionImpactFilter from "../../Map/Filters/ActionImpactFilter"
-import ActionTypeFilter from "../../Map/Filters/ActionTypeFilter"
-
 import ActionMap from "../../../components/Map/ActionMap/Index"
 
 export interface ILayoutProps {
@@ -55,20 +52,24 @@ export default class MatchDetails extends React.Component<ILayoutProps, ILayoutS
 
     setTeamActions() {
         this.setState({
-            loading: ActionStore.fetching,
-            team_actions: ActionStore.team_actions,
-            actions: this.getActions()
+            team_actions: ActionStore.team_actions
+        }, () => {
+            this.setState({
+                loading: ActionStore.fetching,
+                actions: this.getActions()
+            })
         })
     }
 
     componentWillMount() {
-        ActionStore.on("FETCH_MATCH_ACTIONS", this.setLoadingStatus)
-        ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setTeamActions)
+        ActionStore.on("FETCH_MATCH_ACTIONS", this.setLoadingStatus);
+        ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setTeamActions);
+        ActionsCreator.getTeamActionsByMatch(this.props.params.teamID, this.props.params.matchID);
     }
 
     componentWillUnmount() {
         ActionStore.removeListener("FETCH_MATCH_ACTIONS", this.setLoadingStatus)
-        ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setTeamActions)
+        ActionStore.removeListener("RECEIVE_MATCH_ACTIONS", this.setTeamActions)
     }
 
     componentDidMount() {

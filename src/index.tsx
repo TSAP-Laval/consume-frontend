@@ -22,7 +22,7 @@ ReactDOM.render(
       <Route path="team/:teamID" component={Team}></Route>
       <Route path="team/:teamID/player/:playerID" component={Player}></Route>
       <Route path="team/:teamID/matches" component={MatchList}></Route>
-      <Route path="team/:teamID/matches/matchID" component={MatchDetails}></Route>
+      <Route path="team/:teamID/matches/:matchID" component={MatchDetails}></Route>
       <Route path="team/:teamID/settings" component={TeamSettings}></Route>
     </Route>
   </Router>,

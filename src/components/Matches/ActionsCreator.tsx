@@ -44,51 +44,52 @@ export function getTeamActionsByMatch(team_id: number, match_id: number) {
 
     axios.get(url).then((response) => {
         let data = response.data
-        let actions = data.map((team_actions: any) => {
-            let info = new Models.TeamActions()
+        let info = new Models.TeamActions()
 
-            info.match_id = team_actions.match_id
-            info.team_id = team_actions.team_id
-            info.location = team_actions.location
-            info.home_team_name = team_actions.home_team_name
-            info.away_team_name = team_actions.away_team_name
-            info.date = team_actions.date
+        info.match_id = data.match_id
+        info.team_id = data.team_id
+        info.location = data.location
+        info.home_team_name = data.home_team_name
+        info.away_team_name = data.away_team_name
+        info.date = data.date
 
-            info.players = team_actions.map((player: any) => {
-                let player_info = new Models.Player()
+        info.players = data.players.map((player: any) => {
+            let player_info = new Models.Player()
 
-                player_info.player_id = player.id
-                player_info.number = player.number
-                player_info.first_name = player.first_name
-                player_info.last_name = player.last_name
-                player_info.position = player.position
+            player_info.player_id = player.id
+            player_info.number = player.number
+            player_info.first_name = player.first_name
+            player_info.last_name = player.last_name
+            player_info.position = player.position
 
-                player_info.actions = player.actions.map((action: any) => {
-                    let action_info = new Models.Action()
+            player_info.actions = player.actions.map((action: any) => {
+                let action_info = new Models.Action()
 
-                    action_info.action_id = action.id
-                    action_info.description = action.TypeAction.name
-                    action_info.is_positive = action.is_valid
-                    action_info.context.player.player_id = player_info.player_id
+                action_info.context = new Models.Context();
+                action_info.context.player = player;
 
-                    action_info.start = new Models.Coordinate()
-                    action_info.start.x = action.x1
-                    action_info.start.y = action.y1
+                action_info.action_id = action.id
+                action_info.description = action.TypeAction.name
+                action_info.is_positive = action.is_valid
+                action_info.context.player.player_id = player_info.player_id
 
-                    if(action.x2 != null && action.y2 != null) {
-                        action_info.end = new Models.Coordinate()
-                        action_info.end.x = action.x2
-                        action_info.end.y = action.y2
-                    }
+                action_info.start = new Models.Coordinate()
+                action_info.start.x = action.x1
+                action_info.start.y = action.y1
 
-                    return action_info
-                })
+                if(action.x2 != null && action.y2 != null) {
+                    action_info.end = new Models.Coordinate()
+                    action_info.end.x = action.x2
+                    action_info.end.y = action.y2
+                }
 
-                return player_info
+                return action_info
             })
+
+            return player_info
         })
 
-        const receive_match_actions = new Actions.ReceiveMatchActions(actions)
+        const receive_match_actions = new Actions.ReceiveMatchActions(info);
         dispatcher.dispatch(receive_match_actions)
     }).catch((error) => {
         CreateErrorAction(error);
