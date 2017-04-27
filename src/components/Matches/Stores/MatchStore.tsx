@@ -1,8 +1,8 @@
 import { EventEmitter } from "events"
-import dispatcher from "../dispatcher"
-import IAction from "../IAction"
-import {Match} from "./Models"
-import * as Actions from "./Actions"
+import dispatcher from "../../dispatcher"
+import IAction from "../../IAction"
+import {Match} from "../Models"
+import * as Actions from "../Actions"
 
 class MatchStore extends EventEmitter {
     fetching: boolean

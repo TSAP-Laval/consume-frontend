@@ -1,13 +1,12 @@
 import * as React from "react";
 import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
 import * as ActionsCreator from "../ActionsCreator"
-import {Action} from "../Models"
+import {Action} from "../../Matches/Models"
 import Map from "../Index"
 import MapStore from "../Store"
 import ActionTypeFilter from "../Filter/ActionTypeFilter"
 import ActionImpactFilter from "../Filter/ActionImpactFilter"
 
-import FilterStore from "../Filter/Store"
 import * as FilterModels from "../Filter/Models"
 
 import LeftDiv from "../../Elements/LeftDiv";
@@ -29,7 +28,7 @@ export interface ILayoutState {
     width?: number
 }
 
-export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
+export default class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
     readonly mainColor = "green";
     readonly actionColor = "black"
     readonly strokeWidth = 3;
@@ -117,9 +116,7 @@ export class ActionMap extends React.Component<ILayoutProps, ILayoutState> {
                 </SmallContainer>
             );
         } else {
-            return(
-                <Spinner />
-            )
+            return(<Spinner />)
         }
     }
 }

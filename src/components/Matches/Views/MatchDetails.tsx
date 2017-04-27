@@ -6,9 +6,14 @@ import CustomTable from "../../CustomTable/CustomTable"
 import CustomRow from "../../CustomTable/CustomRow"
 import FlatButton from 'material-ui/FlatButton';
 
-import MatchesStore from "../Store"
-import {Match} from "../Models"
+import ActionStore from "../Stores/ActionStore"
+import {TeamActions, Action} from "../Models"
 import * as ActionsCreator from "../ActionsCreator"
+
+import ActionImpactFilter from "../../Map/Filters/ActionImpactFilter"
+import ActionTypeFilter from "../../Map/Filters/ActionTypeFilter"
+
+import ActionMap from "../../../components/Map/ActionMap/Index"
 
 export interface ILayoutProps {
     params: {
@@ -18,20 +23,52 @@ export interface ILayoutProps {
 }
 
 export interface ILayoutState {
-    match?: Match
+    loading?: boolean,
+    team_actions?: TeamActions,
+    actions?: Action[]
 }
 
 export default class MatchDetails extends React.Component<ILayoutProps, ILayoutState> {
     constructor(props: ILayoutProps) {
         super(props)
+
+        this.state = {
+            team_actions: new TeamActions()
+        }
+
+        this.getActions = this.getActions.bind(this)
+        this.setLoadingStatus = this.setLoadingStatus.bind(this)
+        this.setTeamActions = this.setTeamActions.bind(this)
+    }
+
+    getActions() {
+        return [].concat.apply([], this.state.team_actions.players.map((player) => {
+            return player.actions
+        }))
+    }
+
+    setLoadingStatus() {
+        this.setState({
+            loading: ActionStore.fetching
+        })
+    }
+
+    setTeamActions() {
+        this.setState({
+            loading: ActionStore.fetching,
+            team_actions: ActionStore.team_actions,
+            actions: this.getActions()
+        })
     }
 
     componentWillMount() {
-        
+        ActionStore.on("FETCH_MATCH_ACTIONS", this.setLoadingStatus)
+        ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setTeamActions)
     }
 
     componentWillUnmount() {
-
+        ActionStore.removeListener("FETCH_MATCH_ACTIONS", this.setLoadingStatus)
+        ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setTeamActions)
     }
 
     componentDidMount() {
@@ -39,6 +76,11 @@ export default class MatchDetails extends React.Component<ILayoutProps, ILayoutS
     }
 
     render() {
-        return(<p>alo</p>)
+        if(!this.state.loading){
+            let actions = {actions: this.state.actions}
+            return(<ActionMap params={actions}></ActionMap>)
+        } else {
+            return(<Spinner />)
+        }
     }
 }

@@ -71,6 +71,16 @@ export class ActionType {
     used: boolean
 }
 
+export class TeamActions {
+    match_id: number
+    team_id: number
+    location: string
+    home_team_name: string
+    away_team_name: string
+    date: Date
+    players: Player[]
+}
+
 export class RGBColor {
     r: number
     g: number

@@ -1,12 +1,10 @@
 import {Action} from "../../Matches/Models"
 
 export class ActionImpactFilter {
-    actions: Action[]
     action_impacts: ActionImpact[]
 
    constructor(actions: Action[]) {
-       this.actions = actions
-       this.setActionImpacts()
+       this.setActionImpacts(actions)
    }
 
     getUsedActionImpacts() {
@@ -19,8 +17,8 @@ export class ActionImpactFilter {
         return used_impacts
     }
 
-    setActionImpacts() {
-        this.action_impacts =  this.actions.reduce((acc, action) => {
+    setActionImpacts(actions: Action[]) {
+        this.action_impacts =  actions.reduce((acc, action) => {
             if(acc.indexOf(action.description) == -1) {
                 acc.push(action.description)
             }
@@ -42,12 +40,10 @@ export class ActionImpactFilter {
 }
 
 export class ActionTypeFilter {
-    actions: Action[]
     action_types: ActionType[]
 
     constructor(actions: Action[]) {
-        this.actions = actions
-        this.setActionTypes()
+        this.setActionTypes(actions)
     }
 
     getUsedActionTypes() {
@@ -60,8 +56,8 @@ export class ActionTypeFilter {
         return used_types
     }
 
-    setActionTypes() {
-        this.action_types =  this.actions.reduce((acc, action) => {
+    setActionTypes(actions: Action[]) {
+        this.action_types =  actions.reduce((acc, action) => {
             if(acc.indexOf(action.description) == -1) {
                 acc.push(action.description)
             }

@@ -7,7 +7,7 @@ import CustomTable from "../../CustomTable/CustomTable"
 import CustomRow from "../../CustomTable/CustomRow"
 import FlatButton from 'material-ui/FlatButton';
 
-import MatchStore from "../Store"
+import MatchStore from "../Stores/MatchStore"
 import {Match} from "../Models"
 import * as ActionsCreator from "../ActionsCreator"
 
