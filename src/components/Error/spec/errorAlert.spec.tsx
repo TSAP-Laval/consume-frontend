@@ -12,7 +12,7 @@ function setup(){
 }
 
 describe('ErrorAlert component test suite.', () => {
-    let wrapper;
+    let wrapper:any;
 
     before(() =>{
         wrapper = setup();

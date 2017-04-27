@@ -87,7 +87,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
                 return 0;
             })
             baseData = baseData.concat(sortedMetrics.map((metric) => {
-                return metric.value.toFixed(2).toString().concat("  (",metric.last_match.toFixed(2).toString(),")");
+                return metric.value.toFixed(2).toString().concat("  (",metric.last_match.toFixed(2).toString(),")", " (",metric.standard.toFixed(2).toString(),")");
             }));
 
             return <MetricRow key={i} playerID={joueur.id} teamID={this.props.teamID} Data={ baseData }/>
