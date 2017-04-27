@@ -68,7 +68,7 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
                 rowData = [match.home_team.name, 
                 match.away_team.name, 
                 match.location, 
-                match.date,
+                match.date.toDateString(),
                 <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.teamID + "/matches/" + match.match_id}/>} />]
 
                 return <CustomRow key={i} data={rowData}></CustomRow>
@@ -81,6 +81,8 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
     componentWillMount() {
         MatchStore.on("FETCH_MATCHES", this.setLoadingStatus)
         MatchStore.on("RECEIVE_MATCHES", this.setMatches)
+
+        ActionsCreator.getAllTeamMatches(this.props.params.teamID)
     }
 
     componentWillUnmount() {
@@ -88,14 +90,12 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
         MatchStore.removeListener("RECEIVE_MATCHES", this.setMatches)
     }
 
-    componentDidMount() {
-        ActionsCreator.getAllTeamMatches(this.props.params.teamID)
-    }
-
     render() {
         if(!this.state.loading) {
             let columns = this.getTableColumns()
             let data = this.getTableData()
+
+            console.log(data)
 
             if((columns.length + data.length) == 0) {
                 return(
