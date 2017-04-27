@@ -27,5 +27,5 @@ describe('MetricsTable component test suite.', () => {
     it('should have classe name metrics-table.', () => {
         expect(wrapper.find('.metrics-table')).to.exist;
     });
-    
+
 });

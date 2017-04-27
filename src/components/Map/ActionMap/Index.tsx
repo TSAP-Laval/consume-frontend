@@ -83,7 +83,6 @@ export default class ActionMap extends React.Component<ILayoutProps, ILayoutStat
     }
 
     componentWillUnmount() {
-
     }
 
     refs: {

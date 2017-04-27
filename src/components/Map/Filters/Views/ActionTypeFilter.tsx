@@ -1,9 +1,8 @@
 import * as React from "react";
-import * as Models from "./Models"
-import {Action} from "../../Matches/Models"
-import 
+import * as Models from "../Models"
+import {Action} from "../../../Matches/Models"
 
-import Li from '../../Elements/Li';
+import Li from '../../../Elements/Li';
 
 import Toggle from 'material-ui/Toggle';
 
