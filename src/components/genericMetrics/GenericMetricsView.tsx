@@ -71,11 +71,11 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
 
      render() {
          //Pour afficher le nom et le prénom du joueur.
-        let baseCols: Array<String> = ["Prénom", "Nom"];
+        let baseCols: Array<Array<String>> = [["Prénom", null], ["Nom", null]];
         // Pour récupérer les noms des colonnes qui seront afffichées.
         let cols = baseCols.concat(this.state.joueurs.length > 0?
         this.state.joueurs[0].metrics.map((metric) => {
-            return metric.name
+            return [metric.name, "Moy. / Dernier / Norme"];
         }): []);
 
         // Pour récupérer les metrics.
@@ -87,7 +87,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
                 return 0;
             })
             baseData = baseData.concat(sortedMetrics.map((metric) => {
-                return metric.value.toFixed(2).toString().concat("  (",metric.last_match.toFixed(2).toString(),")", " (",metric.standard.toFixed(2).toString(),")");
+                return metric.value.toFixed(2).toString().concat("  /  ", metric.last_match.toFixed(2).toString(), "  /  ", metric.standard.toFixed(2).toString());
             }));
 
             return <MetricRow key={i} playerID={joueur.id} teamID={this.props.teamID} Data={ baseData }/>

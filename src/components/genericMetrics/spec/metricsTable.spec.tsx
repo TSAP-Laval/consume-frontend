@@ -8,7 +8,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 function setup(){
     const muiTheme = getMuiTheme();
-    const cols = ['Embrace the darkside','true'];
+    const cols = [['Embrace the darkside', null], ['true', null]];
 
     return mount(<MetricsTable columns={cols}/>, {context: {muiTheme}, childContextTypes:{muiTheme: React.PropTypes.object}});
 }
@@ -27,5 +27,5 @@ describe('MetricsTable component test suite.', () => {
     it('should have classe name metrics-table.', () => {
         expect(wrapper.find('.metrics-table')).to.exist;
     });
-    
+
 });
