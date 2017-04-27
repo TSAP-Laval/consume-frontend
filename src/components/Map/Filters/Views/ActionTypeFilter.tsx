@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as Models from "./Models"
 import {Action} from "../../Matches/Models"
+import 
 
 import Li from '../../Elements/Li';
 
@@ -9,7 +10,8 @@ import Toggle from 'material-ui/Toggle';
 
 export interface ILayoutProps {
     params: {
-        actions: Action[]
+        parent: string,
+        actions: Action[],
     }
 }
 export interface ILayoutState {

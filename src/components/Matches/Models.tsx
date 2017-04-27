@@ -59,18 +59,6 @@ export class Action {
 }
 
 //View models
-export class ActionImpact {
-    description: string
-    is_positive: boolean
-    used: boolean
-}
-
-export class ActionType {
-    description: string
-    color: RGBColor
-    used: boolean
-}
-
 export class TeamActions {
     match_id: number
     team_id: number

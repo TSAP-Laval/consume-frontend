@@ -1,3 +1,4 @@
+import IAction from "../../IAction"
 import {Action} from "../../Matches/Models"
 
 export class ActionImpactFilter {
@@ -115,6 +116,20 @@ export class ActionTypeFilter {
         }
 
         return this.action_types
+    }
+}
+
+export class Filters {
+    action_impacts: ActionImpact[]
+    action_types: ActionType[]
+
+    constructor() {
+        this.action_impacts = new Array<ActionImpact>()
+        this.action_types = new Array<ActionType>()
+    }
+
+    getFilteredActions(Actions: Action[]) {
+        
     }
 }
 
