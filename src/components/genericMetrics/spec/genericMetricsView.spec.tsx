@@ -15,7 +15,7 @@ function setup(){
 }
 
 describe('GenericMetricsView component test suite.', () => {
-    let wrapper;
+    let wrapper:any;
 
     before(() =>{
         wrapper = setup();

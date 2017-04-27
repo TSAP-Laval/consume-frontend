@@ -14,7 +14,7 @@ function setup(){
 }
 
 describe('MetricsTable component test suite.', () => {
-    let wrapper;
+    let wrapper:any;
 
     before(() =>{
         wrapper = setup();
