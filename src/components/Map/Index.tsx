@@ -11,7 +11,7 @@ export default class Map extends React.Component<ILayoutProps, ILayoutState> {
     height: number;
     width: number;
     
-    readonly mainColor = "green";
+    readonly mainColor = "black";
     readonly strokeWidth = 3;
 
     constructor(props: ILayoutProps) {

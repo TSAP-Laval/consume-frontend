@@ -1,10 +1,10 @@
-namespace ActionCreation {
-    interface IAction {
+export namespace ActionCreation {
+    export interface IAction {
         type: string
     }
 }
 
-namespace DatabaseModels {
+export namespace DatabaseModels {
     export class Action {
         id: number
         player_id: number
@@ -95,7 +95,7 @@ namespace DatabaseModels {
     }
 }
 
-namespace ComponentModels {
+export namespace ComponentModels {
     export interface IFilterable {
         toFilterNode(): FilterNode
     }
@@ -103,10 +103,12 @@ namespace ComponentModels {
     export class Filter {
         name: string
         nodes: Array<FilterNode>
+        colored: boolean
 
-        constructor(name: string, nodes: Array<FilterNode> = new Array<FilterNode>()) {
+        constructor(name: string, nodes: Array<FilterNode> = new Array<FilterNode>(), colored: boolean = false) {
             this.name = name
             this.nodes = nodes
+            this.colored = colored
         }
     }
 
@@ -114,8 +116,9 @@ namespace ComponentModels {
         label: string
         value: string
         used: boolean
+        color: RGBColor
 
-        constructor(label: string, value: string, used: boolean = true) {
+        constructor(label: string, value: string, used: boolean = true, color: RGBColor = null) {
             this.label = label
             this.value = value
             this.used = used

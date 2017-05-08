@@ -1,9 +1,9 @@
 import IAction from "../../IAction"
-import * as Models from "./Models"
+import {ComponentModels} from "../../../Models"
 
 export class FilterActionsByType implements IAction {
     type: string
-    filter: Models.ActionType
+    filter: ComponentModels.
 
     constructor(action_type: Models.ActionType){
         this.type = "FILTER_ACTIONS_BY_TYPE"
