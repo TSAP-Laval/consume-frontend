@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
+import GenericMetricsView from "../components/GenericMetrics/GenericMetricsView";
 
 import BigContent from '../components/Elements/BigContent';
 

@@ -1,8 +1,8 @@
 import * as React from "react";
 import Store from "./Store";
-import MetricsTable from "../genericMetrics/MetricsTable";
+import MetricsTable from ".//MetricsTable";
 import {Player} from "../../Models/DatabaseModels";
-import { CreateGetPlayersAction } from "./actions/Actions";
+import * as ActionCreator from "./ActionsCreator";
 import MetricRow from './MetricsRow';
 import Spinner from "../Elements/Spinner";
 import { Link } from 'react-router';
@@ -48,7 +48,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
     componentWillMount(){
         Store.on("FETCH_PLAYERS", this.setLoadingStatus);
         Store.on("RECEIVE_PLAYERS", this.onPlayersReceived);
-        CreateGetPlayersAction(this.props.team_id)
+        ActionCreator.FetchPlayers(this.props.team_id)
     }
 
     componentWillUnmount(){
@@ -76,7 +76,8 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
                 return metric.value.toFixed(2).toString().concat("  /  ", metric.last_match.toFixed(2).toString(), "  /  ", metric.standard.toFixed(2).toString());
             }));
 
-            return <MetricRow key={i} playerID={joueur.id} teamID={this.props.teamID} Data={ baseData }/>
+            //TODO: Refactor avec nouvelle entité de métrique
+            return <MetricRow key={i} playerID={joueur.id} teamID={this.props.team_id} Data={ baseData }/>
         });
 
         return (

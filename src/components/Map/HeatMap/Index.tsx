@@ -176,7 +176,7 @@ export class HeatMap extends React.Component <ILayoutProps, ILayoutState>{
                 return (
                     <Li>
                         <Toggle
-                        label={action + " (" + this.state.actionTypes[action] + " actions)"}
+                        label={action + " (" + this.state.actionTypes[action] + " Actions)"}
                         checked={this.state.filters.indexOf(action) != -1}
                         value={action}
                         onToggle={this.handleCheck.bind(this)}
