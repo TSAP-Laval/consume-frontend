@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
+import {Layer, Stage, Circle, Arrow} from 'react-konva';
 import * as ActionsCreator from "../ActionsCreator"
 import {Action} from "../Models"
 import Map from "../Index"
