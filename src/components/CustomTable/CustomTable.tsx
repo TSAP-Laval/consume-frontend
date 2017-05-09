@@ -1,16 +1,16 @@
 import * as React from "react";
-import styled from 'styled-components';
+import Styled from 'styled-components';
 import { Table, TableBody, TableRow, TableHeader, TableHeaderColumn } from 'material-ui/Table';
 
 export interface IDataProps {
-    columns: Array<Array<String>>
+    columns: Array<String>
 }
 
 export interface IDataStates {
     title: string
 }
 
-const StyledTable = styled(Table)`
+const StyledTable = Styled(Table)`
     text-align: center;
 `;
 

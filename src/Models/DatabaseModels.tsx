@@ -47,15 +47,15 @@ export class Player {
 }
 
 export class PlayerDataByMatch {
-    id: number;
     player_id: number;
+    team_id: number;
     match_id: number;
     number: number;
     position: Position;
 
-    constructor(id: number, player_id: number, match_id: number, number: number, position: Position) {
-        this.id = id;
+    constructor(player_id: number, team_id: number, match_id: number, number: number, position: Position) {
         this.player_id = player_id;
+        this.team_id = team_id;
         this.match_id = match_id;
         this.number = number;
         this.position = position;
@@ -85,6 +85,20 @@ export class Match {
         this.away_team_id = away_team_id;
         this.date = date;
         this.location = location;
+    }
+}
+
+export class Team {
+    id: number;
+    name: string;
+    season: Season;
+    players: Player[];
+
+    constructor(id: number, name: string, season: Season, players: Player[]) {
+        this.id = id;
+        this.name = name;
+        this.season = season;
+        this.players = players;
     }
 }
 
