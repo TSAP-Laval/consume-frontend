@@ -1,4 +1,4 @@
-import {IAction} from "../IAction"
+import {IAction} from "../../Models/ActionCreation"
 
 import dispatcher from "../dispatcher";
 

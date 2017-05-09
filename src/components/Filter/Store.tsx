@@ -1,37 +1,38 @@
 import { EventEmitter } from "events"
-import {ActionCreation, ComponentModels} from "../../Models"
+import {IAction} from "../../Models/ActionCreation"
+import {RGBColor, Filter, FilterNode} from "../../Models/ComponentModels"
 import dispatcher from "../dispatcher"
 
 class FilterStore extends EventEmitter {
-    filters: Array<ComponentModels.Filter>
+    filters: Array<Filter>
 
     constructor() {
         super();
-        this.filters = new Array<ComponentModels.Filter>()
+        this.filters = new Array<Filter>()
     }
 
-    setNodesColors(nodes: Array<ComponentModels.FilterNode>) {
-        var colorValue = 255;
-        var index = 1;
+    setNodesColors(nodes: Array<FilterNode>) {
+        let colorValue = 255;
+        let index = 1;
 
-        var switchIndex = 2;
-        var switchValue = false;
+        let switchIndex = 2;
+        let switchValue = false;
 
-        for(var i = 0; i < nodes.length; i++) {
+        for(let i = 0; i < nodes.length; i++) {
             if(colorValue % 2 != 0)
                 colorValue--;
             
             switch(index) {
                 case 1:
-                    nodes[i].color = new ComponentModels.RGBColor(colorValue, 0, 0);
+                    nodes[i].color = new RGBColor(colorValue, 0, 0);
                     index = 2;
                     break;
                 case 2:
-                    nodes[i].color = new ComponentModels.RGBColor(0, colorValue, 0);
+                    nodes[i].color = new RGBColor(0, colorValue, 0);
                     index = 3;
                     break;
                 case 3:
-                    nodes[i].color = new ComponentModels.RGBColor(0, 0, colorValue);
+                    nodes[i].color = new RGBColor(0, 0, colorValue);
                     index = 1;
                     break;
             }
@@ -48,7 +49,7 @@ class FilterStore extends EventEmitter {
         }
     }
 
-    handleActions(action: ActionCreation.IAction) {
+    handleActions(action: IAction) {
         switch(action.type) {
             
         }

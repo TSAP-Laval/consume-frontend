@@ -1,10 +1,7 @@
 import * as React from "react";
-
-import styled from 'styled-components';
-
+import Styled from 'styled-components';
 import { Table, TableBody, TableRow, TableHeader, TableHeaderColumn } from 'material-ui/Table';
 
-// Represent the props reveived by the Component GenericMetrics.
 export interface IDataProps {
     columns: Array<Array<String>>
 }
@@ -13,11 +10,10 @@ export interface IDataStates {
     title: string
 }
 
-const StyledTable = styled(Table)`
+const StyledTable = Styled(Table)`
     text-align: center;
 `;
 
-//This component will display all metrics from a team.
 export default class MetricsTable extends React.Component<IDataProps, IDataStates> {
 
     render() {

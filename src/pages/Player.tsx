@@ -7,15 +7,12 @@ import {HeatMap} from "../components/Map/HeatMap/Index"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
-import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
 import StatsTableStore from "../components/PlayerStats/store";
 import { CreateGetMatchesAction } from "../components/PlayerStats/actions/GetMatchesAction";
 import { CreateGetSeasonsAction } from "../components/PlayerStats/actions/GetSeasonsAction";
 import { CreateGetPositionsAction } from "../components/PlayerStats/actions/GetPositionsAction";
 
 import { DataPanel } from "../components/DataPanel";
-
-import Paper from 'material-ui/Paper';
 
 export interface ILayoutProps {
     params: {
@@ -47,8 +44,8 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         StatsTableStore.on("dataChange", this.getPlayerName);
 
         CreateGetSeasonsAction();
-        CreateGetPositionsAction(this.props.params.playerID);
-        CreateGetMatchesAction(this.props.params.playerID, this.props.params.teamID);
+        CreateGetPositionsAction(this.props.params.player_id);
+        CreateGetMatchesAction(this.props.params.player_id, this.props.params.teamID);
     }
 
     componentWillUnmount() {
@@ -80,11 +77,11 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
 
         return (
             <AllContainer>
-                <DataPanel PlayerName={this.state.playerName} Header={arrowTitle}><ActionMap playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></DataPanel>
-                <DataPanel PlayerName={this.state.playerName} Header={heatmapTitle} ><HeatMap playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></DataPanel>
+                <DataPanel PlayerName={this.state.playerName} Header={arrowTitle}><ActionMap playerID={this.props.params.player_id} teamID={this.props.params.teamID}/></DataPanel>
+                <DataPanel PlayerName={this.state.playerName} Header={heatmapTitle} ><HeatMap playerID={this.props.params.player_id} teamID={this.props.params.teamID}/></DataPanel>
 
-                <DataPanel PlayerName={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
-                <DataPanel PlayerName={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
+                <DataPanel PlayerName={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
+                <DataPanel PlayerName={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
             </AllContainer>
         );
     }

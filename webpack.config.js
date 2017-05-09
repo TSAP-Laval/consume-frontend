@@ -13,7 +13,7 @@ const sassLoaders = [
 ]
 
 module.exports = {
-    entry: "./src/index.tsx",
+    entry: "./src/Index.tsx",
     output: {
         filename: "bundle.js",
         path: "dist",

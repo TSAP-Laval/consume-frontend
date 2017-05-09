@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import Styled from 'styled-components';
 
-const Li = styled.li`
+const Li = Styled.li`
     list-style-type: none;
 `;
 

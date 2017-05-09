@@ -1,9 +1,7 @@
 import { EventEmitter } from "events";
-import  IAction  from "../IAction";
-import dispatcher from "../dispatcher"; 
-
+import {IAction} from "../../Models/ActionCreation";
+import dispatcher from "../dispatcher";
 import { ErrorAction } from "./ErrorAction";
-
 
 class ErrorStore extends EventEmitter {
     error: string;

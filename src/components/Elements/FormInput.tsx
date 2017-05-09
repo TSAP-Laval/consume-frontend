@@ -1,8 +1,7 @@
-import styled from 'styled-components';
-
+import Styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 
-const FormInput = styled(TextField)`
+const FormInput = Styled(TextField)`
     margin-left: 2em;
     margin-right: 2em;
 `;

@@ -1,9 +1,8 @@
-import styled from 'styled-components';
-
+import Styled from 'styled-components';
 import Paper from 'material-ui/Paper';
 
 
-const BigContent = styled(Paper)`
+const BigContent = Styled(Paper)`
     max-width: 80%;
     margin-top: 3em;
     margin-left: auto;

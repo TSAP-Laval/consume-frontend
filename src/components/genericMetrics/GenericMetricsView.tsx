@@ -1,84 +1,70 @@
 import * as React from "react";
-import genericMetricsStore from "../genericMetrics/GenericMetricsStore";
+import Store from "./Store";
 import MetricsTable from "../genericMetrics/MetricsTable";
-import IJoueur from "./models/IJoueur";
-import Status from "./models/Status";
-import { CreateGetPlayersAction } from "./actions/genericMetricsActions";
-
-import CircularProgress from 'material-ui/CircularProgress';
-
+import {Player} from "../../Models/DatabaseModels";
+import { CreateGetPlayersAction } from "./actions/Actions";
 import MetricRow from './MetricsRow';
-
 import Spinner from "../Elements/Spinner";
-
 import { Link } from 'react-router';
-
 import FlatButton from 'material-ui/FlatButton';
 
-// Represent the props reveived by the Component GenericMetrics.
 export interface IDataProps {
-    teamID: number
+    team_id: number
 }
 
-export interface IDataStates {
-    requestState?: Status,
-    joueurs?: IJoueur[],
-    nomEquipe?: string
+export interface IDataState {
+    loading: boolean,
+    players?: Player[],
+    team_name?: string
 }
 
-//This component will display all metrics from a team.
-export default class GenericMetricsView extends React.Component<IDataProps, IDataStates> {
+export default class GenericMetricsView extends React.Component<IDataProps, IDataState> {
 
     constructor(props: IDataProps) {
-        super();
-
-         this.getStatus = this.getStatus.bind(this);
-        this.getResults = this.getResults.bind(this);
+        super(props);
 
         this.state = {
-            requestState: genericMetricsStore.getRequestStatus(),
-            joueurs: genericMetricsStore.getAllPlayers()
+            loading: false,
+            players: new Array<Player>()
         }
+
+        this.setLoadingStatus = this.setLoadingStatus.bind(this);
+        this.onPlayersReceived = this.onPlayersReceived.bind(this);
     }
 
-    // Will fetch and load the data.
-    componentWillMount(){
-        genericMetricsStore.on("dataChange", this.getResults);
-        genericMetricsStore.on("requestState", this.getStatus);
-        CreateGetPlayersAction(this.props.teamID);
-    }
-
-    // Pour la gestion de mémoire on supprime les listener d'events.
-    componentWillUnmount(){
-        genericMetricsStore.removeListener("dataChange", this.getResults);
-        genericMetricsStore.removeListener("requestState", this.getStatus);
-    }
-
-    // Va récupérer les joueurs du store.
-     getResults() {
+    setLoadingStatus() {
         this.setState({
-            joueurs: genericMetricsStore.getAllPlayers(),
-            nomEquipe: genericMetricsStore.getTeamName()
-        });
-    }
-
-    // Va récupérer le status de la requête.
-    getStatus() {
-        this.setState({
-            requestState: genericMetricsStore.getRequestStatus()
+            loading: Store.fetching
         })
     }
 
+    onPlayersReceived() {
+        this.setState({
+            players: Store..players,
+            team_name: Store.team_name
+        });
+    }
+
+    componentWillMount(){
+        Store.on("FETCH_PLAYERS", this.setLoadingStatus);
+        Store.on("RECEIVE_PLAYERS", this.onPlayersReceived);
+        CreateGetPlayersAction(this.props.team_id)
+    }
+
+    componentWillUnmount(){
+        Store.removeListener("FETCH_PLAYERS", this.onPlayersReceived);
+        Store.removeListener("RECEIVE_PLAYERS", this.onPlayersReceived);
+    }
+
      render() {
-         //Pour afficher le nom et le prénom du joueur.
         let baseCols: Array<Array<String>> = [["Prénom", null], ["Nom", null]];
-        // Pour récupérer les noms des colonnes qui seront afffichées.
         let cols = baseCols.concat(this.state.joueurs.length > 0?
-        this.state.joueurs[0].metrics.map((metric) => {
+
+            //TODO: Refactor avec nouvelle entité de métrique
+        this.state.players[0].metrics.map((metric) => {
             return [metric.name, "Moy. / Dernier / Norme"];
         }): []);
 
-        // Pour récupérer les metrics.
         let data = this.state.joueurs.map((joueur, i) => {
             let baseData: Array<string> = [joueur.first_name, joueur.last_name];
             let sortedMetrics = joueur.metrics.sort((a, b) => {
@@ -94,7 +80,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
         });
 
         return (
-            this.state.requestState == Status.Idle?
+            this.state.loading ?
             <div>
                 <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
                 <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.teamID + "/settings"} />} />

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import Styled from 'styled-components';
 
-const Form = styled.div`
+const Form = Styled.div`
     display: block;
     text-align: center;
 `;

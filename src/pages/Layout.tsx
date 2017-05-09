@@ -6,7 +6,7 @@ import { injectGlobal } from 'styled-components';
 
 import { MuiThemeProvider, getMuiTheme } from "material-ui/styles";
 
-import  ErrorStore  from "../components/Error/store";
+import  ErrorStore  from "../components/Error/Store";
 import ErrorAlert from "../components/Error";
 
 

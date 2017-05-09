@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import Styled from 'Styled-components';
 
-const RightDiv = styled.div`
+const RightDiv = Styled.div`
     display: inline-block;
     text-align: center;
     position: absolute;
