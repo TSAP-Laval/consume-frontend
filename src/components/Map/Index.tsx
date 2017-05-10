@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Layer, Rect, Stage, Circle, Line, Arrow} from 'react-konva';
+import {Layer, Rect, Circle, Line} from 'react-konva';
 
 export interface ILayoutProps {
     height:number
@@ -7,7 +7,7 @@ export interface ILayoutProps {
 
 export interface ILayoutState {}
 
-export default class Map extends React.Component<ILayoutProps, ILayoutState> {
+export default class FieldMap extends React.Component<ILayoutProps, ILayoutState> {
     height: number;
     width: number;
     
@@ -15,10 +15,10 @@ export default class Map extends React.Component<ILayoutProps, ILayoutState> {
     readonly strokeWidth = 3;
 
     constructor(props: ILayoutProps) {
-        super(props)
+        super(props);
 
-        this.height = this.props.height
-        this.width = this.height * 2
+        this.height = this.props.height;
+        this.width = this.height * 2;
     }
 
     render() {

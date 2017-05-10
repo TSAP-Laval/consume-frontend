@@ -1,57 +1,31 @@
 import { EventEmitter } from "events"
 import {IAction} from "../../Models/ActionCreation"
-import {RGBColor, Filter, FilterNode} from "../../Models/ComponentModels"
+import {Filter} from "../../Models/ComponentModels"
+import * as Actions from "./Actions"
 import dispatcher from "../dispatcher"
 
 class FilterStore extends EventEmitter {
-    filters: Array<Filter>
+    filters: {[component: string] : {[name: string] : Filter}}
 
     constructor() {
         super();
-        this.filters = new Array<Filter>()
+        this.filters = {};
     }
 
-    setNodesColors(nodes: Array<FilterNode>) {
-        let colorValue = 255;
-        let index = 1;
+    getFiltersByComponent(component: string): {[name: string] : Filter}{
+        return this.filters[component];
+    }
 
-        let switchIndex = 2;
-        let switchValue = false;
-
-        for(let i = 0; i < nodes.length; i++) {
-            if(colorValue % 2 != 0)
-                colorValue--;
-            
-            switch(index) {
-                case 1:
-                    nodes[i].color = new RGBColor(colorValue, 0, 0);
-                    index = 2;
-                    break;
-                case 2:
-                    nodes[i].color = new RGBColor(0, colorValue, 0);
-                    index = 3;
-                    break;
-                case 3:
-                    nodes[i].color = new RGBColor(0, 0, colorValue);
-                    index = 1;
-                    break;
-            }
-
-            if(i === switchIndex){
-                if(switchValue)
-                    colorValue = colorValue + (colorValue / 2);
-                else
-                    colorValue /= 2;
-
-                switchValue = !switchValue;
-                switchIndex += 3;
-            }
-        }
+    private updateFilter(filter: Filter) {
+        this.filters[filter.component][filter.name] = filter;
     }
 
     handleActions(action: IAction) {
         switch(action.type) {
-            
+            case "HANDLE_FILTER":
+                this.updateFilter((action as Actions.HandleFilter).filter);
+                this.emit(action.type);
+                break;
         }
     }
 }

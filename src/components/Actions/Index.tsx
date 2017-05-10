@@ -15,7 +15,11 @@ export interface ILayoutState {
 export class ActionComponent extends React.Component<ILayoutProps, ILayoutState> {
     readonly strokeWidth = 3;
 
-    getActionRendering() {
+    constructor(props: ILayoutProps) {
+        super(props);
+    }
+
+    render() {
         let x1 = this.props.action.start.x * this.props.parent_size.width;
         let y1 = (1 - this.props.action.start.y) * this.props.parent_size.height;
 
@@ -28,9 +32,5 @@ export class ActionComponent extends React.Component<ILayoutProps, ILayoutState>
             let radius = this.props.parent_size.height / 50;
             return <Circle x={x1} y={y1} radius={radius} strokeWidth={this.strokeWidth}/>
         }
-    }
-
-    render() {
-        return this.getActionRendering();
     }
 }
