@@ -18,8 +18,6 @@ export interface ILayoutProps {
 export interface ILayoutState {
     size?: Size
     filters?: {[name: string]  : Filter};
-    actions?: Action[];
-    action_impacts?: {[action_impact_id: number] : RGBColor};
 }
 
 export class ActionMap
@@ -27,6 +25,8 @@ export class ActionMap
     implements IComponent{
 
     readonly component_name: string = "ActionMap";
+    actions?: Action[];
+    action_impacts?: {[action_impact_id: number] : RGBColor};
 
     refs: {
         [string: string]: (Element);
@@ -35,11 +35,7 @@ export class ActionMap
 
     constructor(props: ILayoutProps) {
         super(props);
-
-        this.setState({
-           actions: props.actions.slice(0)
-        });
-
+        this.actions = props.actions.slice(0);
         this.createActionTypeFilter = this.createActionTypeFilter.bind(this);
     }
 
@@ -63,7 +59,7 @@ export class ActionMap
 
             if(acc.indexOf(node) == -1) {
                 acc.push(node);
-                this.state.action_impacts[action.impact.id] = node.color;
+                this.action_impacts[action.impact.id] = node.color;
             }
 
             return acc;
@@ -109,12 +105,12 @@ export class ActionMap
         let action_types = this.state.filters["ACTION_TYPE"].nodes.filter(node => node.used == true).map((node) => {
             return node.value;
         });
-        actions.push(this.state.actions.filter(action => action_types.indexOf(action.type.toFilterNode().value) !== -1));
+        actions.push(this.actions.filter(action => action_types.indexOf(action.type.toFilterNode().value) !== -1));
 
         let action_impacts = this.state.filters["ACTION_IMPACT"].nodes.filter(node => node.used == true).map((node) => {
             return node.value
         });
-        actions.push(this.state.actions.filter(action => action_impacts.indexOf(action.impact.toFilterNode().value) !== -1));
+        actions.push(this.actions.filter(action => action_impacts.indexOf(action.impact.toFilterNode().value) !== -1));
 
         actions.sort((a, b) => {
             return a.length - b.length;
@@ -135,7 +131,7 @@ export class ActionMap
 
     render() {
             let actions = this.getFilteredActions().map((action) => {
-                let color: RGBColor = this.state.action_impacts[action.impact.id];
+                let color: RGBColor = this.action_impacts[action.impact.id];
                 return <ActionComponent action={action} color={color} parent_size={this.state.size}/>
             });
 
