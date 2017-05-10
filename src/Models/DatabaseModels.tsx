@@ -1,4 +1,4 @@
-import {IFilterable, FilterNode} from "./ComponentModels"
+import {IFilterable, FilterNode, RGBColor} from "./ComponentModels"
 
 export enum ActionImpactId {
     Negative = -1,
@@ -36,7 +36,7 @@ export class ActionType implements IFilterable{
     }
 
     toFilterNode() {
-        return new FilterNode(this.description, this.id.toString());
+        return new FilterNode(this.description, this.id.toString(), true);
     }
 }
 
@@ -50,7 +50,20 @@ export class ActionImpact implements IFilterable {
     }
 
     toFilterNode() {
-        return new FilterNode(this.name, this.id.toString());
+        let color: RGBColor;
+
+        switch(this.id) {
+            case ActionImpactId.Negative:
+                color = new RGBColor(255, 0, 0);
+                break;
+            case ActionImpactId.Neutral:
+                color = new RGBColor(0, 0, 0);
+                break;
+            case ActionImpactId.Positive:
+                color = new RGBColor(0, 128, 0);
+                break;
+        }
+        return new FilterNode(this.name, this.id.toString(), true, color);
     }
 }
 

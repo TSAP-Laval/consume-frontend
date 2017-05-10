@@ -5,7 +5,7 @@ import RightDiv from "../../Elements/RightDiv";
 import SmallContainer from "../../Elements/SmallContainer";
 import FieldMap from "../../../components/Map/Index"
 import {ActionComponent} from "../Index"
-import {Action, ActionImpactId} from "../../../Models/DatabaseModels"
+import {Action} from "../../../Models/DatabaseModels"
 import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../Models/ComponentModels"
 import * as FilterActionsCreator from "../../Filter/ActionsCreator"
 import FilterStore from "../../Filter/Store"
@@ -62,24 +62,8 @@ export class ActionMap
             let node = action.impact.toFilterNode();
 
             if(acc.indexOf(node) == -1) {
-                switch(action.impact.id) {
-                    case ActionImpactId.Negative:
-                        let negative_color = new RGBColor(255, 0, 0);
-                        node.color = negative_color;
-                        this.state.action_impacts[action.impact.id] = negative_color;
-                        break;
-                    case ActionImpactId.Neutral:
-                        let neutral_color = new RGBColor(0, 0, 0);
-                        node.color = neutral_color;
-                        this.state.action_impacts[action.impact.id] = neutral_color;
-                        break;
-                    case ActionImpactId.Positive:
-                        let positive_color = new RGBColor(0, 128, 0);
-                        node.color = positive_color;
-                        this.state.action_impacts[action.impact.id] = positive_color;
-                        break;
-                }
                 acc.push(node);
+                this.state.action_impacts[action.impact.id] = node.color;
             }
 
             return acc;
@@ -122,11 +106,15 @@ export class ActionMap
     getFilteredActions() {
         let actions:Array<Action[]> = [];
 
-        let action_types = this.state.filters["ACTION_TYPE"].nodes.filter(node => node.used == true);
-        actions.push(this.state.actions.filter(action => action_types.indexOf(action.type.toFilterNode()) !== -1));
+        let action_types = this.state.filters["ACTION_TYPE"].nodes.filter(node => node.used == true).map((node) => {
+            return node.value;
+        });
+        actions.push(this.state.actions.filter(action => action_types.indexOf(action.type.toFilterNode().value) !== -1));
 
-        let action_impacts = this.state.filters["ACTION_IMPACT"].nodes.filter(node => node.used == true);
-        actions.push(this.state.actions.filter(action => action_impacts.indexOf(action.impact.toFilterNode()) !== -1));
+        let action_impacts = this.state.filters["ACTION_IMPACT"].nodes.filter(node => node.used == true).map((node) => {
+            return node.value
+        });
+        actions.push(this.state.actions.filter(action => action_impacts.indexOf(action.impact.toFilterNode().value) !== -1));
 
         actions.sort((a, b) => {
             return a.length - b.length;
