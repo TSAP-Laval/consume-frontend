@@ -5,7 +5,7 @@ import * as Actions from "./Actions"
 import dispatcher from "../dispatcher"
 
 class FilterStore extends EventEmitter {
-    filters: {[component: string] : {[name: string] : Filter}}
+    filters: {[component: string] : {[name: string] : Filter}};
 
     constructor() {
         super();

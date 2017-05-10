@@ -32,11 +32,7 @@ export default class FilterComponent extends React.Component<ILayoutProps, ILayo
 
     render() {
         let nodes = this.props.filter.nodes.map((node: FilterNode) => {
-            let style = {};
-
-            if(node.color != null) {
-                style = {color: node.color.toString()};
-            }
+            let style = {color: node.color.toString()};
 
             return(
                 <Li style={style}>

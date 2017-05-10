@@ -137,12 +137,14 @@ export class Season {
 export class Metric {
     id: number;
     name: string;
-    equation: string;
+    description: string;
+    formula: string;
 
-    constructor(id: number, name: string, equation: string) {
+    constructor(id: number, name: string, description: string, formula: string) {
         this.id = id;
         this.name = name;
-        this.equation = equation;
+        this.description = description;
+        this.formula = formula;
     }
 }
 
