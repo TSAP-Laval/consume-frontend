@@ -1,16 +1,24 @@
 import {IFilterable, FilterNode} from "./ComponentModels"
 
+export enum ActionImpactId {
+    Negative = -1,
+    Neutral = 0,
+    Positive = 1
+}
+
 export class Action {
     id: number;
     player_id: number;
     type: ActionType;
+    impact: ActionImpact;
     start: Coordinate;
     end: Coordinate;
 
-    constructor(id: number, player_id: number, type: ActionType, start: Coordinate, end: Coordinate = null) {
+    constructor(id: number, player_id: number, type: ActionType, impact: ActionImpact, start: Coordinate, end: Coordinate = null) {
         this.id = id;
         this.player_id = player_id;
         this.type = type;
+        this.impact = impact;
         this.start = start;
         this.end = end;
     }
@@ -20,17 +28,29 @@ export class ActionType implements IFilterable{
     id: number;
     name: string;
     description: string;
-    is_positive: boolean;
 
-    constructor(id: number, name: string, description: string, is_positive: boolean) {
+    constructor(id: number, name: string, description: string) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.is_positive = is_positive;
     }
 
     toFilterNode() {
         return new FilterNode(this.description, this.id.toString());
+    }
+}
+
+export class ActionImpact implements IFilterable {
+    id: number;
+    name: string;
+
+    constructor(id: number, name: string) {
+        this.id = id;
+        this.name = name;
+    }
+
+    toFilterNode() {
+        return new FilterNode(this.name, this.id.toString());
     }
 }
 
