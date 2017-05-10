@@ -26,7 +26,7 @@ export default class FilterComponent extends React.Component<ILayoutProps, ILayo
             return node
         });
 
-        let filter = new Filter(this.props.filter.name, this.props.filter.component, this.props.filter.colored, nodes);
+        let filter = new Filter(this.props.filter.name, this.props.filter.component, nodes);
         FilterActionsCreator.handleFilter(filter);
     }
 
