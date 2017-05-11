@@ -1,5 +1,3 @@
-import {Coordinate} from "./DatabaseModels"
-
 export interface IFilterable {
     toFilterNode(): FilterNode;
 }
@@ -36,23 +34,27 @@ export class FilterNode {
 }
 
 export class Zone {
-    coordinate: Coordinate;
+    x: number;
+    y: number;
     percentage: number;
     rating: number;
 
-    constructor(coordinate: Coordinate, percentage: number, rating: number) {
-        this.coordinate = coordinate;
+    constructor(x: number, y: number, percentage: number, rating: number) {
+        this.x = x;
+        this.y = y;
         this.percentage = percentage;
         this.rating = rating;
     }
 }
 
 export class ZoneData {
-    coordinate: Coordinate;
+    x: number;
+    y: number;
     is_positive: boolean;
 
-    constructor(coordinate: Coordinate, is_positive: boolean) {
-        this.coordinate = coordinate;
+    constructor(x: number, y: number, is_positive: boolean) {
+        this.x = x;
+        this.y = y;
         this.is_positive = is_positive;
     }
 }
