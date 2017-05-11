@@ -25,9 +25,9 @@ export class FilterNode {
     used: boolean;
     color: RGBColor;
 
-    constructor(label: string, value: string, used: boolean = true, color: RGBColor = new RGBColor(0,0,0)) {
-        this.label = label;
+    constructor(value: string, label: string, used: boolean = true, color: RGBColor = new RGBColor(0,0,0)) {
         this.value = value;
+        this.label = label;
         this.used = used;
         this.color = color;
     }

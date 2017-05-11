@@ -18,9 +18,20 @@ export class ActionImpact implements IFilterable {
     id: number;
     name: string;
 
-    constructor(id: number, name: string) {
+    constructor(id: number) {
         this.id = id;
-        this.name = name;
+
+        switch(id) {
+            case -1:
+                this.name = "Négatif";
+                break;
+            case 0:
+                this.name = "Neutre";
+                break;
+            case 1:
+                this.name = "Positif";
+                break;
+        }
     }
 
     toFilterNode() {
@@ -37,23 +48,21 @@ export class ActionImpact implements IFilterable {
                 color = new RGBColor(0, 128, 0);
                 break;
         }
-        return new FilterNode(this.name, this.id.toString(), true, color);
+        return new FilterNode(this.id.toString(), this.name, true, color);
     }
 }
 
 export class ActionType implements IFilterable{
     id: number;
     name: string;
-    description: string;
 
-    constructor(id: number, name: string, description: string) {
+    constructor(id: number, name: string) {
         this.id = id;
         this.name = name;
-        this.description = description;
     }
 
     toFilterNode() {
-        return new FilterNode(this.description, this.id.toString(), true);
+        return new FilterNode(this.id.toString(), this.name, true);
     }
 }
 
