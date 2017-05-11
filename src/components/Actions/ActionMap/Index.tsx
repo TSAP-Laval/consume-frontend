@@ -152,9 +152,7 @@ export class ActionMap
                             </Stage>
                         </div>
                     </LeftDiv>
-                    <RightDiv>
-                        <ul>{filters}</ul>>
-                    </RightDiv>
+                    <RightDiv>{filters}</RightDiv>
                 </SmallContainer>
             );
     }
