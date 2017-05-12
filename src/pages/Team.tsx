@@ -13,7 +13,6 @@ export interface ITeamProps {
 export interface ITeamState {}
 
 export default class Team extends React.Component<ITeamProps, ITeamState> {
-
     constructor() {
         super();
     }

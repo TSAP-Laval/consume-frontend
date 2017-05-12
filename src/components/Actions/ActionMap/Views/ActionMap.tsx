@@ -10,10 +10,12 @@ import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../../Models
 import * as FilterActionsCreator from "../../../Filter/ActionsCreator"
 import FilterStore from "../../../Filter/Store"
 import FilterComponent from "../../../Filter/Index"
-import {ActionImpact, ActionType} from "../../../../Models/DatabaseModels";
+import {ActionImpact, ActionType} from "../../../../Models/ComponentModels";
 
 export interface ILayoutProps {
-    actions: IActionSummary[]
+    params: {
+        actions: IActionSummary[]
+    }
 }
 
 export interface ILayoutState {
@@ -57,7 +59,7 @@ export class ActionMapComponent
     createActionImpactFilter() {
         let nodes: Array<FilterNode> = new Array<FilterNode>();
 
-        for(let action of this.props.actions) {
+        for(let action of this.props.params.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});
 
             if(nodes_values.indexOf(action.impact.toString()) === -1) {
@@ -74,7 +76,7 @@ export class ActionMapComponent
     createActionTypeFilter() {
         let nodes: Array<FilterNode> = new Array<FilterNode>();
 
-        for(let action of this.props.actions) {
+        for(let action of this.props.params.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});
 
             if(nodes_values.indexOf(action.type.id.toString()) === -1) {
@@ -111,7 +113,7 @@ export class ActionMapComponent
             return node.value
         });
 
-        return this.props.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1)
+        return this.props.params.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1)
                                  .filter(action => action_types.indexOf(action.type.id.toString()) !== -1);
     }
 
@@ -124,7 +126,7 @@ export class ActionMapComponent
     render() {
             let actions = this.getFilteredActions().map((action) => {
                 let color: RGBColor = this.action_impacts[action.impact.toString()];
-                return <ActionComponent action={action} color={color} parent_size={this.state.size}/>
+                return <ActionComponent params={{action: action, color: color, parent_size: this.state.size}}/>
             });
 
             let filters = this.getFilterComponents();

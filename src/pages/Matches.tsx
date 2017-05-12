@@ -1,6 +1,6 @@
 import * as React from "react";
 import BigContent from '../components/Elements/BigContent';
-import MatchList from '../components/Matches/Views/MatchList';
+import MatchList from '../components/Team/Views/MatchList';
 
 export interface IMatchesProps {
     params?: {
