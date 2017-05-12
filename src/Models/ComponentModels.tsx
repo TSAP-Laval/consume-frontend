@@ -50,12 +50,12 @@ export class Zone {
 export class ZoneData {
     x: number;
     y: number;
-    is_positive: boolean;
+    impact: number;
 
-    constructor(x: number, y: number, is_positive: boolean) {
+    constructor(x: number, y: number, impact: number) {
         this.x = x;
         this.y = y;
-        this.is_positive = is_positive;
+        this.impact = impact;
     }
 }
 
