@@ -23,7 +23,7 @@ export interface ILayoutState {
 
 export class ActionMap
     extends React.Component<ILayoutProps, ILayoutState>
-    implements IComponent{
+    implements IComponent {
 
     readonly component_name: string = "ActionMap";
     action_impacts: {[action_impact: string] : RGBColor};
@@ -103,29 +103,16 @@ export class ActionMap
     }
 
     getFilteredActions() {
-        let actions: Array<IActionSummary[]> = [];
-
         let action_types = this.state.filters["ACTION_TYPE"].nodes.filter(node => node.used == true).map((node) => {
             return node.value;
         });
-
-        actions.push(this.props.actions.filter(action => action_types.indexOf(action.type.id.toString()) !== -1));
 
         let action_impacts = this.state.filters["ACTION_IMPACT"].nodes.filter(node => node.used == true).map((node) => {
             return node.value
         });
 
-        actions.push(this.props.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1));
-
-        actions.sort((a, b) => {
-            return a.length - b.length;
-        });
-
-        return actions.shift().filter((x) => {
-            return actions.every((y) => {
-                return y.indexOf(x) !== -1;
-            })
-        });
+        return this.props.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1)
+                                 .filter(action => action_types.indexOf(action.type.id.toString()) !== -1);
     }
 
     handleFiltering() {
