@@ -19,7 +19,6 @@ ReactDOM.render(
       <IndexRoute component={Home}></IndexRoute>
       <Route path="team/:teamID" component={Team}></Route>
       <Route path="team/:teamID/player/:playerID" component={Player}></Route>
-
       <Route path="team/:teamID/settings" component={TeamSettings}></Route>
     </Route>
   </Router>,
