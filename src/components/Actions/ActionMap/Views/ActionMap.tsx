@@ -1,16 +1,16 @@
 import * as React from "react";
 import {Layer, Stage} from 'react-konva';
-import LeftDiv from "../../Elements/LeftDiv";
-import RightDiv from "../../Elements/RightDiv";
-import SmallContainer from "../../Elements/SmallContainer";
-import FieldMap from "../../../components/Map/Index"
-import {ActionComponent} from "../Index"
-import {IActionSummary} from "../../../Models/DatabaseModelsSummaries"
-import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../Models/ComponentModels"
-import * as FilterActionsCreator from "../../Filter/ActionsCreator"
-import FilterStore from "../../Filter/Store"
-import FilterComponent from "../../Filter/Index"
-import {ActionImpact, ActionType} from "../../../Models/DatabaseModels";
+import LeftDiv from "../../../Elements/LeftDiv";
+import RightDiv from "../../../Elements/RightDiv";
+import SmallContainer from "../../../Elements/SmallContainer";
+import FieldMap from "../../../Map/Index"
+import {ActionComponent} from "./Action"
+import {IActionSummary} from "../../../../Models/DatabaseModelsSummaries"
+import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../../Models/ComponentModels"
+import * as FilterActionsCreator from "../../../Filter/ActionsCreator"
+import FilterStore from "../../../Filter/Store"
+import FilterComponent from "../../../Filter/Index"
+import {ActionImpact, ActionType} from "../../../../Models/DatabaseModels";
 
 export interface ILayoutProps {
     actions: IActionSummary[]
@@ -21,11 +21,11 @@ export interface ILayoutState {
     filters?: {[name: string]  : Filter};
 }
 
-export class ActionMap
+export class ActionMapComponent
     extends React.Component<ILayoutProps, ILayoutState>
     implements IComponent {
 
-    readonly component_name: string = "ActionMap";
+    readonly component_name: string = "ActionMapComponent";
     action_impacts: {[action_impact: string] : RGBColor};
 
     refs: {

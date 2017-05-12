@@ -1,10 +1,10 @@
 import * as React from "react";
 import {Circle, Arrow} from 'react-konva';
-import {Action} from "../../Models/DatabaseModels"
-import {RGBColor, Size} from "../../Models/ComponentModels"
+import {IActionSummary} from "../../../../Models/DatabaseModelsSummaries"
+import {RGBColor, Size} from "../../../../Models/ComponentModels"
 
 export interface ILayoutProps {
-    action: Action
+    action: IActionSummary
     color: RGBColor
     parent_size: Size
 }
@@ -21,12 +21,12 @@ export class ActionComponent extends React.Component<ILayoutProps, ILayoutState>
     }
 
     render() {
-        let x1 = this.props.action.start.x * this.props.parent_size.width;
-        let y1 = (1 - this.props.action.start.y) * this.props.parent_size.height;
+        let x1 = this.props.action.start_x * this.props.parent_size.width;
+        let y1 = (1 - this.props.action.start_y) * this.props.parent_size.height;
 
-        if(this.props.action.end != null) {
-            let x2 = this.props.action.end.x * this.props.parent_size.width;
-            let y2 = (1 - this.props.action.end.y) * this.props.parent_size.height;
+        if(this.props.action.end_x != null && this.props.action.end_y != null) {
+            let x2 = this.props.action.end_x * this.props.parent_size.width;
+            let y2 = (1 - this.props.action.end_y) * this.props.parent_size.height;
 
             return <Arrow points={[x1, y1, x2, y2]} fill={this.props.color.toString()} stroke={this.props.color.toString()} strokeWidth={this.strokeWidth}/>
         } else {
