@@ -1,5 +1,5 @@
 import {IAction} from "../../Models/ActionCreation";
-import {Action} from "../../Models/DatabaseModels";
+import {IActionSummary} from "../../Models/DatabaseModelsSummaries";
 
 export class FetchMatchActions implements IAction {
     type: string;
@@ -11,9 +11,9 @@ export class FetchMatchActions implements IAction {
 
 export class ReceiveMatchActions implements IAction {
     type: string;
-    actions: Action[];
+    actions: IActionSummary[];
 
-    constructor(actions: Action[]) {
+    constructor(actions: IActionSummary[]) {
         this.type = "RECEIVE_MATCH_ACTIONS";
         this.actions = actions
     }

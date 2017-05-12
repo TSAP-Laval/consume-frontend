@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Link } from 'react-router';
-
 import Spinner from "../../Elements/Spinner";
 import CustomTable from "../../CustomTable/CustomTable"
 import CustomRow from "../../CustomTable/CustomRow"
 import FlatButton from 'material-ui/FlatButton';
-import {Match} from "../../../Models/DatabaseModels";
+import {IMatch} from "../../../Models/DatabaseModels";
+import MatchStore from "../Store";
+import * as ActionsCreator from "../ActionsCreator"
 
 export interface ILayoutProps {
     params: {
@@ -15,7 +16,7 @@ export interface ILayoutProps {
 
 export interface ILayoutState {
     loading?: boolean,
-    matches?: Array<Match>
+    matches?: Array<IMatch>
 }
 
 export default class MatchList extends React.Component<ILayoutProps, ILayoutState> {
@@ -23,7 +24,7 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
         super(props);
 
         this.state = {
-            matches : new Array<Match>()
+            matches : new Array<IMatch>()
         };
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
@@ -46,13 +47,13 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
     }
 
     getTableColumns() {
-        let columns = new Array<String>()
+        let columns = new Array<String>();
 
         if(this.state.matches.length > 0) {
             columns = ["Équipe locale", "Équipe visiteur", "Emplacement", "Date", "Voir Détails"]
         }
 
-        return columns
+        return columns;
     }
 
     getTableData() {

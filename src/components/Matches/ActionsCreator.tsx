@@ -1,9 +1,8 @@
 import dispatcher from "../dispatcher"
 import {serverUrl} from "Config"
 import axios from "axios"
-
 import * as Actions from "./Actions"
-import {Match} from "../../Models/DatabaseModels";
+import {IMatch} from "../../Models/DatabaseModels";
 
 import { CreateErrorAction } from "../Error/ErrorAction";
 
@@ -15,7 +14,7 @@ export function getTeamMatches(team_id: number) {
 
     axios.get(url).then((response) => {
         let data = response.data;
-        let matches = data.map((match: any) => {
+        let matches = data.map((match: IMatch) => {
 
         });
 
@@ -24,4 +23,5 @@ export function getTeamMatches(team_id: number) {
     }).catch((error) => {
         CreateErrorAction(error);
     });
+}
 

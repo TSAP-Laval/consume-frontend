@@ -1,17 +1,17 @@
 import { EventEmitter } from "events"
 import dispatcher from "../dispatcher"
 import {IAction} from "../../Models/ActionCreation";
-import {Match} from "../../Models/DatabaseModels";
+import {IMatch} from "../../Models/DatabaseModels";
 import * as Actions from "../Actions"
 
 class MatchStore extends EventEmitter {
     fetching: boolean;
-    matches: Match[];
+    matches: IMatch[];
 
     constructor() {
         super();
         this.fetching = false;
-        this.matches = new Array<Match>();
+        this.matches = new Array<IMatch>();
     }
 
     handleActions(action: IAction) {

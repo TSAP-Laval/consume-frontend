@@ -10,7 +10,7 @@ import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../../Models
 import * as FilterActionsCreator from "../../../Filter/ActionsCreator"
 import FilterStore from "../../../Filter/Store"
 import FilterComponent from "../../../Filter/Index"
-import {ActionImpact, ActionType} from "../../../../Models/DatabaseModels";
+import {ActionImpact, ActionType} from "../../../../Models/ComponentModels";
 
 export interface ILayoutProps {
     actions: IActionSummary[]
