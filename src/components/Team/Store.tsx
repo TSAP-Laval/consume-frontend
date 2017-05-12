@@ -1,35 +1,34 @@
 import { EventEmitter } from "events"
 import dispatcher from "../dispatcher"
 import {IAction} from "../../Models/ActionCreation";
-import {IMatch} from "../../Models/DatabaseModels";
-import * as Actions from "../Actions"
+import {ITeam} from "../../Models/DatabaseModels";
+import * as Actions from "./Actions"
 
-class MatchStore extends EventEmitter {
+class TeamStore extends EventEmitter {
     fetching: boolean;
-    matches: IMatch[];
+    team: ITeam;
 
     constructor() {
         super();
         this.fetching = false;
-        this.matches = new Array<IMatch>();
     }
 
     handleActions(action: IAction) {
         switch(action.type) {
-            case "FETCH_MATCHES":
+            case "FETCH_TEAM":
                 this.fetching = true;
-                this.emit("FETCH_MATCHES");
+                this.emit(action.type);
                 break;
-            case "RECEIVE_MATCHES":
-                this.matches = (action as Actions.ReceiveMatches).matches;
+            case "RECEIVE_TEAM":
+                this.team = (action as Actions.ReceiveTeam).team;
                 this.fetching = false;
-                this.emit("RECEIVE_MATCHES");
+                this.emit(action.type);
                 break;
         }
     }
 }
 
-const store = new MatchStore();
+const store = new TeamStore();
 export default store;
 
 dispatcher.register(store.handleActions.bind(store));

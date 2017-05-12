@@ -18,12 +18,12 @@ class ActionStore extends EventEmitter {
         switch(action.type) {
             case "FETCH_MATCH_ACTIONS":
                 this.fetching = true;
-                this.emit("FETCH_ACTIONS");
+                this.emit(action.type);
                 break;
             case "RECEIVE_MATCH_ACTIONS":
                 this.fetching = false;
                 this.actions = ((action as Actions.ReceiveMatchActions)).actions;
-                this.emit("RECEIVE_ACTIONS");
+                this.emit(action.type);
                 break;
         }
     }
