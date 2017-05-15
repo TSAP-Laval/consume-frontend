@@ -1,6 +1,6 @@
 import * as React from "react";
 import Store from "./Store";
-import {Player} from "../../Models/DatabaseModels";
+import {IPlayer} from "../../Models/DatabaseModels";
 import * as ActionCreator from "./ActionsCreator";
 import Spinner from "../Elements/Spinner";
 import { Link } from 'react-router';
@@ -14,7 +14,7 @@ export interface IDataProps {
 
 export interface IDataState {
     loading: boolean,
-    players?: Player[],
+    players?: IPlayer[],
     team_name?: string
 }
 
@@ -24,7 +24,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
 
         this.state = {
             loading: false,
-            players: new Array<Player>()
+            players: new Array<IPlayer>()
         }
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
@@ -48,7 +48,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
         let data = new Array<any>();
 
         if(this.state.players.length > 0) {
-            data = this.state.players.map((player: Player, i: number) => {
+            data = this.state.players.map((player: IPlayer, i: number) => {
                 let rowData: Array<any>;
 
                 rowData = [player.first_name, player.last_name];
@@ -89,7 +89,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
     }
 
     componentWillUnmount(){
-        Store.removeListener("FETCH_PLAYERS", this.onPlayersReceived);
+        Store.removeListener("FETCH_PLAYERS", this.setLoadingStatus);
         Store.removeListener("RECEIVE_PLAYERS", this.onPlayersReceived);
     }
 

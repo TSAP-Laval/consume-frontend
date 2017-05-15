@@ -1,16 +1,16 @@
 import {EventEmitter} from "events"
 import dispatcher from "../dispatcher";
 import {IAction} from "../../Models/ActionCreation";
-import {Player} from "../../Models/DatabaseModels";
+import {IPlayer} from "../../Models/DatabaseModels";
 
 class GenericMetricsStore extends EventEmitter{
-    players: Array<Player>;
+    players: Array<IPlayer>;
     fetching: boolean;
     team_name: string;
     
      constructor() {
         super();
-        this.players = new Array<Player>();
+        this.players = new Array<IPlayer>();
         this.fetching = false;
         this.team_name = "";
     }

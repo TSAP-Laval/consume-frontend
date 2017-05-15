@@ -2,19 +2,8 @@ import { EventEmitter } from "events"
 import {IAction} from "../../Models/ActionCreation";
 import * as Actions from "./Actions"
 import dispatcher from "../dispatcher"
-
-enum Status {
-    Started = 1,
-    Idle
-}
-
-interface IUser {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    is_admin: boolean;
-}
+import { Status } from "../PlayerStats/models/Status";
+import {IUser} from "../../Models/DatabaseModels";
 
 class LoginStore extends EventEmitter {
 
@@ -47,7 +36,7 @@ class LoginStore extends EventEmitter {
                 this.requestStatus = Status.Started;
                 this.emit("requestState")
                 break;
-                
+
             case "AUTHENTICATION_SUCCEEDED":
                 let succeeded: Actions.OnAuthenticationSucceeded = action as Actions.OnAuthenticationSucceeded;
                 this.connectedUser = succeeded.connectedUser;

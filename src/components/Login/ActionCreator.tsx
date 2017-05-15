@@ -2,15 +2,8 @@ import * as Actions from "./Actions"
 import dispatcher from "../dispatcher";
 import axios from 'axios';
 import { CreateErrorAction } from "../Error/ErrorAction";
+import {IUser} from "../../Models/DatabaseModels";
 import * as Config from 'Config';
-
-interface IUser {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    is_admin: boolean;
-}
 
 export function CreateAuthenticateUserAction(email: string, password: string) {
     dispatcher.dispatch(new Actions.AuthenticateUser());
@@ -46,7 +39,8 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
                 console.log('Error', error.message);
             }
             console.log(error.config);
-            CreateOnAuthenticationFailedAction(error.response.data);
+            CreateErrorAction(error);
+            //CreateOnAuthenticationFailedAction(error.response.data);
         });
 }
 

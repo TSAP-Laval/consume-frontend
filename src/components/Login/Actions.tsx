@@ -1,12 +1,5 @@
-import IAction from "../IAction";
-
-interface IUser {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    is_admin: boolean;
-}
+import {IAction} from "../../Models/ActionCreation";
+import {IUser} from "../../Models/DatabaseModels";
 
 export class AuthenticateUser implements IAction {
     type: string;

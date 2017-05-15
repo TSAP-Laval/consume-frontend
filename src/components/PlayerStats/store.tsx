@@ -1,7 +1,6 @@
 import { EventEmitter } from "events";
-import  IAction  from "../IAction";
+import {IAction} from "../../Models/ActionCreation";
 import dispatcher from "../dispatcher";
-
 import IMatch from "./models/IMatch";
 import { ISeason } from "./models/ISeason";
 import { IPosition } from './models/IPosition';
