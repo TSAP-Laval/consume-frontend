@@ -24,6 +24,7 @@ export default class Home extends React.Component<IHomeProps, IHomeState> {
         return (
             <BigContent>
                 <h1>Console TSAP</h1>
+                
                 <p>
                     <Link to="/team/3">
                         <RaisedButton primary={true} label="Statistiques de l'équipe" />

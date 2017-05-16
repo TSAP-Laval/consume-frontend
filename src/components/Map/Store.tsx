@@ -1,12 +1,12 @@
-import { EventEmitter } from "events"
-import IAction from "../IAction"
+import { EventEmitter } from "events";
+import { IAction } from "../../Models/ActionCreation";
 import * as Actions from "./Actions"
-import {Action, ZoneData, Coordinate, Zone, Size} from "./Models"
+import { ZoneData, Coordinate, Zone, Size } from "../../Models/ComponentModels";
 import dispatcher from "../dispatcher"
 import FilterStore from "./Filter/Store"
 
 class MapStore extends EventEmitter {
-    actions: Action[];
+    actions: IAction[];
     fetching: boolean;
     zones: Zone[];
     mapParameters: Size;
@@ -14,14 +14,14 @@ class MapStore extends EventEmitter {
 
     constructor() {
         super();
-        this.actions = new Array<Action>();
+        this.actions = new Array<IAction>();
         this.fetching = false;
         this.zones = new Array<Zone>();
         this.mapParameters = new Size(4,3);
         this.actionTypes = {};
     }
 
-    receiveActions(actions: Action[]){
+    receiveActions(actions: IAction[]){
         this.actions = actions;
         FilterStore.setActionTypes(actions);
         FilterStore.setActionImpacts();

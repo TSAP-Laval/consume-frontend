@@ -1,5 +1,5 @@
-import { EventEmitter } from "events"
-import {IAction} from "../../Models/ActionCreation";
+import { EventEmitter } from "events";
+import { IAction } from "../../Models/ActionCreation";
 import * as Actions from "./Actions"
 import dispatcher from "../dispatcher"
 import { Status } from "../PlayerStats/models/Status";

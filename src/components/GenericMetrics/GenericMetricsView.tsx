@@ -101,7 +101,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
             if((columns.length + data.length) == 0) {
                 return(
                     <div>
-                        <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
+                        <h2 className="text-center">Équipe <b>{this.state.team_name}</b></h2>
                         <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.team_id+ "/settings"} />} />
                         <h3 className="text-center"><b>Aucun joueur trouvé</b></h3>
                     </div>
