@@ -1,6 +1,6 @@
 import * as React from "react";
 import Spinner from "../Elements/Spinner";
-import {ITeam} from "../../Models/DatabaseModels";
+import {ITeam} from "../../models/DatabaseModels";
 import TeamStore from "./Store";
 import * as ActionsCreator from "./ActionsCreator"
 

@@ -1,9 +1,9 @@
 import * as React from "react";
-import Styled from 'styled-components';
+import styled from 'styled-components';
 
 import CircularProgress from 'material-ui/CircularProgress';
 
-const SpinnerContainer = Styled.div`
+const SpinnerContainer = styled.div`
     margin-left: auto;
     margin-right: auto;
     text-align: center;

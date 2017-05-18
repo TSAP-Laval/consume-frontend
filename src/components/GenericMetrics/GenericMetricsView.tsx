@@ -1,6 +1,6 @@
 import * as React from "react";
 import Store from "./Store";
-import {Player} from "../../Models/DatabaseModels";
+import {Player} from "../../models/DatabaseModels";
 import * as ActionCreator from "./ActionsCreator";
 import Spinner from "../Elements/Spinner";
 import { Link } from 'react-router';
@@ -24,8 +24,8 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
 
         this.state = {
             loading: false,
-            players: new Array<Player>()
-        }
+            players: []
+        };
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
         this.onPlayersReceived = this.onPlayersReceived.bind(this);
@@ -45,7 +45,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
     }
 
     getTableData() {
-        let data = new Array<any>();
+        let data: Array<string> = [];
 
         if(this.state.players.length > 0) {
             data = this.state.players.map((player: Player, i: number) => {
@@ -67,7 +67,7 @@ export default class GenericMetricsView extends React.Component<IDataProps, IDat
     }
 
     getTableColumns() {
-        let columns = new Array<String>();
+        let columns: Array<string> = [];
 
         if(this.state.players.length > 0) {
             columns = ["Prénom", "Nom"];

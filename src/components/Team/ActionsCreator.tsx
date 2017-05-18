@@ -1,8 +1,8 @@
-import dispatcher from "../dispatcher"
+import dispatcher from "../Dispatcher"
 import {serverUrl} from "Config"
 import axios, {AxiosResponse} from "axios"
 import * as Actions from "./Actions"
-import {ITeam} from "../../Models/DatabaseModels";
+import {ITeam} from "../../models/DatabaseModels";
 
 import { CreateErrorAction } from "../Error/ErrorAction";
 

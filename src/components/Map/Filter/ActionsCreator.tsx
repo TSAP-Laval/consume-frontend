@@ -1,4 +1,4 @@
-import dispatcher from "../../dispatcher"
+import dispatcher from "../../Dispatcher"
 import * as Actions from "./Actions"
 import axios from "axios"
 import * as Models from "./Models"

@@ -1,5 +1,5 @@
-import {IAction} from "../../Models/ActionCreation";
-import {Player} from "../../Models/DatabaseModels";
+import {IAction} from "../../models/ActionCreation";
+import {IPlayer} from "../../models/DatabaseModels";
 
 export class FetchPlayers implements IAction {
     type: string;
@@ -11,10 +11,10 @@ export class FetchPlayers implements IAction {
 
 export class OnPlayersReceived implements IAction {
     type: string;
-    players: Player[];
+    players: IPlayer[];
     team_name: string;
 
-    constructor(players: Player[], team_name: string) {
+    constructor(players: IPlayer[], team_name: string) {
         this.type = "RECEIVE_PLAYERS";
         this.players = players;
         this.team_name = team_name;

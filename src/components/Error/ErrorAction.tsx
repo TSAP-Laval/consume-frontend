@@ -1,6 +1,6 @@
-import {IAction} from "../../Models/ActionCreation"
+import {IAction} from "../../models/ActionCreation"
 
-import dispatcher from "../dispatcher";
+import dispatcher from "../Dispatcher";
 
 export class ErrorAction implements IAction  {
     type = "ERROR_OCCURED";

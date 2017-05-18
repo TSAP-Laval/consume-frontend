@@ -1,23 +1,21 @@
 import * as React from "react";
-
 import styled from 'styled-components';
-
 import {ActionMap} from "../components/Map/ActionMap/Index"
 import {HeatMap} from "../components/Map/HeatMap/Index"
 
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
-import StatsTableStore from "../components/PlayerStats/store";
-import { CreateGetMatchesAction } from "../components/PlayerStats/actions/GetMatchesAction";
-import { CreateGetSeasonsAction } from "../components/PlayerStats/actions/GetSeasonsAction";
-import { CreateGetPositionsAction } from "../components/PlayerStats/actions/GetPositionsAction";
+import StatsTableStore from "../components/PlayerStats/Store";
+import { CreateGetMatchesAction } from "../components/PlayerStats/Actions/GetMatchesAction";
+import { CreateGetSeasonsAction } from "../components/PlayerStats/Actions/GetSeasonsAction";
+import { CreateGetPositionsAction } from "../components/PlayerStats/Actions/GetPositionsAction";
 
 import { DataPanel } from "../components/DataPanel";
 
 export interface ILayoutProps {
     params: {
         teamID: number,
-        playerID: number
+        player_id: number
     }
 }
 
@@ -32,7 +30,7 @@ const AllContainer = styled.div`
 export default class Player extends React.Component<ILayoutProps, ILayoutState> {
 
     constructor(props: ILayoutProps) {
-        super();
+        super(props);
         this.getPlayerName = this.getPlayerName.bind(this);
 
         this.state = {

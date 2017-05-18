@@ -1,15 +1,14 @@
 import { EventEmitter } from "events";
-import  IAction  from "../IAction";
-import dispatcher from "../dispatcher";
-
-import IMatch from "./models/IMatch";
-import { ISeason } from "./models/ISeason";
-import { IPosition } from './models/IPosition';
-import Status from "./models/Status";
-import { MatchesReceivedAction } from './actions/MatchesReceivedAction';
-import { SeasonsReceivedAction } from './actions/SeasonsReceivedAction';
-import { PositionsReceivedAction } from './actions/PositionsReceivedActions';
-import { ChangeFilterAction } from './actions/ChangeFilterAction';
+import {IAction} from "../../models/ActionCreation";
+import dispatcher from "../Dispatcher";
+import IMatch from "./Models/IMatch";
+import { ISeason } from "./Models/ISeason";
+import { IPosition } from './Models/IPosition';
+import Status from "./Models/Status";
+import { MatchesReceivedAction } from './Actions/MatchesReceivedAction';
+import { SeasonsReceivedAction } from './Actions/SeasonsReceivedAction';
+import { PositionsReceivedAction } from './Actions/PositionsReceivedActions';
+import { ChangeFilterAction } from './Actions/ChangeFilterAction';
 
 class StatsTableStore extends EventEmitter {
     data: Array<IMatch>;
@@ -81,8 +80,6 @@ class StatsTableStore extends EventEmitter {
     handleActions(action: IAction){
         switch(action.type) {
             case "GET_MATCHES":
-                // On affiche éventuellement un message de loading en attendant la
-                // requête HTTP
                 this.emit("requestState");
                 break;
 

@@ -1,4 +1,4 @@
-var debug = !(process.env.ENV === 'production');
+let debug = !(process.env.ENV === 'production');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -79,4 +79,4 @@ module.exports = function(config) {
         singleRun: true,
         concurrency: Infinity
     })
-}
+};

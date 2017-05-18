@@ -1,11 +1,8 @@
 import { EventEmitter } from "events";
-import  IAction  from "../IAction";
-import dispatcher from "../dispatcher";
-
+import  {IAction}  from "../../models/ActionCreation";
+import dispatcher from "../Dispatcher";
 import { Metric } from './MetricModel';
-
-import { CreateMetricAction } from "./actions/CreateMetric";
-import { MetricsReceived } from './actions/MetricsReceived';
+import { MetricsReceived } from './Actions/MetricsReceived';
 
 
 class MetricStore extends EventEmitter {
@@ -15,7 +12,7 @@ class MetricStore extends EventEmitter {
 
     constructor() {
         super();
-        this.metrics = []
+        this.metrics = [];
         this.fetching = false;
     }
 

@@ -1,7 +1,7 @@
 import { EventEmitter } from "events"
-import dispatcher from "../dispatcher"
-import {IActionSummary} from "../../Models/DatabaseModelsSummaries";
-import {IAction} from "../../Models/ActionCreation";
+import dispatcher from "../Dispatcher"
+import {IActionSummary} from "../../models/DatabaseModelsSummaries";
+import {IAction} from "../../models/ActionCreation";
 import * as Actions from "./Actions"
 
 class ActionStore extends EventEmitter {
@@ -11,7 +11,6 @@ class ActionStore extends EventEmitter {
     constructor() {
         super();
         this.fetching = false;
-        this.actions = new Array<IActionSummary>();
     }
 
     handleActions(action: IAction) {

@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
-import {IAction} from "../../Models/ActionCreation";
-import dispatcher from "../dispatcher";
+import {IAction} from "../../models/ActionCreation";
+import dispatcher from "../Dispatcher";
 import { ErrorAction } from "./ErrorAction";
 
 class ErrorStore extends EventEmitter {

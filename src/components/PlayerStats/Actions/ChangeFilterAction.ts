@@ -1,5 +1,5 @@
-import IAction from "../../IAction";
-import dispatcher from "../../dispatcher";
+import {IAction} from "../../../models/ActionCreation";
+import dispatcher from "../../Dispatcher";
 
 import { CreateGetMatchesAction } from "./GetMatchesAction";
 

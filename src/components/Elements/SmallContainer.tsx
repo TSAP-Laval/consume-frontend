@@ -1,6 +1,6 @@
-import Styled from 'styled-components';
+import styled from 'styled-components';
 
-const SmallContainer = Styled.div`
+const SmallContainer = styled.div`
     position: relative;
     height: 100%;
 `;

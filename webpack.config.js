@@ -1,19 +1,18 @@
-var debug = !(process.env.ENV === 'production');
-console.log("DEBUG: " + debug.valueOf());
-var webpack = require('webpack');
-var path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const autoprefixer = require('autoprefixer')
+let debug = !(process.env.ENV === 'production');
+let webpack = require('webpack');
+let path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const sassLoaders = [
   'css-loader',
   'postcss-loader',
   'sass-loader?includePaths[]='+ path.resolve(__dirname, 'node_modules')
-]
+];
 
 module.exports = {
-    entry: "./src/ActionMap.tsx",
+    entry: "./src/Index.tsx",
     output: {
         filename: "bundle.js",
         path: "dist",
@@ -47,9 +46,9 @@ module.exports = {
 
     externals: {
          'Config': JSON.stringify(debug ? {
-             serverUrl: "http://localhost:8080/api"
+             serverUrl: "http://consume-backend-prod.pms5mbrhfk.ca-central-1.elasticbeanstalk.com/"
          } : {
-             serverUrl: "/api"
+             serverUrl: "http://consume-backend-prod.pms5mbrhfk.ca-central-1.elasticbeanstalk.com/"
          })
      },
 

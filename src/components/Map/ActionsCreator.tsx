@@ -1,4 +1,4 @@
-import dispatcher from "../dispatcher"
+import dispatcher from "../Dispatcher"
 import * as Actions from "./Actions"
 import * as Models from "./Models"
 import {serverUrl} from "Config"

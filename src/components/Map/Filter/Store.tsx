@@ -1,7 +1,7 @@
 import { EventEmitter } from "events"
 import IAction from "../../IAction"
 import * as Actions from "./Actions"
-import dispatcher from "../../dispatcher"
+import dispatcher from "../../Dispatcher"
 import * as Models from "./Models"
 import {Action} from "../Models"
 import MapStore from "../Store"

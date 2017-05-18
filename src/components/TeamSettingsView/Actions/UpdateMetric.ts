@@ -1,14 +1,10 @@
-import { IAction } from "../../IAction";
-
+import { IAction } from "../../../models/ActionCreation";
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import { CreateFetchMetricsAction } from './FetchMetrics';
 import { Metric } from "../MetricModel";
-
-import axios from 'axios';
-import dispatcher from "../../dispatcher";
-
+import axios, {AxiosResponse} from 'axios';
+import dispatcher from "../../Dispatcher";
 import * as Config from 'Config';
-
 
 export class UpdateMetricAction implements IAction {
     type: string;
@@ -25,7 +21,7 @@ export class UpdateMetricAction implements IAction {
 export function CreateUpdateMetricAction(metric: Metric, teamID: number) {
     dispatcher.dispatch(new UpdateMetricAction(metric));
 
-    var url: string = Config.serverUrl + "/teams/" + teamID + "/metrics/" + metric.id.toString();
+    let url: string = Config.serverUrl + "/teams/" + teamID + "/metrics/" + metric.id.toString();
 
     axios.put(url, {
         name: metric.name,
@@ -33,8 +29,7 @@ export function CreateUpdateMetricAction(metric: Metric, teamID: number) {
         formula: metric.formula
     })
     .then(
-        (resp) => {
-            // Refresh the metrics once it's edited
+        (resp: AxiosResponse) => {
             CreateFetchMetricsAction(teamID);
         },
         (err) => {

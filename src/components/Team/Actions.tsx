@@ -1,5 +1,5 @@
-import {IAction} from "../../Models/ActionCreation"
-import {ITeam} from "../../Models/DatabaseModels"
+import {IAction} from "../../models/ActionCreation"
+import {ITeam} from "../../models/DatabaseModels"
 
 export class FetchTeam implements IAction {
     type: string;

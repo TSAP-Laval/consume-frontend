@@ -5,12 +5,12 @@ import RightDiv from "../../../Elements/RightDiv";
 import SmallContainer from "../../../Elements/SmallContainer";
 import FieldMap from "../../../Map/Index"
 import {ActionComponent} from "./Action"
-import {IActionSummary} from "../../../../Models/DatabaseModelsSummaries"
-import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../../Models/ComponentModels"
+import {IActionSummary} from "../../../../models/DatabaseModelsSummaries"
+import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../../models/ComponentModels"
 import * as FilterActionsCreator from "../../../Filter/ActionsCreator"
 import FilterStore from "../../../Filter/Store"
 import FilterComponent from "../../../Filter/Index"
-import {ActionImpact, ActionType} from "../../../../Models/ComponentModels";
+import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
 
 export interface ILayoutProps {
     params: {
@@ -57,7 +57,7 @@ export class ActionMapComponent
     }
 
     createActionImpactFilter() {
-        let nodes: Array<FilterNode> = new Array<FilterNode>();
+        let nodes: Array<FilterNode> = [];
 
         for(let action of this.props.params.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});
@@ -74,7 +74,7 @@ export class ActionMapComponent
     }
 
     createActionTypeFilter() {
-        let nodes: Array<FilterNode> = new Array<FilterNode>();
+        let nodes: Array<FilterNode> = [];
 
         for(let action of this.props.params.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});

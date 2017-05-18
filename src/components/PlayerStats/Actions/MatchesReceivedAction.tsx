@@ -1,9 +1,6 @@
-import  IAction  from "../../IAction"
-import dispatcher from "../../dispatcher"
-
-import IMatch from "../models/IMatch";
-
-import * as Config from 'Config';
+import {IAction} from "../../../models/ActionCreation";
+import dispatcher from "../../Dispatcher"
+import IMatch from "../Models/IMatch";
 
 export class MatchesReceivedAction implements IAction {
     type = "MATCHES_RECEIVED";

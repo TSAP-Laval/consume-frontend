@@ -1,9 +1,6 @@
-import  IAction  from "../../IAction"
-import dispatcher from "../../dispatcher"
-
-import { IPosition } from "../models/IPosition";
-
-import * as Config from 'Config';
+import {IAction} from "../../../models/ActionCreation";
+import dispatcher from "../../Dispatcher"
+import { IPosition } from "../Models/IPosition";
 
 export class PositionsReceivedAction implements IAction {
     type = "POSITIONS_RECEIVED";

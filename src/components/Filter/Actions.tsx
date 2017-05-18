@@ -1,5 +1,5 @@
-import {IAction} from "../../Models/ActionCreation";
-import {Filter} from "../../Models/ComponentModels";
+import {IAction} from "../../models/ActionCreation";
+import {Filter} from "../../models/ComponentModels";
 
 export class HandleFilter implements IAction {
     type: string;

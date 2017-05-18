@@ -1,4 +1,4 @@
-import Metric from "./metric";
+import Metric from "./Metric";
 
 export interface IMatch {
     match_id: number;

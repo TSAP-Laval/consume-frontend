@@ -2,7 +2,7 @@ import { EventEmitter } from "events"
 import IAction from "../IAction"
 import * as Actions from "./Actions"
 import {Action, ZoneData, Coordinate, Zone, Size} from "./Models"
-import dispatcher from "../dispatcher"
+import dispatcher from "../Dispatcher"
 import FilterStore from "./Filter/Store"
 
 class MapStore extends EventEmitter {

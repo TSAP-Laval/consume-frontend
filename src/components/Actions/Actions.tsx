@@ -1,5 +1,5 @@
-import {IAction} from "../../Models/ActionCreation";
-import {IActionSummary} from "../../Models/DatabaseModelsSummaries";
+import {IAction} from "../../models/ActionCreation";
+import {IActionSummary} from "../../models/DatabaseModelsSummaries";
 
 export class FetchMatchActions implements IAction {
     type: string;
