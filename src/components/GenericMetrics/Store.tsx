@@ -1,7 +1,7 @@
 import {EventEmitter} from "events"
-import dispatcher from "../dispatcher";
-import {IAction} from "../../Models/ActionCreation";
-import {Player} from "../../Models/DatabaseModels";
+import dispatcher from "../Dispatcher";
+import {IAction} from "../../models/ActionCreation";
+import {Player} from "../../models/DatabaseModels";
 
 class GenericMetricsStore extends EventEmitter{
     players: Array<Player>;

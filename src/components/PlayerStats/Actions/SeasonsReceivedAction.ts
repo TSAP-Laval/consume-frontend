@@ -1,9 +1,6 @@
-import  IAction  from "../../IAction"
-import dispatcher from "../../dispatcher"
-
-import { ISeason } from "../models/ISeason";
-
-import * as Config from 'Config';
+import {IAction} from "../../../models/ActionCreation";
+import dispatcher from "../../Dispatcher"
+import { ISeason } from "../Models/ISeason";
 
 export class SeasonsReceivedAction implements IAction {
     type = "SEASONS_RECEIVED";

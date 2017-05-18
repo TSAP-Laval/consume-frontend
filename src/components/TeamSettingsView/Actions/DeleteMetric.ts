@@ -1,12 +1,8 @@
-import { IAction } from "../../IAction";
-
+import { IAction } from "../../../models/ActionCreation";
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import { CreateFetchMetricsAction } from './FetchMetrics';
-import { Metric } from "../MetricModel";
-
-import axios from 'axios';
-import dispatcher from "../../dispatcher";
-
+import axios, {AxiosResponse} from 'axios';
+import dispatcher from "../../Dispatcher";
 import * as Config from 'Config';
 
 
@@ -21,17 +17,15 @@ export class DeleteMetricAction implements IAction {
 export function CreateDeleteMetricAction(metricID: number, teamID: number) {
     dispatcher.dispatch(new DeleteMetricAction());
 
-    var url: string = Config.serverUrl + "/teams/" + teamID + "/metrics/" + metricID.toString();
+    let url: string = Config.serverUrl + "/teams/" + teamID + "/metrics/" + metricID.toString();
 
     if (!metricID) {
-        // Don't do anything if metric is bad
         return;
     }
 
     axios.delete(url)
     .then(
-        (resp) => {
-            // Refresh the metrics once it's deleted.
+        (resp: AxiosResponse) => {
             CreateFetchMetricsAction(teamID);
         },
         (err) => {

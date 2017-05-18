@@ -1,14 +1,15 @@
 import * as React from "react";
-
 import AppBar from 'material-ui/AppBar';
-
 import { Link } from "react-router"
-
 import styled from 'styled-components';
 
-export interface ILayoutProps {}
+export interface ILayoutProps {
 
-export interface ILayoutState {}
+}
+
+export interface ILayoutState {
+
+}
 
 const AppTitle = styled(Link)`
     color: inherit;

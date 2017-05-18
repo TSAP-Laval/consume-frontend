@@ -1,16 +1,9 @@
-import { IAction } from "../../IAction"
-
-import axios from 'axios';
-import dispatcher from "../../dispatcher";
-
-import { CreateErrorAction } from "../../Error/ErrorAction";
-
+import { IAction } from "../../../models/ActionCreation";
+import dispatcher from "../../Dispatcher";
 import { Metric } from '../MetricModel';
 
-import * as Config from 'Config';
-
 export class MetricsReceived implements IAction {
-    type: String;
+    type: string;
     metrics: Array<Metric>;
 
     constructor(metrics: Array<Metric>) {

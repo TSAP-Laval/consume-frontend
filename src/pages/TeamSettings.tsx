@@ -1,21 +1,18 @@
 import * as React from "react";
-import { Link } from 'react-router';
-
 import BigContent from "../components/Elements/BigContent";
-import FlatButton from 'material-ui/FlatButton';
-
 import TeamSettingsView from "../components/TeamSettingsView";
 
-export interface ITeamProps {
+export interface ILayoutProps {
     params?: {
         teamID: number
     }
 }
 
-export interface ITeamState {}
+export interface ILayoutState {
 
-export default class Team extends React.Component<ITeamProps, ITeamState> {
+}
 
+export default class Team extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
         super();
     }

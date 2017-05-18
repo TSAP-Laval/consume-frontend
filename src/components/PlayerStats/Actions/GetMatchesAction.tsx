@@ -1,17 +1,9 @@
-import  IAction  from "../../IAction"
-import dispatcher from "../../dispatcher"
-
+import {IAction} from "../../../models/ActionCreation";
+import dispatcher from "../../Dispatcher"
 import { CreateErrorAction } from "../../Error/ErrorAction";
-
 import axios from 'axios';
-
-import IMatch from "../models/IMatch";
-
+import IMatch from "../Models/IMatch";
 import { MatchesReceivedAction } from "./MatchesReceivedAction";
-
-import { CreateGetSeasonsAction } from "./GetSeasonsAction";
-import { CreateGetPositionsAction } from "./GetPositionsAction";
-
 import * as Config from 'Config';
 
 export class GetMatchesAction implements IAction {
@@ -29,9 +21,9 @@ export class GetMatchesAction implements IAction {
 export function CreateGetMatchesAction(playerId: number, teamId: number, seasonID?: number, positionID?: number) {
     dispatcher.dispatch(new GetMatchesAction(playerId, teamId));
 
-    var url: string = Config.serverUrl + "/stats/player/" + playerId.toString() + "/team/" + teamId.toString();
+    let url: string = Config.serverUrl + "/stats/player/" + playerId.toString() + "/team/" + teamId.toString();
 
-    let params = []
+    let params = [];
 
     if (seasonID) {
         params.push("season=" + seasonID.toString());
@@ -48,14 +40,12 @@ export function CreateGetMatchesAction(playerId: number, teamId: number, seasonI
     axios.get(url)
     .then((response) => {
         let matches : Array<IMatch> = response.data.matches as Array<IMatch>;
-        //On récupère le prénom du joueur pour l'affichage.
+
         let playerName : string = response.data.firstname;
-        // On y ajoute son nom.
         playerName = playerName.concat(" ", response.data.lastname);
 
-        // TEMPORAIRE: Parse date, serait mieux de faire dans un objet?
         matches = matches.map((match) => {
-            match.date = new Date(match.date.toString())
+            match.date = new Date(match.date.toString());
             return match;
         });
         dispatcher.dispatch(new MatchesReceivedAction(matches.sort((a, b) => {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Circle, Arrow} from 'react-konva';
-import {IActionSummary} from "../../../../Models/DatabaseModelsSummaries"
-import {RGBColor, Size} from "../../../../Models/ComponentModels"
+import {IActionSummary} from "../../../../models/DatabaseModelsSummaries"
+import {RGBColor, Size} from "../../../../models/ComponentModels"
 
 export interface ILayoutProps {
     params: {

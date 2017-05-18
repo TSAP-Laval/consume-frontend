@@ -1,6 +1,6 @@
 import * as React from "react";
 import Toggle from 'material-ui/Toggle';
-import {Filter, FilterNode} from "../../Models/ComponentModels";
+import {Filter, FilterNode} from "../../models/ComponentModels";
 import Li from "../Elements/Li";
 import * as FilterActionsCreator from "./ActionsCreator"
 

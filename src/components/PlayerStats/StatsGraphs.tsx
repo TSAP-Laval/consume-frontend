@@ -1,10 +1,10 @@
 import * as React from "react";
-import StatsTableStore from "./store";
+import StatsTableStore from "./Store";
 
-import { CreateGetMatchesAction } from "./actions/GetMatchesAction";
-import { CreateChangeFilterAction } from './actions/ChangeFilterAction';
-import Status from "./models/Status";
-import IMatch from "./models/IMatch";
+import { CreateGetMatchesAction } from "./Actions/GetMatchesAction";
+import { CreateChangeFilterAction } from './Actions/ChangeFilterAction';
+import Status from "./Models/Status";
+import IMatch from "./Models/IMatch";
 
 import { IStatsState } from './StatsTable';
 

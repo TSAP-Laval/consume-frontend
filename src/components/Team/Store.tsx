@@ -1,7 +1,7 @@
 import { EventEmitter } from "events"
-import dispatcher from "../dispatcher"
-import {IAction} from "../../Models/ActionCreation";
-import {ITeam} from "../../Models/DatabaseModels";
+import dispatcher from "../Dispatcher"
+import {IAction} from "../../models/ActionCreation";
+import {ITeam} from "../../models/DatabaseModels";
 import * as Actions from "./Actions"
 
 class TeamStore extends EventEmitter {

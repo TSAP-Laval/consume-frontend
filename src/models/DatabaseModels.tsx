@@ -1,5 +1,5 @@
 import {IActionSummary, IMatchSummary, IMetricSummary, ITeamSummary, IUserSummary} from "./DatabaseModelsSummaries";
-import {IPosition} from "../components/PlayerStats/models/IPosition";
+import {IPosition} from "../components/PlayerStats/Models/IPosition";
 
 export enum ActionImpactId {
     Negative = -1,

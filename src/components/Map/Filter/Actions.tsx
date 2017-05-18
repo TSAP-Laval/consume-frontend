@@ -1,5 +1,5 @@
 import IAction from "../../IAction"
-import {ComponentModels} from "../../../Models"
+import {ComponentModels} from "../../../models"
 
 export class FilterActionsByType implements IAction {
     type: string

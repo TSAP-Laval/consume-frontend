@@ -1,6 +1,6 @@
-import Styled from 'styled-components';
+import styled from 'styled-components';
 
-const LeftDiv = Styled.div`
+const LeftDiv = styled.div`
     width: 75%;
     height: 100%;
     display: inline-block;

@@ -1,16 +1,14 @@
 import * as React from "react";
-import {Link} from "react-router"
 import {Header} from "./Header";
-
 import { injectGlobal } from 'styled-components';
-
 import { MuiThemeProvider, getMuiTheme } from "material-ui/styles";
-
 import  ErrorStore  from "../components/Error/Store";
 import ErrorAlert from "../components/Error";
 
 
-export interface ILayoutProps {}
+export interface ILayoutProps {
+
+}
 
 export interface ILayoutState {
     title?: string,

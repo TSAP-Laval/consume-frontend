@@ -1,8 +1,8 @@
 import { EventEmitter } from "events"
-import {IAction} from "../../Models/ActionCreation"
-import {Filter} from "../../Models/ComponentModels"
+import {IAction} from "../../models/ActionCreation"
+import {Filter} from "../../models/ComponentModels"
 import * as Actions from "./Actions"
-import dispatcher from "../dispatcher"
+import dispatcher from "../Dispatcher"
 
 class FilterStore extends EventEmitter {
     filters: {[component: string] : {[name: string] : Filter}};

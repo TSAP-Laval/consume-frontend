@@ -1,14 +1,8 @@
 import * as React from "react";
-
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-
 import { Metric } from './MetricModel';
 import MetricRow from './MetricRow';
-import MetricStore from './store';
-
-import { CreateFetchMetricsAction } from './actions/FetchMetrics';
-
+import MetricStore from './Store';
+import { CreateFetchMetricsAction } from './Actions/FetchMetrics';
 import Form from "../Elements/Form";
 import Spinner from "../Elements/Spinner";
 
@@ -21,7 +15,6 @@ export interface IMetricEditorState {
     metrics?: Metric[];
     fetching?: boolean;
 }
-
 
 export default class MetricEditor extends React.Component<IMetricEditorProps, IMetricEditorState> {
 
@@ -64,7 +57,7 @@ export default class MetricEditor extends React.Component<IMetricEditorProps, IM
 
         let existingRows = this.state.metrics.map((m) => (
             <MetricRow metric={m} teamID={this.props.teamId} />
-        ))
+        ));
 
         return(
             this.state.fetching?
