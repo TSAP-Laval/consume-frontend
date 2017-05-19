@@ -10,7 +10,7 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
 
 
     // Define the url
-    const url: string = Config.serverUrl + "/login";
+    const url: string = Config.serverUrl + "auth/login";
     //const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6eyJmaXJzdF9uYW1lIjoiS2V2aW4iLCJsYXN0X25hbWUiOiJLaW0iLCJpc19hZG1pbiI6dHJ1ZSwibW9kaWZpZWRfYXQiOiIyMDE3LTA1LTE2VDAyOjQwOjIyKzAwOjAwIiwiY3JlYXRlZF9hdCI6IjIwMTctMDUtMTZUMDI6NDA6MjIrMDA6MDAiLCJlbWFpbCI6InN0ZXBoZW5yb2RyaWd1ZXpAaG90bWFpbC5jb20iLCJpZCI6NSwidGVhbXMiOltdfSwiaWF0IjoxNDk0OTAzNjc2fQ.KcQAvgfdvrmpRJyfHe2s8RntxwflHdBGPMjQQbRdje4";
 
     // Added the token into headers.
@@ -26,6 +26,7 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
             //We fetch the informations of authenticated user.
             let user: IUser = response.data.user as IUser;
             let token: string = response.data.token;
+            console.log(response.data);
 
             CreateOnAuthenticationSucceededAction(user, token)
         })
