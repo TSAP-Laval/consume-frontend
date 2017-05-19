@@ -1,6 +1,6 @@
-let debug = !(process.env.ENV === 'production');
-let webpack = require('webpack');
-let path = require('path');
+var debug = !(process.env.ENV === 'production');
+var webpack = require('webpack');
+var path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
