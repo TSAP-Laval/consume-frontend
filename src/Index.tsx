@@ -11,9 +11,9 @@ const root = document.getElementById("root");
 ReactDOM.render(
   <Router history={browserHistory}>
     <Route path="/" component={Layout}>
-      <IndexRoute component={Home}/>
-      <Route path="team/:teamID/player/:playerID" component={Player}/>
-      <Route path="team/:teamID/settings" component={TeamSettings}/>
+      <IndexRoute component={Home}></IndexRoute>
+      <Route path="team/:teamID/player/:playerID" component={Player}></Route>
+      <Route path="team/:teamID/settings" component={TeamSettings}></Route>
     </Route>
   </Router>,
 root);

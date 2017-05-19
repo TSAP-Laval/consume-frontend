@@ -20,7 +20,7 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
     render() {
         return (
             <BigContent>
-                <h1>Console TSAP</h1>
+                <h1>Console TSAP</h1>              
                 <p>
                     <Link to="/team/3">
                         <RaisedButton primary={true} label="Statistiques de l'équipe" />
