@@ -3,20 +3,21 @@ import {Layer, Stage} from 'react-konva';
 import LeftDiv from "../../../Elements/LeftDiv";
 import RightDiv from "../../../Elements/RightDiv";
 import SmallContainer from "../../../Elements/SmallContainer";
-import FieldMap from "../../../../components/Map/Index"
+import FieldMap from "../../../Map/Index"
 import {ZoneComponent} from "./Zone"
 import {IActionSummary} from "../../../../Models/DatabaseModelsSummaries"
 import {Filter, FilterNode, IComponent, RGBColor, Size, Zone, ZoneData} from "../../../../Models/ComponentModels"
 import * as FilterActionsCreator from "../../../Filter/ActionsCreator"
 import FilterStore from "../../../Filter/Store"
 import FilterComponent from "../../../Filter/Index"
-import {ActionImpact, ActionType} from "../../../../Models/DatabaseModels";
+import {ActionImpact, ActionType} from "../../../../Models/ComponentModels";
 
 export interface ILayoutProps {
     actions: IActionSummary[]
 }
 
 export interface ILayoutState {
+    zones_size?: Size
     size?: Size
     filters?: {[name: string]  : Filter};
 }
@@ -48,7 +49,8 @@ export class HeatMap
         let height = width / 2;
 
         this.setState({
-            size: new Size(width, height)
+            size: new Size(width, height),
+            zones_size: new Size(4,3)
         });
 
         this.createActionTypeFilter();
@@ -56,7 +58,7 @@ export class HeatMap
     }
 
     createActionImpactFilter() {
-        let nodes: Array<FilterNode> = new Array<FilterNode>();
+        let nodes: Array<FilterNode> = [];
 
         for(let action of this.props.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});
@@ -73,7 +75,7 @@ export class HeatMap
     }
 
     createActionTypeFilter() {
-        let nodes: Array<FilterNode> = new Array<FilterNode>();
+        let nodes: Array<FilterNode> = [];
 
         for(let action of this.props.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});
@@ -117,17 +119,17 @@ export class HeatMap
     }
 
     getZones() {
-        let zonesData = new Array<ZoneData>()
+        let zonesData = [];
 
         for (let action of this.getFilteredActions()) {
-            var x = Math.floor(action.start_x * this.mapParameters.width);
-            var y = Math.floor(action.start_y * this.mapParameters.height);
+            let x = Math.floor(action.start_x * this.mapParameters.width);
+            let y = Math.floor(action.start_y * this.mapParameters.height);
             zonesData.push(new ZoneData(x,y, action.impact));
         }
-        let zones = new Array<Zone>()
+        let zones = [];
 
-        for (var x = 0; x < this.mapParameters.width; x++) {
-            for (var y = 0; y < this.mapParameters.height; y++) {
+        for (let x = 0; x < this.mapParameters.width; x++) {
+            for (let y = 0; y < this.mapParameters.height; y++) {
                 zones.push(new Zone(x,y, 0, 0));
             }
         }
@@ -135,6 +137,7 @@ export class HeatMap
         for (let zone of zones){
             let nbActions = 0;
             let rating = 0;
+            let nbNeutres = 0;
 
             for(let zoneData of zonesData){
                 if (zoneData.x == zone.x && zoneData.y == zone.y){
@@ -142,13 +145,13 @@ export class HeatMap
                     if (zoneData.impact == 1){
                         rating++;
                     } else if (zoneData.impact == 0) {
-                        
+                        nbNeutres++;
                     }
                 }
             }
 
             zone.percentage = + (nbActions / zonesData.length).toFixed(2);
-            zone.rating = + (rating / nbActions).toFixed(2);
+            zone.rating = + (rating / nbActions - nbNeutres).toFixed(2);
         }
         return zones;
     }
@@ -161,7 +164,7 @@ export class HeatMap
 
     render() {
             let zones = this.getZones().map((zone) => {
-                return <ZoneComponent zone={zone} parent_size={this.state.size}/>
+                return <ZoneComponent zone={zone} zone_size={this.state.zones_size} parent_size={this.state.size}/>
             });
 
             let filters = this.getFilterComponents();
