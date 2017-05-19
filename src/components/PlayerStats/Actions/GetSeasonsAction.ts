@@ -1,5 +1,5 @@
 import {IAction} from "../../../models/ActionCreation";
-import dispatcher from '../../Dispatcher';
+import Dispatcher from '../../Dispatcher';
 import { ISeason } from "../Models/ISeason";
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import { CreateSeasonsReceivedAction } from "./SeasonsReceivedAction";
@@ -11,7 +11,7 @@ export class GetSeasonsAction implements IAction {
 }
 
 export function CreateGetSeasonsAction() {
-    dispatcher.dispatch(new GetSeasonsAction);
+    Dispatcher.dispatch(new GetSeasonsAction);
 
     let url: string = Config.serverUrl + "/seasons";
 

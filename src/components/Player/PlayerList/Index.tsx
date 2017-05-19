@@ -1,5 +1,5 @@
 import * as React from "react";
-import Store from "./Store";
+import TeamMetricStatsStore from "./Store";
 import {IPlayer, ITeamMetricStats} from "../../../models/DatabaseModels";
 import * as ActionCreator from "./ActionsCreator";
 import Spinner from "../../Elements/Spinner";
@@ -28,7 +28,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
         super(props);
 
         this.state = {
-            loading: false,
+            loading: true
         };
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
@@ -37,14 +37,14 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
 
     setLoadingStatus() {
         this.setState({
-            loading: Store.fetching
-        })
+            loading: TeamMetricStatsStore.fetching
+        });
     }
 
     onStatsReceived() {
         this.setState({
-            loading: Store.fetching,
-            stats: Store.stats
+            loading: TeamMetricStatsStore.fetching,
+            stats: TeamMetricStatsStore.stats
         });
     }
 
@@ -95,18 +95,18 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
     }
 
     componentWillMount(){
-        Store.on("FETCH_PLAYERS", this.setLoadingStatus);
-        Store.on("RECEIVE_PLAYERS", this.onStatsReceived);
+        TeamMetricStatsStore.on("FETCH_TEAM_METRIC_STATS", this.setLoadingStatus);
+        TeamMetricStatsStore.on("RECEIVE_TEAM_METRIC_STATS", this.onStatsReceived);
         ActionCreator.FetchTeamMetricStats(this.props.params.team_id);
     }
 
     componentWillUnmount(){
-        Store.removeListener("FETCH_PLAYERS", this.onStatsReceived);
-        Store.removeListener("RECEIVE_PLAYERS", this.onStatsReceived);
+        TeamMetricStatsStore.removeListener("FETCH_TEAM_METRIC_STATS", this.onStatsReceived);
+        TeamMetricStatsStore.removeListener("RECEIVE_TEAM_METRIC_STATS", this.onStatsReceived);
     }
 
     render() {
-        if(this.state.loading) {
+        if(!this.state.loading) {
             let columns = this.getTableColumns();
             let data = this.getTableData();
 

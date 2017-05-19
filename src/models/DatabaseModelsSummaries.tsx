@@ -19,7 +19,7 @@ export interface IMatchSummary {
     home_team: ITeamSummary;
     away_team: ITeamSummary;
     season: ISeason;
-    date: Date;
+    date: string;
 }
 
 export interface IMetricSummary {

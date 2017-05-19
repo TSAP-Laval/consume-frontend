@@ -1,5 +1,5 @@
 import {IAction} from "../../../models/ActionCreation";
-import dispatcher from "../../Dispatcher"
+import Dispatcher from "../../Dispatcher"
 import { ISeason } from "../Models/ISeason";
 
 export class SeasonsReceivedAction implements IAction {
@@ -12,5 +12,5 @@ export class SeasonsReceivedAction implements IAction {
 }
 
 export function CreateSeasonsReceivedAction(seasons: ISeason[]) {
-    dispatcher.dispatch(new SeasonsReceivedAction(seasons));
+    Dispatcher.dispatch(new SeasonsReceivedAction(seasons));
 }

@@ -3,7 +3,7 @@ import { CreateErrorAction } from "../../Error/ErrorAction";
 import { CreateFetchMetricsAction } from './FetchMetrics';
 import { Metric } from "../MetricModel";
 import axios, {AxiosResponse} from 'axios';
-import dispatcher from "../../Dispatcher";
+import Dispatcher from "../../Dispatcher";
 import * as Config from 'Config';
 
 export class UpdateMetricAction implements IAction {
@@ -19,7 +19,7 @@ export class UpdateMetricAction implements IAction {
 }
 
 export function CreateUpdateMetricAction(metric: Metric, teamID: number) {
-    dispatcher.dispatch(new UpdateMetricAction(metric));
+    Dispatcher.dispatch(new UpdateMetricAction(metric));
 
     let url: string = Config.serverUrl + "/teams/" + teamID + "/metrics/" + metric.id.toString();
 

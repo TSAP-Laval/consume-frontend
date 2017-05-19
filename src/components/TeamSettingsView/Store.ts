@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import  {IAction}  from "../../models/ActionCreation";
-import dispatcher from "../Dispatcher";
+import Dispatcher from "../Dispatcher";
 import { Metric } from './MetricModel';
 import { MetricsReceived } from './Actions/MetricsReceived';
 
@@ -43,5 +43,5 @@ class MetricStore extends EventEmitter {
 }
 
 const store = new MetricStore();
-dispatcher.register(store.handleActions.bind(store));
+Dispatcher.register(store.handleActions.bind(store));
 export default store;

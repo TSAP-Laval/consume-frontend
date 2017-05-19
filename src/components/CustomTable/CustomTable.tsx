@@ -17,7 +17,7 @@ const StyledTable = styled(Table)`
 export default class CustomTable extends React.Component<IDataProps, IDataStates> {
     render() {
         let headers = this.props.columns.map((h, i) => {
-            return <TableHeaderColumn key={ i.toString() }><span>{ h[0] }</span><br/>{h[1]}</TableHeaderColumn>
+            return <TableHeaderColumn key={ i.toString() }>{h}</TableHeaderColumn>
         });
 
         return (

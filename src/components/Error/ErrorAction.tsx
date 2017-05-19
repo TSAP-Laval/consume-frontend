@@ -1,6 +1,5 @@
 import {IAction} from "../../models/ActionCreation"
-
-import dispatcher from "../Dispatcher";
+import Dispatcher from "../Dispatcher";
 
 export class ErrorAction implements IAction  {
     type = "ERROR_OCCURED";
@@ -12,5 +11,5 @@ export class ErrorAction implements IAction  {
 }
 
 export function CreateErrorAction(message: string) {
-    dispatcher.dispatch(new ErrorAction(message));
+    Dispatcher.dispatch(new ErrorAction(message));
 }

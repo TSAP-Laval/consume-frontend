@@ -1,5 +1,5 @@
 import { EventEmitter } from "events"
-import dispatcher from "../Dispatcher"
+import Dispatcher from "../Dispatcher"
 import {IActionSummary} from "../../models/DatabaseModelsSummaries";
 import {IAction} from "../../models/ActionCreation";
 import * as Actions from "./Actions"
@@ -31,4 +31,4 @@ class ActionStore extends EventEmitter {
 const store = new ActionStore();
 export default store;
 
-dispatcher.register(store.handleActions.bind(store));
+Dispatcher.register(store.handleActions.bind(store));
