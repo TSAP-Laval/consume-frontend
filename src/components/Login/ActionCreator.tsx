@@ -11,22 +11,23 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
 
     // Define the url
     const url: string = Config.serverUrl + "/login";
-    const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6eyJmaXJzdF9uYW1lIjoiS2V2aW4iLCJsYXN0X25hbWUiOiJLaW0iLCJpc19hZG1pbiI6dHJ1ZSwibW9kaWZpZWRfYXQiOiIyMDE3LTA1LTE2VDAyOjQwOjIyKzAwOjAwIiwiY3JlYXRlZF9hdCI6IjIwMTctMDUtMTZUMDI6NDA6MjIrMDA6MDAiLCJlbWFpbCI6InN0ZXBoZW5yb2RyaWd1ZXpAaG90bWFpbC5jb20iLCJpZCI6NSwidGVhbXMiOltdfSwiaWF0IjoxNDk0OTAzNjc2fQ.KcQAvgfdvrmpRJyfHe2s8RntxwflHdBGPMjQQbRdje4";
+    //const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6eyJmaXJzdF9uYW1lIjoiS2V2aW4iLCJsYXN0X25hbWUiOiJLaW0iLCJpc19hZG1pbiI6dHJ1ZSwibW9kaWZpZWRfYXQiOiIyMDE3LTA1LTE2VDAyOjQwOjIyKzAwOjAwIiwiY3JlYXRlZF9hdCI6IjIwMTctMDUtMTZUMDI6NDA6MjIrMDA6MDAiLCJlbWFpbCI6InN0ZXBoZW5yb2RyaWd1ZXpAaG90bWFpbC5jb20iLCJpZCI6NSwidGVhbXMiOltdfSwiaWF0IjoxNDk0OTAzNjc2fQ.KcQAvgfdvrmpRJyfHe2s8RntxwflHdBGPMjQQbRdje4";
 
     // Added the token into headers.
-    let instance = axios.create({
-             headers: {"X-Auth-Token":token}
-    })
+    // let instance = axios.create({
+    //          headers: {"X-Auth-Token":token}
+    // })
 
-    instance.post(url, {
+    axios.post(url, {
         email: email,
         password: password
     },)
         .then((response) => {
             //We fetch the informations of authenticated user.
             let user: IUser = response.data.user as IUser;
+            let token: string = response.data.token;
 
-            CreateOnAuthenticationSucceededAction(user)
+            CreateOnAuthenticationSucceededAction(user, token)
         })
         .catch(function (error) {
             if (error.response) {
@@ -50,8 +51,8 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
         });
 }
 
-export function CreateOnAuthenticationSucceededAction(user: IUser) {
-    dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user));
+export function CreateOnAuthenticationSucceededAction(user: IUser, token:string) {
+    dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
 }
 
 export function CreateOnAuthenticationFailedAction(error: any) {

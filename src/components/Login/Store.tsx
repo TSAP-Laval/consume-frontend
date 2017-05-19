@@ -11,6 +11,7 @@ class LoginStore extends EventEmitter {
     requestStatus: Status;
     connectedUser: IUser;
     error: string;
+    token: string;
 
     constructor() {
         super();
@@ -20,6 +21,10 @@ class LoginStore extends EventEmitter {
 
     getRequestStatus(): Status {
         return this.requestStatus;
+    }
+
+    userIsLoggedIn():boolean{
+        return this.isLoggedIn == true;
     }
 
     isAdmin(): boolean {

@@ -12,10 +12,12 @@ export class AuthenticateUser implements IAction {
 export class OnAuthenticationSucceeded implements IAction {
     type: string;
     connectedUser: IUser;
+    token : string;
 
-    constructor(user: IUser) {
+    constructor(user: IUser, token:string) {
         this.type = "AUTHENTICATION_SUCCEEDED";
         this.connectedUser = user;
+        this.token = token;
     }
 
 }
