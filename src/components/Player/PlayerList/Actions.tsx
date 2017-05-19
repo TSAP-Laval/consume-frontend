@@ -5,6 +5,7 @@ export class FetchTeamMetricStats implements IAction {
     type: string;
 
     constructor() {
+        console.log("Creating action...");
         this.type = "FETCH_TEAM_METRIC_STATS";
     }
 }

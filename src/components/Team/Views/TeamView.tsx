@@ -5,6 +5,7 @@ import TeamStore from "../Store";
 import * as ActionsCreator from "../ActionsCreator"
 import MatchList from "./MatchList";
 import BigContent from "../../Elements/BigContent";
+import PlayerList from "../../Player/PlayerList/Index";
 
 export interface ILayoutProps {
     params: {
@@ -56,7 +57,11 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
 
     render() {
         if(!this.state.loading) {
-            return(<BigContent><MatchList params={{team_id: this.state.team.id, matches: this.state.team.matches}}/></BigContent>)
+            //let matches_params = {team_id: this.state.team.id, matches: this.state.team.matches};
+            //return(<BigContent><MatchList params={matches_params}/></BigContent>)
+
+            let players_params = {team_id: this.state.team.id, team_name: this.state.team.name, players: this.state.team.players, metrics: this.state.team.metrics};
+            return(<BigContent><PlayerList params={players_params}/></BigContent>)
         } else {
             return(<Spinner />)
         }

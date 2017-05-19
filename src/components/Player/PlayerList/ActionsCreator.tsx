@@ -15,12 +15,10 @@ export function FetchTeamMetricStats(team_id: number) {
         headers: {"X-Auth-Token": token}
     });
 
-    instance.get(url)
-        .then((response: AxiosResponse) => {
-                let data: ITeamMetricStats = (response.data as ITeamMetricStats);
-                dispatcher.dispatch(new Actions.ReceiveTeamMetricStats(data));
-            },
-            (err) => {
-                CreateErrorAction(err.toString());
-            });
+    instance.get(url).then((response: AxiosResponse) => {
+        let data: ITeamMetricStats = (response.data.data.team_matches as ITeamMetricStats);
+        dispatcher.dispatch(new Actions.ReceiveTeamMetricStats(data));
+    }).catch((error => {
+        CreateErrorAction(error);
+    }));
 }
