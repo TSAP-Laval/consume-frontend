@@ -1,14 +1,14 @@
-let debug = !(process.env.ENV === 'production');
-let webpack = require('webpack');
-let path = require('path');
+var debug = !(process.env.ENV === 'production');
+var webpack = require('webpack');
+var path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const sassLoaders = [
-  'css-loader',
-  'postcss-loader',
-  'sass-loader?includePaths[]='+ path.resolve(__dirname, 'node_modules')
+    'css-loader',
+    'postcss-loader',
+    'sass-loader?includePaths[]=' + path.resolve(__dirname, 'node_modules')
 ];
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
     },
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: debug? "eval-cheap-source-map": "source-map",
+    devtool: debug ? "eval-cheap-source-map" : "source-map",
 
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
@@ -45,12 +45,10 @@ module.exports = {
     ],
 
     externals: {
-         'Config': JSON.stringify(debug ? {
-             serverUrl: "http://consume-backend-prod.pms5mbrhfk.ca-central-1.elasticbeanstalk.com"
-         } : {
-             serverUrl: "http://consume-backend-prod.pms5mbrhfk.ca-central-1.elasticbeanstalk.com"
-         })
-     },
+        'Config': JSON.stringify({
+            serverUrl: "http://consume-backend-prod.pms5mbrhfk.ca-central-1.elasticbeanstalk.com/"
+        })
+    },
 
     postcss: [
         autoprefixer({

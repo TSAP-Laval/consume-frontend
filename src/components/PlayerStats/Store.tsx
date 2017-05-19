@@ -10,6 +10,7 @@ import { SeasonsReceivedAction } from './Actions/SeasonsReceivedAction';
 import { PositionsReceivedAction } from './Actions/PositionsReceivedActions';
 import { ChangeFilterAction } from './Actions/ChangeFilterAction';
 
+
 class StatsTableStore extends EventEmitter {
     data: Array<IMatch>;
     seasons: Array<ISeason>;

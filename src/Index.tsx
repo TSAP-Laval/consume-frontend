@@ -13,7 +13,7 @@ ReactDOM.render(
   <Router history={browserHistory}>
     <Route path="/" component={Layout}>
       <IndexRoute component={Home}/>
-        <Route path="team/:team_id" component={TeamView}/>
+      <Route path="team/:team_id" component={TeamView}/>
       <Route path="team/:teamID/player/:playerID" component={Player}/>
       <Route path="team/:teamID/settings" component={TeamSettings}/>
     </Route>
