@@ -12,6 +12,7 @@ import {IMetricSummary} from "../../../models/DatabaseModelsSummaries";
 export interface IDataProps {
     params: {
         team_id: number,
+        team_name: string,
         players: IPlayer[],
         metrics: IMetricSummary[]
     }
@@ -96,7 +97,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
     componentWillMount(){
         Store.on("FETCH_PLAYERS", this.setLoadingStatus);
         Store.on("RECEIVE_PLAYERS", this.onStatsReceived);
-        ActionCreator.FetchTeamMetricStats(this.props.params.team_id)
+        ActionCreator.FetchTeamMetricStats(this.props.params.team_id);
     }
 
     componentWillUnmount(){
@@ -112,7 +113,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
             if((columns.length + data.length) == 0) {
                 return(
                     <div>
-                        <h2 className="text-center">Équipe <b>{this.state.nomEquipe}</b></h2>
+                        <h2 className="text-center">Équipe <b>{this.props.params.team_name}</b></h2>
                         <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/settings"} />} />
                         <h3 className="text-center"><b>Aucun joueur trouvé</b></h3>
                     </div>
@@ -120,7 +121,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
             } else {
                 return(
                     <div>
-                        <h2 className="text-center">Équipe <b>{this.state.team_name}</b></h2>
+                        <h2 className="text-center">Équipe <b>{this.props.params.team_name}</b></h2>
                         <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/settings"} />} />
                         <CustomTable columns={columns}>
                             {data}
