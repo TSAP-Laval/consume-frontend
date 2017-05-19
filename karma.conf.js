@@ -1,4 +1,4 @@
-let debug = !(process.env.ENV === 'production');
+var debug = !(process.env.ENV === 'production');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
