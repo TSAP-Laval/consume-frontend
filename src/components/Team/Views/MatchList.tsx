@@ -39,14 +39,17 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
 
         if(this.props.params.matches.length > 0) {
             data = this.props.params.matches.map((match, i) => {
+                let date: Date = new Date(match.date);
+
                 let rowData: Array<any> = [match.home_team.name,
                     match.away_team.name,
-                    match.date.toDateString(),
+                    date.toLocaleDateString(),
                     <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/matches/" + match.id}/>} />];
 
                 return <CustomRow key={i} data={rowData}/>
             })
         }
+
         return data
     }
 

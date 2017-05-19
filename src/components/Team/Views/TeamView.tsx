@@ -1,8 +1,10 @@
 import * as React from "react";
-import Spinner from "../Elements/Spinner";
-import {ITeam} from "../../models/DatabaseModels";
-import TeamStore from "./Store";
-import * as ActionsCreator from "./ActionsCreator"
+import Spinner from "../../Elements/Spinner";
+import {ITeam} from "../../../models/DatabaseModels";
+import TeamStore from "../Store";
+import * as ActionsCreator from "../ActionsCreator"
+import MatchList from "./MatchList";
+import BigContent from "../../Elements/BigContent";
 
 export interface ILayoutProps {
     params: {
@@ -15,9 +17,13 @@ export interface ILayoutState {
     team?: ITeam
 }
 
-export default class MatchList extends React.Component<ILayoutProps, ILayoutState> {
+export default class TeamView extends React.Component<ILayoutProps, ILayoutState> {
     constructor(props: ILayoutProps) {
         super(props);
+
+        this.setState({
+           loading: true
+        });
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
         this.setTeam = this.setTeam.bind(this);
@@ -33,7 +39,7 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
         this.setState({
             loading: TeamStore.fetching,
             team: TeamStore.team
-        })
+        });
     }
 
     componentWillMount() {
@@ -50,7 +56,7 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
 
     render() {
         if(!this.state.loading) {
-
+            return(<BigContent><MatchList params={{team_id: this.state.team.id, matches: this.state.team.matches}}/></BigContent>)
         } else {
             return(<Spinner />)
         }

@@ -46,9 +46,9 @@ module.exports = {
 
     externals: {
          'Config': JSON.stringify(debug ? {
-             serverUrl: "http://consume-backend-prod.pms5mbrhfk.ca-central-1.elasticbeanstalk.com/"
+             serverUrl: "http://consume-backend-prod.pms5mbrhfk.ca-central-1.elasticbeanstalk.com"
          } : {
-             serverUrl: "http://consume-backend-prod.pms5mbrhfk.ca-central-1.elasticbeanstalk.com/"
+             serverUrl: "http://consume-backend-prod.pms5mbrhfk.ca-central-1.elasticbeanstalk.com"
          })
      },
 
