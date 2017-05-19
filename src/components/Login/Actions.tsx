@@ -14,9 +14,9 @@ export class OnAuthenticationSucceeded implements IAction {
     connectedUser: IUser;
     token : string;
 
-    constructor(token:string) {
+    constructor(user:IUser, token:string) {
         this.type = "AUTHENTICATION_SUCCEEDED";
-        //this.connectedUser = user;
+        this.connectedUser = user;
         this.token = token;
     }
 

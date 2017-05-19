@@ -32,28 +32,20 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
 
     handleEmailChange(e: any) {
         this.setState({ email:  e.target.value})
-        console.log(e.target.value);
-        console.log(this.state.email);
     }
 
     handlePasswordChange(e: any) {
         this.setState({ password: e.target.value})
-        console.log(e.target.value);
-        console.log(this.state.password);
     }
 
     // Will fetch and load the data.
     componentWillMount() {
         Store.on("AuthSucceed", this.onLogin);
-        //     Store.on("AUTHENTICATION_SUCCEEDED", this.getStatus);
-        //     Store.on("AUTHENTICATION_FAILED", this.)
     }
 
     // Pour la gestion de mémoire on supprime les listener d'events.
     componentWillUnmount() {
         Store.removeListener("AuthSucceed", this.onLogin);
-        // Store.removeListener("AUTHENTICATION_SUCCEEDED", this.getStatus);
-        // Store.removeListener("AUTHENTICATION_FAILED", this.getStatus);
     }
 
     render() {
