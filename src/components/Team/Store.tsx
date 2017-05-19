@@ -1,5 +1,5 @@
 import { EventEmitter } from "events"
-import dispatcher from "../Dispatcher"
+import Dispatcher from "../Dispatcher"
 import {IAction} from "../../models/ActionCreation";
 import {ITeam} from "../../models/DatabaseModels";
 import * as Actions from "./Actions"
@@ -33,4 +33,4 @@ class TeamStore extends EventEmitter {
 const store = new TeamStore();
 export default store;
 
-dispatcher.register(store.handleActions.bind(store));
+Dispatcher.register(store.handleActions.bind(store));

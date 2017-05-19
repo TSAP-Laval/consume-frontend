@@ -1,5 +1,5 @@
 import {IAction} from "../../../models/ActionCreation";
-import dispatcher from "../../Dispatcher"
+import Dispatcher from "../../Dispatcher"
 import IMatch from "../Models/IMatch";
 
 export class MatchesReceivedAction implements IAction {
@@ -15,5 +15,5 @@ export class MatchesReceivedAction implements IAction {
 }
 
 export function CreateMatchesReceivedAction(matches: IMatch[], playerName: string) {
-    dispatcher.dispatch(new MatchesReceivedAction(matches, playerName));
+    Dispatcher.dispatch(new MatchesReceivedAction(matches, playerName));
 }

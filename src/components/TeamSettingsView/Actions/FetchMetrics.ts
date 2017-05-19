@@ -1,6 +1,6 @@
 import { IAction } from "../../../models/ActionCreation";
 import axios, {AxiosResponse} from 'axios';
-import dispatcher from "../../Dispatcher";
+import Dispatcher from "../../Dispatcher";
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import { CreateMetricsReceivedAction } from './MetricsReceived';
 import { Metric } from '../MetricModel';
@@ -15,9 +15,8 @@ export class FetchMetrics implements IAction {
 }
 
 export function CreateFetchMetricsAction(teamId: number) {
-    dispatcher.dispatch(new FetchMetrics());
+    Dispatcher.dispatch(new FetchMetrics());
 
-    // TODO: Enlever le hardcoding quand on se loggera pour vrai (et qu'on aura pas de data seedé)
     let url: string = Config.serverUrl + "/teams/" + teamId + "/metrics";
 
     axios.get(url).then(

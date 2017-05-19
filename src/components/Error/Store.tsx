@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import {IAction} from "../../models/ActionCreation";
-import dispatcher from "../Dispatcher";
+import Dispatcher from "../Dispatcher";
 import { ErrorAction } from "./ErrorAction";
 
 class ErrorStore extends EventEmitter {
@@ -26,5 +26,5 @@ class ErrorStore extends EventEmitter {
 }
 
 const store = new ErrorStore();
-dispatcher.register(store.handleActions.bind(store));
+Dispatcher.register(store.handleActions.bind(store));
 export default store;

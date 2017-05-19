@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { IAction } from "../../Models/ActionCreation";
 import * as Actions from "./Actions"
 //import { ZoneData, Coordinate, Zone, Size } from "../../Models/ComponentModels";
-import dispatcher from "../dispatcher"
+import Dispatcher from "../Dispatcher"
 //import FilterStore from "./Filter/Store"
 
 class MapStore extends EventEmitter {
@@ -14,7 +14,7 @@ class MapStore extends EventEmitter {
 
     constructor() {
         super();
-        this.actions = new Array<IAction>();
+        this.actions = [];
         this.fetching = false;
         // this.zones = new Array<Zone>();
         // this.mapParameters = new Size(4,3);
@@ -30,13 +30,13 @@ class MapStore extends EventEmitter {
     handleActions(action: IAction) {
         switch(action.type) {
             case "FETCH_ACTIONS":
-                this.fetching = true
-                this.emit("FETCH_ACTIONS")
+                this.fetching = true;
+                this.emit("FETCH_ACTIONS");
                 break;
             case "RECEIVE_ACTIONS":
-                this.fetching = false
-                this.receiveActions((action as Actions.ReceiveActions).actions)
-                this.emit("RECEIVE_ACTIONS")
+                this.fetching = false;
+                this.receiveActions((action as Actions.ReceiveActions).actions);
+                this.emit("RECEIVE_ACTIONS");
                 break;
             case "RECEIVE_PARAMETERS":
                  //this.mapParameters = ((action as Actions.ReceiveMapParameters).parameters);
@@ -112,4 +112,4 @@ class MapStore extends EventEmitter {
 const store = new MapStore();
 export default store;
 
-dispatcher.register(store.handleActions.bind(store));
+Dispatcher.register(store.handleActions.bind(store));

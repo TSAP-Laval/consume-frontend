@@ -1,5 +1,5 @@
 import {IAction} from "../../../models/ActionCreation";
-import dispatcher from "../../Dispatcher";
+import Dispatcher from "../../Dispatcher";
 
 import { CreateGetMatchesAction } from "./GetMatchesAction";
 
@@ -17,6 +17,6 @@ export class ChangeFilterAction implements IAction {
 }
 
 export function CreateChangeFilterAction(seasonID: number, positionID: number, playerID: number, teamID: number) {
-    dispatcher.dispatch(new ChangeFilterAction(seasonID, positionID));
+    Dispatcher.dispatch(new ChangeFilterAction(seasonID, positionID));
     CreateGetMatchesAction(playerID, teamID, seasonID, positionID)
 }

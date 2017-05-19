@@ -2,7 +2,7 @@ import { EventEmitter } from "events"
 import {IAction} from "../../models/ActionCreation"
 import {Filter} from "../../models/ComponentModels"
 import * as Actions from "./Actions"
-import dispatcher from "../Dispatcher"
+import Dispatcher from "../Dispatcher"
 
 class FilterStore extends EventEmitter {
     filters: {[component: string] : {[name: string] : Filter}};
@@ -33,4 +33,4 @@ class FilterStore extends EventEmitter {
 const store = new FilterStore();
 export default store;
 
-dispatcher.register(store.handleActions.bind(store));
+Dispatcher.register(store.handleActions.bind(store));

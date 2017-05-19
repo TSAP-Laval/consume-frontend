@@ -1,5 +1,5 @@
 import {EventEmitter} from "events"
-import dispatcher from "../../Dispatcher";
+import Dispatcher from "../../Dispatcher";
 import {IAction} from "../../../models/ActionCreation";
 import {ITeamMetricStats} from "../../../models/DatabaseModels"
 import * as Actions from "./Actions"
@@ -34,4 +34,4 @@ class TeamMetricStatsStore extends EventEmitter {
 const store = new TeamMetricStatsStore();
 export default store;
 
-dispatcher.register(store.handleActions.bind(store));
+Dispatcher.register(store.handleActions.bind(store));

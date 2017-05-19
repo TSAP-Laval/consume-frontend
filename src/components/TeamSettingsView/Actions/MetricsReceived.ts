@@ -1,5 +1,5 @@
 import { IAction } from "../../../models/ActionCreation";
-import dispatcher from "../../Dispatcher";
+import Dispatcher from "../../Dispatcher";
 import { Metric } from '../MetricModel';
 
 export class MetricsReceived implements IAction {
@@ -13,5 +13,5 @@ export class MetricsReceived implements IAction {
 }
 
 export function CreateMetricsReceivedAction(metrics: Array<Metric>) {
-    dispatcher.dispatch(new MetricsReceived(metrics));
+    Dispatcher.dispatch(new MetricsReceived(metrics));
 }

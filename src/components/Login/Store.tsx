@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import { IAction } from "../../Models/ActionCreation";
 import * as Actions from "./Actions"
-import dispatcher from "../dispatcher"
+import Dispatcher from "../Dispatcher"
 import { Status } from "../PlayerStats/models/Status";
 import {IUser} from "../../Models/DatabaseModels";
 
@@ -39,25 +39,24 @@ class LoginStore extends EventEmitter {
         switch (action.type) {
             case "AUTHENTICATE_USER":
                 this.requestStatus = Status.Started;
-                this.emit("requestState")
+                this.emit("requestState");
                 break;
 
             case "AUTHENTICATION_SUCCEEDED":
                 let succeeded: Actions.OnAuthenticationSucceeded = action as Actions.OnAuthenticationSucceeded;
                 this.connectedUser = succeeded.connectedUser;
                 this.isLoggedIn = true;
-                this.emit("AuthSucceed")
+                this.emit("AuthSucceed");
 
                 // Intialize the state.
                 this.requestStatus = Status.Started;
-                this.emit("requestState")
+                this.emit("requestState");
                 break;
         }
     }
 }
 
 const store = new LoginStore();
-
-dispatcher.register(store.handleActions.bind(store));
-
 export default store;
+
+Dispatcher.register(store.handleActions.bind(store));

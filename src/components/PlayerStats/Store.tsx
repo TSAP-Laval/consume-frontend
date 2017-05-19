@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import {IAction} from "../../models/ActionCreation";
-import dispatcher from "../Dispatcher";
+import Dispatcher from "../Dispatcher";
 import IMatch from "./Models/IMatch";
 import { ISeason } from "./Models/ISeason";
 import { IPosition } from './Models/IPosition';
@@ -124,5 +124,5 @@ class StatsTableStore extends EventEmitter {
 }
 
 const store = new StatsTableStore();
-dispatcher.register(store.handleActions.bind(store));
+Dispatcher.register(store.handleActions.bind(store));
 export default store;

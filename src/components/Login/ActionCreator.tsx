@@ -1,12 +1,12 @@
 import * as Actions from "./Actions"
-import dispatcher from "../dispatcher";
+import Dispatcher from "../Dispatcher";
 import axios from 'axios';
 import { CreateErrorAction } from "../Error/ErrorAction";
 import {IUser} from "../../Models/DatabaseModels";
 import * as Config from 'Config';
 
 export function CreateAuthenticateUserAction(email: string, password: string) {
-    dispatcher.dispatch(new Actions.AuthenticateUser());
+    Dispatcher.dispatch(new Actions.AuthenticateUser());
 
 
     // Define the url
@@ -29,5 +29,5 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
 }
 
  export function CreateOnAuthenticationSucceededAction(user: IUser, token:string) {
-     dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
+     Dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
  }

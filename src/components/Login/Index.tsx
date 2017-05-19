@@ -1,8 +1,6 @@
 import * as React from "react";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { TextField, FlatButton } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
 import Store from "./Store";
 import * as ActionCreator from "./ActionCreator"
 
@@ -16,7 +14,7 @@ export interface ILoginState {
 export default class Login extends React.Component<ILoginProps, ILoginState> {
 
     constructor(props: ILoginProps) {
-        super();
+        super(props);
         this.onLogin = this.onLogin.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);

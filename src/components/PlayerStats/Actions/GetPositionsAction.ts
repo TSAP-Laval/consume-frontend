@@ -1,5 +1,5 @@
 import {IAction} from "../../../models/ActionCreation";
-import dispatcher from '../../Dispatcher';
+import Dispatcher from '../../Dispatcher';
 import { IPosition } from '../Models/IPosition';
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import { CreatePositionsReceivedAction } from "./PositionsReceivedActions";
@@ -17,7 +17,7 @@ export class GetPositionsAction implements IAction {
 }
 
 export function CreateGetPositionsAction(playerID: number) {
-    dispatcher.dispatch(new GetPositionsAction(playerID));
+    Dispatcher.dispatch(new GetPositionsAction(playerID));
 
     let url: string = Config.serverUrl + "/stats/player/" + playerID + "/positions";
 

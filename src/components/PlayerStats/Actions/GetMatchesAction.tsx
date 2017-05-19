@@ -1,5 +1,5 @@
 import {IAction} from "../../../models/ActionCreation";
-import dispatcher from "../../Dispatcher"
+import Dispatcher from "../../Dispatcher"
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import axios from 'axios';
 import IMatch from "../Models/IMatch";
@@ -19,7 +19,7 @@ export class GetMatchesAction implements IAction {
 }
 
 export function CreateGetMatchesAction(playerId: number, teamId: number, seasonID?: number, positionID?: number) {
-    dispatcher.dispatch(new GetMatchesAction(playerId, teamId));
+    Dispatcher.dispatch(new GetMatchesAction(playerId, teamId));
 
     let url: string = Config.serverUrl + "/stats/player/" + playerId.toString() + "/team/" + teamId.toString();
 
@@ -48,7 +48,7 @@ export function CreateGetMatchesAction(playerId: number, teamId: number, seasonI
             match.date = new Date(match.date.toString());
             return match;
         });
-        dispatcher.dispatch(new MatchesReceivedAction(matches.sort((a, b) => {
+        Dispatcher.dispatch(new MatchesReceivedAction(matches.sort((a, b) => {
             return a.date.getTime() - b.date.getTime();
         }), playerName));
     },
