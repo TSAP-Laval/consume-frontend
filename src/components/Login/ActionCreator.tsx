@@ -20,12 +20,10 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
             //We fetch the informations of authenticated user.
             let user: IUser = response.data.user as IUser;
             let token: string = response.data.auth_token;
-            console.log(response.data);
 
             CreateOnAuthenticationSucceededAction(user, token)
         })
-        .catch(error => {
-            console.log(error.response.data); 
+        .catch(error => { 
             CreateErrorAction(error.response.data.message);
         });
 }
