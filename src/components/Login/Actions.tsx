@@ -14,21 +14,10 @@ export class OnAuthenticationSucceeded implements IAction {
     connectedUser: IUser;
     token : string;
 
-    constructor(user: IUser, token:string) {
+    constructor(token:string) {
         this.type = "AUTHENTICATION_SUCCEEDED";
-        this.connectedUser = user;
+        //this.connectedUser = user;
         this.token = token;
-    }
-
-}
-
-export class OnAuthenticationFailed implements IAction {
-    type: string;
-    err: string;
-
-    constructor(error: any) {
-        this.type = "AUTHENTICATION_FAILED";
-        this.err = error;
     }
 
 }

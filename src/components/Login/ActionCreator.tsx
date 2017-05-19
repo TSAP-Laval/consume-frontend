@@ -11,12 +11,6 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
 
     // Define the url
     const url: string = Config.serverUrl + "auth/login";
-    //const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6eyJmaXJzdF9uYW1lIjoiS2V2aW4iLCJsYXN0X25hbWUiOiJLaW0iLCJpc19hZG1pbiI6dHJ1ZSwibW9kaWZpZWRfYXQiOiIyMDE3LTA1LTE2VDAyOjQwOjIyKzAwOjAwIiwiY3JlYXRlZF9hdCI6IjIwMTctMDUtMTZUMDI6NDA6MjIrMDA6MDAiLCJlbWFpbCI6InN0ZXBoZW5yb2RyaWd1ZXpAaG90bWFpbC5jb20iLCJpZCI6NSwidGVhbXMiOltdfSwiaWF0IjoxNDk0OTAzNjc2fQ.KcQAvgfdvrmpRJyfHe2s8RntxwflHdBGPMjQQbRdje4";
-
-    // Added the token into headers.
-    // let instance = axios.create({
-    //          headers: {"X-Auth-Token":token}
-    // })
 
     axios.post(url, {
         email: email,
@@ -24,37 +18,27 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
     },)
         .then((response) => {
             //We fetch the informations of authenticated user.
+
+            //TODO(Loic): WE NEED USER'S INFORMMATIONS.
             let user: IUser = response.data.user as IUser;
-            let token: string = response.data.token;
+            let token: string = response.data.auth_token;
             console.log(response.data);
 
-            CreateOnAuthenticationSucceededAction(user, token)
+            CreateOnAuthenticationSucceededAction(token)
         })
-        .catch(function (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
-            console.log(error.config);
-            CreateErrorAction(error);
+        .catch(error => {
+            console.log(error.response.data); 
+            CreateErrorAction(error.response.data.message);
             //CreateOnAuthenticationFailedAction(error.response.data);
         });
 }
-
-export function CreateOnAuthenticationSucceededAction(user: IUser, token:string) {
-    dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
-}
+//DO NOT DELETE IT
+// export function CreateOnAuthenticationSucceededAction(user: IUser, token:string) {
+//     dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
+// }
+export function CreateOnAuthenticationSucceededAction(token:string) {
+     dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(token));
+ }
 
 export function CreateOnAuthenticationFailedAction(error: any) {
     dispatcher.dispatch(new Actions.OnAuthenticationFailed(error));

@@ -52,12 +52,6 @@ class LoginStore extends EventEmitter {
                 this.requestStatus = Status.Started;
                 this.emit("requestState")
                 break;
-
-            case "AUTHENTICATION_FAILED":
-                let failed: Actions.OnAuthenticationFailed = action as Actions.OnAuthenticationFailed;
-                this.error = failed.err;
-                this.emit("AuthFailed");
-                break;
         }
     }
 }

@@ -24,6 +24,14 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
         }
     }
 
+    componentWillMount(){
+        LoginStore.on("AuthSucceed", this.userIsLoggedIn);
+    }
+
+    componentWillUnmount(){
+        LoginStore.removeListener("AuthSucceed", this.userIsLoggedIn);
+    }
+
     userIsLoggedIn(){
         this.setState({
            isLoggedIn : LoginStore.userIsLoggedIn()
