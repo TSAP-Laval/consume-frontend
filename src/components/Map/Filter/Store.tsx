@@ -1,5 +1,5 @@
 import { EventEmitter } from "events"
-import IAction from "../../IAction"
+import IAction from "../../IAction.tsx"
 import * as Actions from "./Actions"
 import dispatcher from "../../Dispatcher"
 import * as Models from "./Models"

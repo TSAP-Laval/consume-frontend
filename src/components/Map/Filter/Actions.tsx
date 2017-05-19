@@ -1,4 +1,4 @@
-import IAction from "../../IAction"
+import IAction from "../../IAction.tsx"
 import {ComponentModels} from "../../../models"
 
 export class FilterActionsByType implements IAction {

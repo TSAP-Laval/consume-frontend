@@ -1,4 +1,4 @@
-import IAction from "../IAction"
+import IAction from "../IAction.tsx"
 import {Action, Size} from "./Models"
 
 export class FetchActions implements IAction {

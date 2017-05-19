@@ -58,8 +58,8 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
     }
 
     render() {
-        let arrowTitle = "Tracé des Actions";
-        let heatmapTitle = "Heatmap des Actions";
+        let arrowTitle = "Tracé des Action";
+        let heatmapTitle = "Heatmap des Action";
         let statsTitle = "Statistiques du joueur";
         let graphTitle = "Progression du joueur";
 

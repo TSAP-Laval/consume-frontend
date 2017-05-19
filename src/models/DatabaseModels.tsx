@@ -39,12 +39,6 @@ export interface IMetric {
     team: ITeam;
 }
 
-export interface IMetricData {
-    metric: IMetric;
-    value: number;
-    deviation: number;
-}
-
 export interface IPlayer {
     id: number;
     first_name: string;
@@ -72,6 +66,10 @@ export interface ITeam {
     players: IPlayer[];
 }
 
+export interface ITeamMetricStats {
+    metrics_avg: {[metric_id: string] : number}
+    player_metrics: {[player_id: string] : {[metric_id: string] : {avg: number, last: number}}}
+}
 
 export interface IUser {
     id: number;

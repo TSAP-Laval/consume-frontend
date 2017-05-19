@@ -1,5 +1,5 @@
 import { EventEmitter } from "events"
-import IAction from "../IAction"
+import IAction from "../IAction.tsx"
 import * as Actions from "./Actions"
 import {Action, ZoneData, Coordinate, Zone, Size} from "./Models"
 import dispatcher from "../Dispatcher"
