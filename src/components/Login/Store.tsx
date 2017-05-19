@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { IAction } from "../../Models/ActionCreation";
 import * as Actions from "./Actions"
 import Dispatcher from "../Dispatcher"
-import { Status } from "../PlayerStats/models/Status";
+import { Status } from "../PlayerStats/Models/Status";
 import {IUser} from "../../Models/DatabaseModels";
 
 class LoginStore extends EventEmitter {

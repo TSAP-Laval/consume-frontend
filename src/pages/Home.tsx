@@ -1,6 +1,6 @@
 import * as React from "react";
 import BigContent from "../components/Elements/BigContent";
-import LoginStore from "../components/Login/store";
+import LoginStore from "../components/Login/Store";
 import Login from "../components/Login/Index";
 
 
