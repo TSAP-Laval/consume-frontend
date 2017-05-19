@@ -1,8 +1,5 @@
 import * as React from "react";
 import styled from 'styled-components';
-import {ActionMap} from "../components/Map/ActionMap/Index"
-import {HeatMap} from "../components/Map/HeatMap/Index"
-
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
 import StatsTableStore from "../components/PlayerStats/Store";
@@ -58,8 +55,6 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
     }
 
     render() {
-        let arrowTitle = "Tracé des Actions";
-        let heatmapTitle = "Heatmap des Actions";
         let statsTitle = "Statistiques du joueur";
         let graphTitle = "Progression du joueur";
 
@@ -75,9 +70,6 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
 
         return (
             <AllContainer>
-                <DataPanel PlayerName={this.state.playerName} Header={arrowTitle}><ActionMap playerID={this.props.params.player_id} teamID={this.props.params.teamID}/></DataPanel>
-                <DataPanel PlayerName={this.state.playerName} Header={heatmapTitle} ><HeatMap playerID={this.props.params.player_id} teamID={this.props.params.teamID}/></DataPanel>
-
                 <DataPanel PlayerName={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
                 <DataPanel PlayerName={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
             </AllContainer>
