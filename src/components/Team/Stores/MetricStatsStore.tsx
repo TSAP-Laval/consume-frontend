@@ -2,20 +2,27 @@ import {EventEmitter} from "events"
 import Dispatcher from "../../Dispatcher";
 import {IAction} from "../../../models/ActionCreation";
 import {ITeamMetricStats} from "../../../models/DatabaseModels"
-import * as Actions from "./Actions"
+import * as Actions from "../Actions"
 
 class TeamMetricStatsStore extends EventEmitter {
     fetching: boolean;
-    stats: ITeamMetricStats;
+    metric_stats: {[team_id: string] : ITeamMetricStats};
     
      constructor() {
         super();
         this.fetching = false;
+        this.metric_stats = {};
+    }
+
+    addTeamMetricStats(team_id: number, stats: ITeamMetricStats) {
+         this.metric_stats[team_id.toString()] = stats;
+    }
+
+    teamMetricStatsExists(team_id: number) {
+        return (team_id.toString() in this.metric_stats);
     }
 
     handleActions(action: IAction){
-        console.log(action.type);
-
         switch(action.type) {
             case "FETCH_TEAM_METRIC_STATS":
                 this.fetching = true;
@@ -23,7 +30,7 @@ class TeamMetricStatsStore extends EventEmitter {
                 break;
             case "RECEIVE_TEAM_METRIC_STATS":
                 this.fetching = false;
-                this.stats = (action as Actions.ReceiveTeamMetricStats).stats;
+                this.addTeamMetricStats((action as Actions.ReceiveTeamMetricStats).team_id, (action as Actions.ReceiveTeamMetricStats).stats);
                 this.emit(action.type);
                 break;
         }

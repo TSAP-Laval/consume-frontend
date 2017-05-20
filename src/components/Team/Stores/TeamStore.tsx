@@ -1,16 +1,25 @@
 import { EventEmitter } from "events"
-import Dispatcher from "../Dispatcher"
-import {IAction} from "../../models/ActionCreation";
-import {ITeam} from "../../models/DatabaseModels";
-import * as Actions from "./Actions"
+import Dispatcher from "../../Dispatcher"
+import {IAction} from "../../../models/ActionCreation";
+import {ITeam} from "../../../models/DatabaseModels";
+import * as Actions from "../Actions"
 
 class TeamStore extends EventEmitter {
     fetching: boolean;
-    team: ITeam;
+    teams: {[team_id: string] : ITeam};
 
     constructor() {
         super();
         this.fetching = false;
+        this.teams = {}
+    }
+
+    addTeam(team: ITeam) {
+        this.teams[team.id.toString()] = team;
+    }
+
+    teamExists(team_id: number) {
+        return (team_id.toString() in this.teams);
     }
 
     handleActions(action: IAction) {
@@ -20,7 +29,7 @@ class TeamStore extends EventEmitter {
                 this.emit(action.type);
                 break;
             case "RECEIVE_TEAM":
-                this.team = (action as Actions.ReceiveTeam).team;
+                this.addTeam((action as Actions.ReceiveTeam).team);
                 this.fetching = false;
                 this.emit(action.type);
                 break;
