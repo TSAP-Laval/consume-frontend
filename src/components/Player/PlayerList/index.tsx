@@ -97,8 +97,9 @@ export default class PlayerList extends React.Component<ILayoutProps, ILayoutSta
     componentWillMount(){
         TeamMetricStatsStore.on("FETCH_TEAM_METRIC_STATS", this.setLoadingStatus);
         TeamMetricStatsStore.on("RECEIVE_TEAM_METRIC_STATS", this.onStatsReceived);
-
-        console.log("ACTION TRIGGERED");
+    }
+    
+    componentDidMount() {
         ActionCreator.FetchTeamMetricStats(this.props.team_id);
     }
 

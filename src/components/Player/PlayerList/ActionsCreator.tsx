@@ -10,7 +10,7 @@ const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwi
 export function FetchTeamMetricStats(team_id: number) {
     console.log("BEFORE DISPATCHING");
 
-    const fetch_metrics = new Actions.FetchTeamMetricStats;
+    const fetch_metrics = new Actions.FetchTeamMetricStats();
     Dispatcher.dispatch(fetch_metrics);
 
     console.log("AFTER DISPATCHING");

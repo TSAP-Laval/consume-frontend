@@ -22,6 +22,7 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
     constructor(props: ILayoutProps) {
         super(props);
 
+        console.log("CONSTRUCTOR SETTING STATE");
         this.state = {
            loading: true
         };
@@ -31,7 +32,7 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
     }
 
     setLoadingStatus() {
-        console.log("TEAMVIEW STATE CHANGE.");
+        console.log("TEAMVIEW STATE CHANGE: ", false);
 
         this.setState({
             loading: TeamStore.fetching
@@ -39,7 +40,7 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
     }
 
     setTeam() {
-        console.log("TEAMVIEW STATE CHANGE.");
+        console.log("TEAMVIEW STATE CHANGE: ", TeamStore.fetching);
 
         this.setState({
             loading: TeamStore.fetching,
@@ -50,7 +51,10 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
     componentWillMount() {
         TeamStore.on("FETCH_TEAM", this.setLoadingStatus);
         TeamStore.on("RECEIVE_TEAM", this.setTeam);
+        console.log("COMPONENT WILL MOUNT");
+    }
 
+    componentDidMount() {
         ActionsCreator.getTeam(this.props.params.team_id);
     }
 
