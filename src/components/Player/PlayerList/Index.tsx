@@ -9,22 +9,20 @@ import CustomTable from "../../CustomTable/CustomTable"
 import CustomRow from "../../CustomTable/CustomRow"
 import {IMetricSummary} from "../../../models/DatabaseModelsSummaries";
 
-export interface IDataProps {
-    params: {
-        team_id: number,
-        team_name: string,
-        players: IPlayer[],
-        metrics: IMetricSummary[]
-    }
+export interface ILayoutProps {
+    team_id: number,
+    team_name: string,
+    players: IPlayer[],
+    metrics: IMetricSummary[]
 }
 
-export interface IDataState {
+export interface ILayoutState {
     loading?: boolean,
     stats?: ITeamMetricStats
 }
 
-export default class PlayerList extends React.Component<IDataProps, IDataState> {
-    constructor(props: IDataProps) {
+export default class PlayerList extends React.Component<ILayoutProps, ILayoutState> {
+    constructor(props: ILayoutProps) {
         super(props);
 
         this.state = {
@@ -51,14 +49,14 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
     getTableData() {
         let data: Array<any> = [];
 
-        if(this.props.params.players.length > 0) {
-            data = this.props.params.players.map((player: IPlayer, i: number) => {
+        if(this.props.players.length > 0) {
+            data = this.props.players.map((player: IPlayer, i: number) => {
                 let rowData: Array<any> = [player.first_name, player.last_name];
 
-                if(this.props.params.metrics.length > 0) {
+                if(this.props.metrics.length > 0) {
                     let player_metrics: {[metric_id: string] : {avg: number, last: number}} = this.state.stats.player_metrics[player.id];
 
-                    let metric_ids: Array<number> = this.props.params.metrics.map((metric) => {
+                    let metric_ids: Array<number> = this.props.metrics.map((metric) => {
                         return metric.id;
                     });
 
@@ -68,7 +66,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
                     }
                 }
 
-                rowData.push(<FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id+ "/player/" + player.id}/>} />);
+                rowData.push(<FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.team_id+ "/player/" + player.id}/>} />);
 
                 return <CustomRow key={i} data={rowData}/>
             })
@@ -79,11 +77,11 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
     getTableColumns() {
         let columns: Array<string> = [];
 
-        if(this.props.params.players.length > 0) {
+        if(this.props.players.length > 0) {
             columns = ["Prénom", "Nom"];
 
-            if(this.props.params.metrics.length > 0) {
-                columns = columns.concat(this.props.params.metrics.map((metric) => {
+            if(this.props.metrics.length > 0) {
+                columns = columns.concat(this.props.metrics.map((metric) => {
                     return metric.name;
                 }));
             }
@@ -97,15 +95,19 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
     componentWillMount(){
         TeamMetricStatsStore.on("FETCH_TEAM_METRIC_STATS", this.setLoadingStatus);
         TeamMetricStatsStore.on("RECEIVE_TEAM_METRIC_STATS", this.onStatsReceived);
-        ActionCreator.FetchTeamMetricStats(this.props.params.team_id);
+
+        console.log("ACTION TRIGGERED");
+        ActionCreator.FetchTeamMetricStats(this.props.team_id);
     }
 
     componentWillUnmount(){
+        console.log("UNMOUNT PLAYERLIST");
         TeamMetricStatsStore.removeListener("FETCH_TEAM_METRIC_STATS", this.onStatsReceived);
         TeamMetricStatsStore.removeListener("RECEIVE_TEAM_METRIC_STATS", this.onStatsReceived);
     }
 
     render() {
+        console.log("RENDERING PLAYERLIST");
         if(!this.state.loading) {
             let columns = this.getTableColumns();
             let data = this.getTableData();
@@ -113,16 +115,16 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
             if((columns.length + data.length) == 0) {
                 return(
                     <div>
-                        <h2 className="text-center">Équipe <b>{this.props.params.team_name}</b></h2>
-                        <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/settings"} />} />
+                        <h2 className="text-center">Équipe <b>{this.props.team_name}</b></h2>
+                        <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.team_id + "/settings"} />} />
                         <h3 className="text-center"><b>Aucun joueur trouvé</b></h3>
                     </div>
                 )
             } else {
                 return(
                     <div>
-                        <h2 className="text-center">Équipe <b>{this.props.params.team_name}</b></h2>
-                        <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/settings"} />} />
+                        <h2 className="text-center">Équipe <b>{this.props.team_name}</b></h2>
+                        <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.team_id + "/settings"} />} />
                         <CustomTable columns={columns}>
                             {data}
                         </CustomTable>

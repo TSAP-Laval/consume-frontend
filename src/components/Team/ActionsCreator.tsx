@@ -10,7 +10,7 @@ const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwi
 export function getTeam(team_id: number) {
     Dispatcher.dispatch(new Actions.FetchTeam());
 
-    let url: string = serverUrl + "/teams/" + team_id;
+    let url: string = serverUrl + "teams/" + team_id;
     let instance = axios.create({
         headers: {"X-Auth-Token":token}
     });

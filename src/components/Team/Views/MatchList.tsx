@@ -6,10 +6,8 @@ import FlatButton from 'material-ui/FlatButton';
 import {IMatchSummary} from "../../../models/DatabaseModelsSummaries";
 
 export interface ILayoutProps {
-    params: {
-        team_id: number
-        matches: Array<IMatchSummary>
-    }
+    team_id: number
+    matches: Array<IMatchSummary>
 }
 
 export interface ILayoutState {
@@ -27,7 +25,7 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
     getTableColumns() {
         let columns: Array<String> = [];
 
-        if(this.props.params.matches.length > 0) {
+        if(this.props.matches.length > 0) {
             columns = ["Équipe locale", "Équipe visiteur", "Date", "Voir Détails"]
         }
 
@@ -37,14 +35,14 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
     getTableData() {
         let data: Array<any> = [];
 
-        if(this.props.params.matches.length > 0) {
-            data = this.props.params.matches.map((match, i) => {
+        if(this.props.matches.length > 0) {
+            data = this.props.matches.map((match, i) => {
                 let date: Date = new Date(match.date);
 
                 let rowData: Array<any> = [match.home_team.name,
                     match.away_team.name,
                     date.toLocaleDateString(),
-                    <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/matches/" + match.id}/>} />];
+                    <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.team_id + "/matches/" + match.id}/>} />];
 
                 return <CustomRow key={i} data={rowData}/>
             })

@@ -22,9 +22,9 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
     constructor(props: ILayoutProps) {
         super(props);
 
-        this.setState({
+        this.state = {
            loading: true
-        });
+        };
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
         this.setTeam = this.setTeam.bind(this);
@@ -51,17 +51,15 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
     }
 
     componentWillUnmount() {
+        console.log("UNMOUNT TEAMVIEW");
         TeamStore.removeListener("FETCH_TEAM", this.setLoadingStatus);
         TeamStore.removeListener("RECEIVE_TEAM", this.setTeam);
     }
 
     render() {
         if(!this.state.loading) {
-            //let matches_params = {team_id: this.state.team.id, matches: this.state.team.matches};
-            //return(<BigContent><MatchList params={matches_params}/></BigContent>)
-
-            let players_params = {team_id: this.state.team.id, team_name: this.state.team.name, players: this.state.team.players, metrics: this.state.team.metrics};
-            return(<BigContent><PlayerList params={players_params}/></BigContent>)
+            //return(<BigContent><MatchList team_id={this.state.team.id} matches={this.state.team.matches}/></BigContent>)
+            return(<BigContent><PlayerList team_id={this.state.team.id} team_name={this.state.team.name} players={this.state.team.players} metrics={this.state.team.metrics}/></BigContent>)
         } else {
             return(<Spinner />)
         }

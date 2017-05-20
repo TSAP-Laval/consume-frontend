@@ -70,7 +70,6 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                     type="password"
                     name='password'
                 onChange={this.handlePasswordChange}
-                /*TODO (loic): AJouter des validations front-end*/
                 />
                 <div style={{ float: 'right' }}>
                     <FlatButton label="login" primary={true} onClick={this.onLogin} />
@@ -78,5 +77,4 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             </div>
         );
     }
-
 }
