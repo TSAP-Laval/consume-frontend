@@ -4,6 +4,7 @@ import LoginStore from "../components/Login/Store";
 import Login from "../components/Login/index";
 import {RaisedButton} from "material-ui";
 import { Link } from 'react-router';
+import Li from "../components/Elements/Li";
 
 
 export interface ILayoutProps {
@@ -40,7 +41,11 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
     render() {
         return(
             <BigContent>
-                <Link to="/team/3"><RaisedButton primary={true} label="Statistiques de l'équipe" /></Link>
+                <ul>
+                <Li><Link to="/team/3"><RaisedButton primary={true} label="Statistiques de l'équipe"/></Link></Li><br/>
+                <Li><Link to="/test-matchlist/3"><RaisedButton primary={true} label="Liste de matchs"/></Link></Li><br/>
+                <Li><Link to="/test-playerlist/3"><RaisedButton primary={true} label="Liste de joueurs"/></Link></Li>
+                </ul>
             </BigContent>
         )
     }
