@@ -1,5 +1,5 @@
-import {IAction} from "../../Models/ActionCreation";
-import {IUser} from "../../Models/DatabaseModels";
+import {IAction} from "../../models/ActionCreation";
+import {IUser} from "../../models/DatabaseModels";
 
 export class AuthenticateUser implements IAction {
     type: string;

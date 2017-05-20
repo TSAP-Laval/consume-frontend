@@ -3,7 +3,7 @@ import Dispatcher from "../Dispatcher"
 import {CreateErrorAction} from "../Error/ErrorAction";
 import {serverUrl} from "Config"
 import * as Actions from "./Actions"
-import {IActionSummary} from "../../models/DataBaseModelsSummaries"
+import {IActionSummary} from "../../models/DatabaseModelsSummaries"
 
 const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6NSwiaWF0IjoxNDk1MjQ0MTQ4fQ.-xpppidIjMRqfGTMqo5fDYBOntGz7VmTaGFGSzUPe3g";
 

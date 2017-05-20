@@ -3,13 +3,13 @@ import {Layer, Stage} from 'react-konva';
 import LeftDiv from "../../../Elements/LeftDiv";
 import RightDiv from "../../../Elements/RightDiv";
 import SmallContainer from "../../../Elements/SmallContainer";
-import FieldMap from "../../../Map/Index"
+import FieldMap from "../../../Map"
 import {ActionComponent} from "./Action"
 import {IActionSummary} from "../../../../models/DatabaseModelsSummaries"
 import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../../models/ComponentModels"
 import * as FilterActionsCreator from "../../../Filter/ActionsCreator"
 import FilterStore from "../../../Filter/Store"
-import FilterComponent from "../../../Filter/Index"
+import FilterComponent from "../../../Filter"
 import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
 
 export interface ILayoutProps {

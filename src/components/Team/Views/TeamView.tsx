@@ -5,7 +5,7 @@ import TeamStore from "../Store";
 import * as ActionsCreator from "../ActionsCreator"
 import MatchList from "./MatchList";
 import BigContent from "../../Elements/BigContent";
-import PlayerList from "../../Player/PlayerList/Index";
+import PlayerList from "../../Player/PlayerList/index";
 
 export interface ILayoutProps {
     params: {

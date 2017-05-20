@@ -3,7 +3,7 @@ import Dispatcher from "../../Dispatcher";
 import axios, {AxiosResponse} from 'axios';
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import * as Config from 'Config';
-import { ITeamMetricStats } from "../../../Models/DatabaseModels";
+import { ITeamMetricStats } from "../../../models/DatabaseModels"
 
 const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6NSwiaWF0IjoxNDk1MjQ0MTQ4fQ.-xpppidIjMRqfGTMqo5fDYBOntGz7VmTaGFGSzUPe3g";
 
