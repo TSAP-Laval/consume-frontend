@@ -15,7 +15,8 @@ export interface ILayoutProps {
 
 export interface ILayoutState {
     loading?: boolean,
-    team?: ITeam
+    team?: ITeam,
+    token?: string
 }
 
 export default class TeamView extends React.Component<ILayoutProps, ILayoutState> {
@@ -23,11 +24,13 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
         super(props);
 
         this.setState({
-           loading: true
+           loading: true,
+           token: ''
         });
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
         this.setTeam = this.setTeam.bind(this);
+        this.getToken = this.getToken.bind(this);
     }
 
     setLoadingStatus() {
@@ -40,6 +43,12 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
         this.setState({
             loading: TeamStore.fetching,
             team: TeamStore.team
+        });
+    }
+
+    getToken(){
+          this.setState({
+            token: LoginStore.token 
         });
     }
 
@@ -57,8 +66,6 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
 
     render() {
         if(!this.state.loading) {
-            //let matches_params = {team_id: this.state.team.id, matches: this.state.team.matches};
-            //return(<BigContent><MatchList params={matches_params}/></BigContent>)
 
             let players_params = {team_id: this.state.team.id, team_name: this.state.team.name, players: this.state.team.players, metrics: this.state.team.metrics};
             return(<BigContent><PlayerList params={players_params}/></BigContent>)

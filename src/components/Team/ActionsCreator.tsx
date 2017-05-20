@@ -5,9 +5,8 @@ import * as Actions from "./Actions"
 import {ITeam} from "../../models/DatabaseModels";
 import { CreateErrorAction } from "../Error/ErrorAction";
 
-const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6eyJmaXJzdF9uYW1lIjoiS2V2aW4iLCJsYXN0X25hbWUiOiJLaW0iLCJpc19hZG1pbiI6dHJ1ZSwibW9kaWZpZWRfYXQiOiIyMDE3LTA1LTE2VDAyOjQwOjIyKzAwOjAwIiwiY3JlYXRlZF9hdCI6IjIwMTctMDUtMTZUMDI6NDA6MjIrMDA6MDAiLCJlbWFpbCI6InN0ZXBoZW5yb2RyaWd1ZXpAaG90bWFpbC5jb20iLCJpZCI6NSwidGVhbXMiOltdfSwiaWF0IjoxNDk0OTAzNjc2fQ.KcQAvgfdvrmpRJyfHe2s8RntxwflHdBGPMjQQbRdje4";
 
-export function getTeam(team_id: number) {
+export function getTeam(team_id: number, token: string) {
     Dispatcher.dispatch(new Actions.FetchTeam());
 
     let url: string = serverUrl + "/teams/" + team_id;
@@ -20,5 +19,22 @@ export function getTeam(team_id: number) {
         Dispatcher.dispatch(new Actions.ReceiveTeam(data))
     }).catch((error) => {
         CreateErrorAction(error);
+    });
+}
+
+export function CreateGetTeamsAction(userId: number, token: string, isAdmin: boolean) {
+    Dispatcher.dispatch(new Actions.FetchTeams());
+
+let url: string = isAdmin ? serverUrl + "/teams":  serverUrl + "/users/" + userId;
+    
+    let instance = axios.create({
+        headers: {"X-Auth-Token":token}
+    });
+
+    instance.get(url).then((response: AxiosResponse) => {
+        let data: IUser = (response.data as IUser);
+        Dispatcher.dispatch(new Actions.ReceiveTeams(data))
+    }).catch((error) => {
+        CreateErrorAction(error.response.data.message);
     });
 }

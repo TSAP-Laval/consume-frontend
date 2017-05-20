@@ -1,6 +1,8 @@
 import * as React from "react";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { TextField, FlatButton } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
+import RaisedButton from 'material-ui/RaisedButton';
 import Store from "./Store";
 import * as ActionCreator from "./ActionCreator"
 
@@ -14,7 +16,7 @@ export interface ILoginState {
 export default class Login extends React.Component<ILoginProps, ILoginState> {
 
     constructor(props: ILoginProps) {
-        super(props);
+        super();
         this.onLogin = this.onLogin.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -30,15 +32,20 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
 
     handleEmailChange(e: any) {
         this.setState({ email:  e.target.value})
+        console.log(e.target.value);
+        console.log(this.state.email);
     }
 
     handlePasswordChange(e: any) {
         this.setState({ password: e.target.value})
+        console.log(e.target.value);
+        console.log(this.state.password);
     }
 
     // Will fetch and load the data.
     componentWillMount() {
         Store.on("AuthSucceed", this.onLogin);
+        Store.on();
     }
 
     // Pour la gestion de mémoire on supprime les listener d'events.
@@ -54,7 +61,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                 />
                 <TextField
                     ref='email'
-                    floatingLabelText='Enter your email'
+                    floatingLabelText='Entrer votre email'
                     multiLine={false}
                     fullWidth={true}
                     value ={this.state.email}
@@ -64,13 +71,12 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                 <br />
                 <TextField
                     ref='password'
-                    floatingLabelText='Enter your Password'
+                    floatingLabelText='Entrer votre mot de passe'
                     multiLine={false}
                     fullWidth={true}
                     type="password"
                     name='password'
                 onChange={this.handlePasswordChange}
-                /*TODO (loic): AJouter des validations front-end*/
                 />
                 <div style={{ float: 'right' }}>
                     <FlatButton label="login" primary={true} onClick={this.onLogin} />

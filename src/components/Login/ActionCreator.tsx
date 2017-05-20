@@ -21,13 +21,9 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
             let user: IUser = response.data.user as IUser;
             let token: string = response.data.auth_token;
 
-            CreateOnAuthenticationSucceededAction(user, token)
+            Dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
         })
         .catch(error => { 
             CreateErrorAction(error.response.data.message);
         });
 }
-
- export function CreateOnAuthenticationSucceededAction(user: IUser, token:string) {
-     Dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
- }
