@@ -31,8 +31,6 @@ export default class PlayerList extends React.Component<ILayoutProps, ILayoutSta
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
         this.onStatsReceived = this.onStatsReceived.bind(this);
-
-        console.log("PLAYERLIST CREATED");
     }
 
     setLoadingStatus() {
@@ -104,13 +102,11 @@ export default class PlayerList extends React.Component<ILayoutProps, ILayoutSta
     }
 
     componentWillUnmount(){
-        console.log("UNMOUNT PLAYERLIST");
         TeamMetricStatsStore.removeListener("FETCH_TEAM_METRIC_STATS", this.onStatsReceived);
         TeamMetricStatsStore.removeListener("RECEIVE_TEAM_METRIC_STATS", this.onStatsReceived);
     }
 
     render() {
-        console.log("RENDERING PLAYERLIST");
         if(!this.state.loading) {
             let columns = this.getTableColumns();
             let data = this.getTableData();

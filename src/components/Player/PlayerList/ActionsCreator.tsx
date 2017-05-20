@@ -8,12 +8,8 @@ import { ITeamMetricStats } from "../../../models/DatabaseModels"
 const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6NSwiaWF0IjoxNDk1MjQ0MTQ4fQ.-xpppidIjMRqfGTMqo5fDYBOntGz7VmTaGFGSzUPe3g";
 
 export function FetchTeamMetricStats(team_id: number) {
-    console.log("BEFORE DISPATCHING");
-
     const fetch_metrics = new Actions.FetchTeamMetricStats();
     Dispatcher.dispatch(fetch_metrics);
-
-    console.log("AFTER DISPATCHING");
 
     let url: string = Config.serverUrl + "/stats/team/" + team_id.toString();
     let instance = axios.create({
