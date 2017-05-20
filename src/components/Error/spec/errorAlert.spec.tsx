@@ -3,7 +3,7 @@ import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import ErrorAlert from "../Index";
+import ErrorAlert from "..";
 
 function setup(){
     const muiTheme = getMuiTheme();

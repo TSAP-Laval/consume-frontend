@@ -1,7 +1,7 @@
 import * as React from "react";
 import BigContent from "../components/Elements/BigContent";
 import LoginStore from "../components/Login/Store";
-import Login from "../components/Login/Index";
+import Login from "../components/Login/index";
 import {RaisedButton} from "material-ui";
 import { Link } from 'react-router';
 
