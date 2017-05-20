@@ -14,6 +14,10 @@ module.exports = {
     // Enable sourcemaps for debugging webpack's output.
     devtool: debug ? "eval-cheap-source-map" : "source-map",
 
+    devServer: {
+        historyApiFallback: true
+    },
+
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
