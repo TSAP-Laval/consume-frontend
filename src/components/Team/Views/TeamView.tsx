@@ -40,12 +40,13 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
     }
 
     setTeam() {
-        console.log("TEAMVIEW STATE CHANGE: ", TeamStore.fetching);
+        console.log("TEAMVIEW STATE CHANGE YAO: ", TeamStore.fetching);
 
         this.setState({
             loading: TeamStore.fetching,
             team: TeamStore.team
         });
+        console.log("RECEIVE TEAM DONE")
     }
 
     componentWillMount() {

@@ -12,4 +12,5 @@ export class ErrorAction implements IAction  {
 
 export function CreateErrorAction(message: string) {
     Dispatcher.dispatch(new ErrorAction(message));
+    console.log(message);
 }
