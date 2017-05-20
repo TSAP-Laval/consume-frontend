@@ -21,7 +21,6 @@ class TeamMetricStatsStore extends EventEmitter {
                 this.fetching = true;
                 this.emit(action.type);
                 break;
-
             case "RECEIVE_TEAM_METRIC_STATS":
                 this.fetching = false;
                 this.stats = (action as Actions.ReceiveTeamMetricStats).stats;
@@ -31,7 +30,7 @@ class TeamMetricStatsStore extends EventEmitter {
     }
 }
 
-const store = new TeamMetricStatsStore();
-export default store;
-
+const store = new TeamMetricStatsStore;
 Dispatcher.register(store.handleActions.bind(store));
+
+export default store;

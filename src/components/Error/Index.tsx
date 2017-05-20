@@ -12,10 +12,10 @@ export interface IErrorState {
 export default class ErrorAlert extends React.Component<IErrorProps, IErrorState> {
 
     constructor() {
-        super()
+        super();
         this.state = {
             alertVisible: true
-        }
+        };
 
         this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
     }
