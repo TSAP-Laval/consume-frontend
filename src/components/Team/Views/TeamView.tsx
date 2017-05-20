@@ -31,12 +31,16 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
     }
 
     setLoadingStatus() {
+        console.log("TEAMVIEW STATE CHANGE.");
+
         this.setState({
             loading: TeamStore.fetching
         })
     }
 
     setTeam() {
+        console.log("TEAMVIEW STATE CHANGE.");
+
         this.setState({
             loading: TeamStore.fetching,
             team: TeamStore.team
@@ -58,9 +62,11 @@ export default class TeamView extends React.Component<ILayoutProps, ILayoutState
 
     render() {
         if(!this.state.loading) {
+            console.log("TEAMVIEW CHILD RENDERING");
             //return(<BigContent><MatchList team_id={this.state.team.id} matches={this.state.team.matches}/></BigContent>)
             return(<BigContent><PlayerList team_id={this.state.team.id} team_name={this.state.team.name} players={this.state.team.players} metrics={this.state.team.metrics}/></BigContent>)
         } else {
+            console.log("TEAMVIEW SPINNER RENDERING");
             return(<Spinner />)
         }
     }

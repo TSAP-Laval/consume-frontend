@@ -14,8 +14,6 @@ class TeamMetricStatsStore extends EventEmitter {
     }
 
     handleActions(action: IAction){
-        console.log(action.type);
-
         switch(action.type) {
             case "FETCH_TEAM_METRIC_STATS":
                 this.fetching = true;

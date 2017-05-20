@@ -31,6 +31,8 @@ export default class PlayerList extends React.Component<ILayoutProps, ILayoutSta
 
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
         this.onStatsReceived = this.onStatsReceived.bind(this);
+
+        console.log("PLAYERLIST CREATED");
     }
 
     setLoadingStatus() {
