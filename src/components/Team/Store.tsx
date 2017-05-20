@@ -14,8 +14,6 @@ class TeamStore extends EventEmitter {
     }
 
     handleActions(action: IAction) {
-        console.log(action.type);
-
         switch(action.type) {
             case "FETCH_TEAM":
                 this.fetching = true;
