@@ -1,5 +1,6 @@
 import {IAction} from "../../models/ActionCreation"
-import {ITeam} from "../../models/DatabaseModels"
+import { ITeam, IUser } from "../../models/DatabaseModels"
+import { ITeamSummary } from "../../models/DatabaseModelsSummaries";
 import {ITeamMetricStats} from "../../models/DatabaseModels"
 
 export class FetchTeam implements IAction {
@@ -19,6 +20,25 @@ export class ReceiveTeam implements IAction {
         this.team = team;
     }
 }
+
+export class FetchTeams implements IAction {
+    type: string;
+
+    constructor() {
+        this.type = "FETCH_TEAMS";
+    }
+}
+
+export class ReceiveTeams implements IAction {
+    type: string;
+    teams: Array<ITeamSummary>;
+
+    constructor(teams: Array<ITeamSummary>) {
+        this.type = "RECEIVE_TEAMS";
+        this.teams = teams;
+    }
+}
+
 
 export class FetchTeamMetricStats implements IAction {
     type: string;

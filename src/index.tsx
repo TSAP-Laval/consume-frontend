@@ -10,6 +10,9 @@ import TeamSettings from './pages/TeamSettings';
 import Users from './pages/Users';
 import MatchList from "./components/Team/Views/MatchList";
 import PlayerList from "./components/Team/Views/PlayerList";
+import Login from "./pages/Login";
+import IsAuthenticated from "./pages/IsAuthenticated";
+import IsAdmin from "./pages/IsAdmin";
 
 
 const root = document.getElementById("root");
@@ -18,13 +21,22 @@ ReactDOM.render(
 
     <Router history={browserHistory}>
         <Route path="/" component={Layout}>
-            <IndexRoute component={Home}/>
-            <Route path="users" component={Users} />
-            <Route path="team/:teamID/settings" component={TeamSettings}/>
-            <Route path="team/:team_id/matches/:match_id" component={Match}/>
-            <Route path="team/:team_id/matches" component={MatchList}/>
-            <Route path="team/:team_id/players" component={PlayerList}/>
-            <Route path="team/:teamID/players/:playerID" component={Player}/>
+            <IndexRoute component={Login}/>
+            <Route path="login" component={Login}/>
+
+            <Route component={IsAdmin}>
+                <Route path="users" component={Users} />
+            </Route>
+
+            <Route component={IsAuthenticated} >
+                <Route path="team" component={Home} />
+                <Route path="team/:teamID/settings" component={TeamSettings}/>
+                <Route path="team/:team_id/matches/:match_id" component={Match}/>
+                <Route path="team/:team_id/matches" component={MatchList}/>
+                <Route path="team/:team_id/players" component={PlayerList}/>
+                <Route path="team/:teamID/players/:playerID" component={Player}/>
+            </Route>
+
         </Route>
     </Router>,
 root);

@@ -24,7 +24,7 @@ export class Header extends React.Component<ILayoutProps, ILayoutState> {
 
     render() {
         return (
-            <AppBar className={"navbar"} title={<AppTitle to="/">TSAP</AppTitle>} showMenuIconButton={false} />
+            <AppBar className={"navbar"} title={<AppTitle to="/team">TSAP</AppTitle>} showMenuIconButton={false} />
         );
     }
 }

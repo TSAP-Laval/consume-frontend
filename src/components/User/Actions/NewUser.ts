@@ -20,14 +20,18 @@ export class NewUserAction implements IAction {
 
 }
 
-export function CreateNewUserAction(u: IUser): void {
+export function CreateNewUserAction(u: IUser, token: string): void {
     Dispatcher.dispatch(new NewUserAction(u));
+
+    let instance = axios.create({
+        headers: {"X-Auth-Token": token}
+    });
 
     let url: string = Config.serverUrl + 'users';
 
-    axios.post(url, u).then(
+    instance.post(url, u).then(
         () => {
-            CreateFetchUsersAction();
+            CreateFetchUsersAction(token);
         },
         (err) => {
             CreateErrorAction(err.toString());

@@ -15,6 +15,7 @@ import Form from "../../Elements/Form";
 import FormInput from "../../Elements/FormInput";
 import Li from "../../Elements/Li";
 import {CreateNewUserAction} from "../Actions/NewUser";
+import LoginStore from "../../Login/Store";
 
 export interface IUserListProps {}
 export interface IUserListState {
@@ -79,7 +80,7 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
         UserStore.on("fetchStatusChanged", this.getFetching);
         UserStore.on("usersChanged", this.getUsers);
 
-        CreateFetchUsersAction();
+        CreateFetchUsersAction(LoginStore.token);
     }
 
     private static getColumns(): String[][] {
@@ -114,7 +115,7 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
         this.setState({
             open: false
         });
-        CreateNewUserAction(this.state.newUser);
+        CreateNewUserAction(this.state.newUser, LoginStore.token);
     }
 
     private changeUserProperty(property: any, value: any) {
