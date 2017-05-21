@@ -45,7 +45,6 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     // Will fetch and load the data.
     componentWillMount() {
         Store.on("AuthSucceed", this.onLogin);
-        Store.on();
     }
 
     // Pour la gestion de mémoire on supprime les listener d'events.
