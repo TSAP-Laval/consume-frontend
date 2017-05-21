@@ -1,24 +1,24 @@
-import axios, {AxiosRequestConfig, AxiosResponse} from "axios"
+import axios, {AxiosResponse} from "axios"
 import Dispatcher from "../Dispatcher"
 import {CreateErrorAction} from "../Error/ErrorAction";
 import {serverUrl} from "Config"
 import * as Actions from "./Actions"
-import {IActionSummary} from "../../models/DataBaseModelsSummaries"
+import {IActionSummary} from "../../models/DatabaseModelsSummaries"
 
-const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6eyJmaXJzdF9uYW1lIjoiS2V2aW4iLCJsYXN0X25hbWUiOiJLaW0iLCJpc19hZG1pbiI6dHJ1ZSwibW9kaWZpZWRfYXQiOiIyMDE3LTA1LTE2VDAyOjQwOjIyKzAwOjAwIiwiY3JlYXRlZF9hdCI6IjIwMTctMDUtMTZUMDI6NDA6MjIrMDA6MDAiLCJlbWFpbCI6InN0ZXBoZW5yb2RyaWd1ZXpAaG90bWFpbC5jb20iLCJpZCI6NSwidGVhbXMiOltdfSwiaWF0IjoxNDk0OTAzNjc2fQ.KcQAvgfdvrmpRJyfHe2s8RntxwflHdBGPMjQQbRdje4";
+const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6NSwiaWF0IjoxNDk1MzI1NDc3fQ.68v_Y8ooJrJmUETEJlcddPJUdOg0TqjnJzfAwWWVAbc";
+const instance = axios.create({
+    headers: {"X-Auth-Token":token}
+});
 
-export function fetchMatchActions(team_id: number, match_id: number) {
-    const fetch_match_actions = new Actions.FetchMatchActions();
+export function FetchMatchActions(team_id: number, match_id: number) {
+    const fetch_match_actions = new Actions.FetchMatchActions;
     Dispatcher.dispatch(fetch_match_actions);
 
-    let url = serverUrl + "/teams/" + team_id + "/matches/" + match_id;
-    let instance = axios.create({
-        headers: {"X-Auth-Token":token}
-    });
+    let url = serverUrl + "teams/" + team_id + "/matches/" + match_id;
 
     instance.get(url).then((response: AxiosResponse) => {
-        let data: IActionSummary[] = (response.data as IActionSummary[]);
-        const receive_match_actions = new Actions.ReceiveMatchActions(data);
+        let data: IActionSummary[] = (response.data.data.actions as IActionSummary[]);
+        const receive_match_actions = new Actions.ReceiveMatchActions(match_id, data);
         Dispatcher.dispatch(receive_match_actions);
     }).catch((error) => {
         CreateErrorAction(error);

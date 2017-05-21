@@ -2,18 +2,20 @@ import Dispatcher from "../Dispatcher"
 import {serverUrl} from "Config"
 import axios, {AxiosResponse} from "axios"
 import * as Actions from "./Actions"
-import { ITeam, IUser } from "../../models/DatabaseModels";
+import { ITeam, IUser, ITeamMetricStats } from "../../models/DatabaseModels";
 import { CreateErrorAction } from "../Error/ErrorAction";
-import { ITeamSummary } from "../../Models/DatabaseModelsSummaries";
+import { ITeamSummary } from "../../models/DatabaseModelsSummaries";
 
 
-export function getTeam(team_id: number, token: string) {
-    Dispatcher.dispatch(new Actions.FetchTeam());
+export function FetchTeam(team_id: number, token: string) {
 
-    let url: string = serverUrl + "/teams/" + team_id;
     let instance = axios.create({
         headers: {"X-Auth-Token":token}
     });
+
+    Dispatcher.dispatch(new Actions.FetchTeam());
+
+    let url: string = serverUrl + "teams/" + team_id;
 
     instance.get(url).then((response: AxiosResponse) => {
         let data: ITeam = (response.data.data as ITeam);
@@ -28,17 +30,34 @@ export function CreateGetTeamsAction(userId: number, token: string, isAdmin: boo
 
 let url: string = isAdmin ? serverUrl + "teams": serverUrl + "users/" + userId;
     console.log(url);
+
     let instance = axios.create({
-        headers: {"X-Auth-Token":token}
+        headers: {"X-Auth-Token": token}
     });
     console.log(token);
     instance.get(url).then((response: AxiosResponse) => {
-        console.log(response);
-        let data: Array<ITeamSummary> = isAdmin ? (response.data.data.hits as Array<ITeamSummary>):
-        (response.data.data.teams as Array<ITeamSummary>);
-        Dispatcher.dispatch(new Actions.ReceiveTeams(data));
-        console.log("Dans le axios" + data);
+        let data: Array<ITeamSummary> = isAdmin ? (response.data.hits as Array<ITeamSummary>) :
+            (response.data.teams as Array<ITeamSummary>);
+        Dispatcher.dispatch(new Actions.ReceiveTeams(data))
     }).catch((error) => {
         CreateErrorAction(error);
     });
+}
+
+export function FetchTeamMetricStats(team_id: number, token: string) {
+    let instance = axios.create({
+        headers: {"X-Auth-Token": token}
+    });
+
+    const fetch_metrics = new Actions.FetchTeamMetricStats();
+    Dispatcher.dispatch(fetch_metrics);
+
+    let url: string = serverUrl + "stats/teams/" + team_id.toString();
+
+    instance.get(url).then((response: AxiosResponse) => {
+        let data: ITeamMetricStats = (response.data.data.team_matches as ITeamMetricStats);
+        Dispatcher.dispatch(new Actions.ReceiveTeamMetricStats(team_id, data));
+    }).catch((error => {
+        CreateErrorAction(error);
+    }));
 }

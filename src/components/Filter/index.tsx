@@ -4,7 +4,7 @@ import {Filter, FilterNode} from "../../models/ComponentModels";
 import Li from "../Elements/Li";
 import * as FilterActionsCreator from "./ActionsCreator"
 
-export interface ILayoutProps {
+/*export interface ILayoutProps {
     filter: Filter
 }
 
@@ -27,7 +27,7 @@ export default class FilterComponent extends React.Component<ILayoutProps, ILayo
         });
 
         let filter = new Filter(this.props.filter.name, this.props.filter.component, nodes);
-        FilterActionsCreator.handleFilter(filter);
+        FilterActionsCreator.HandleFilter(filter);
     }
 
     render() {
@@ -43,4 +43,4 @@ export default class FilterComponent extends React.Component<ILayoutProps, ILayo
 
         return(<ul>{nodes}</ul>);
     }
-}
+}*/

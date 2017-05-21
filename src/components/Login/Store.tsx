@@ -1,9 +1,9 @@
 import { EventEmitter } from "events";
-import { IAction } from "../../Models/ActionCreation";
+import { IAction } from "../../models/ActionCreation";
 import * as Actions from "./Actions"
 import Dispatcher from "../Dispatcher"
 import { Status } from "../PlayerStats/Models/Status";
-import {IUser} from "../../Models/DatabaseModels";
+import {IUser} from "../../models/DatabaseModels";
 
 class LoginStore extends EventEmitter {
 
@@ -39,10 +39,10 @@ class LoginStore extends EventEmitter {
                 this.connectedUser = succeeded.connectedUser;
                 this.token = succeeded.token;
                 this.isLoggedIn = true;
+                this.token = succeeded.token;
                 this.emit("AuthSucceed");
 
-                // Intialize the state.
-                this.requestStatus = Status.Started;
+                this.requestStatus = Status.Idle;
                 this.emit("requestState");
                 break;
         }

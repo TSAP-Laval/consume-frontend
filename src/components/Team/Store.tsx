@@ -3,7 +3,7 @@ import Dispatcher from "../Dispatcher"
 import {IAction} from "../../models/ActionCreation";
 import {ITeam} from "../../models/DatabaseModels";
 import * as Actions from "./Actions"
-import { ITeamSummary } from "../../Models/DatabaseModelsSummaries";
+import { ITeamSummary } from "../../models/DatabaseModelsSummaries";
 
 class TeamStore extends EventEmitter {
     fetching: boolean;

@@ -1,5 +1,5 @@
-import {IAction} from "../../Models/ActionCreation";
-import { Size } from "../../Models/ComponentModels";
+import {IAction} from "../../models/ActionCreation";
+import { Size } from "../../models/ComponentModels";
 
 export class FetchActions implements IAction {
     type: string

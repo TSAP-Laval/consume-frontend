@@ -11,10 +11,12 @@ export class FetchMatchActions implements IAction {
 
 export class ReceiveMatchActions implements IAction {
     type: string;
+    match_id: number;
     actions: IActionSummary[];
 
-    constructor(actions: IActionSummary[]) {
+    constructor(match_id: number, actions: IActionSummary[]) {
         this.type = "RECEIVE_MATCH_ACTIONS";
+        this.match_id = match_id;
         this.actions = actions
     }
 }

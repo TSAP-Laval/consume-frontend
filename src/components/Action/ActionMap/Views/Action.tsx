@@ -26,7 +26,7 @@ export class ActionComponent extends React.Component<ILayoutProps, ILayoutState>
         let x1 = this.props.params.action.start_x * this.props.params.parent_size.width;
         let y1 = (1 - this.props.params.action.start_y) * this.props.params.parent_size.height;
 
-        if(this.props.params.action.end_x != null && this.props.params.action.end_y != null) {
+        if(this.props.params.action.end_x != -1 && this.props.params.action.end_y != -1) {
             let x2 = this.props.params.action.end_x * this.props.params.parent_size.width;
             let y2 = (1 - this.props.params.action.end_y) * this.props.params.parent_size.height;
 
