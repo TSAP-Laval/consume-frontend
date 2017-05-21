@@ -37,7 +37,7 @@ class TeamMetricStatsStore extends EventEmitter {
 
             case "CLEAR_TEAM_STATS":
                 let act = action as Actions.ClearTeamStats;
-                this.metric_stats = {};
+                delete this.metric_stats[act.team_id];
                 break;
         }
     }
