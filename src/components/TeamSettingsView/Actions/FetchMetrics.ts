@@ -17,7 +17,7 @@ export class FetchMetrics implements IAction {
 export function CreateFetchMetricsAction(teamId: number) {
     Dispatcher.dispatch(new FetchMetrics());
 
-    let url: string = Config.serverUrl + "/teams/" + teamId + "/metrics";
+    let url: string = Config.serverUrl + "teams/" + teamId + "/metrics";
 
     axios.get(url).then(
         (resp: AxiosResponse) => {

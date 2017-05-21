@@ -3,7 +3,8 @@ import {IAction} from "../../models/ActionCreation"
 import {Filter} from "../../models/ComponentModels"
 import * as Actions from "./Actions"
 import Dispatcher from "../Dispatcher"
-class FilterStore extends EventEmitter {
+
+/*class FilterStore extends EventEmitter {
     filters: {[component: string] : {[name: string] : Filter}};
 
     constructor() {
@@ -40,9 +41,9 @@ class FilterStore extends EventEmitter {
                 break;
         }
     }
-}
+}*/
 
-const store = new FilterStore();
-export default store;
+//const store = new FilterStore();
+//export default store;
 
-Dispatcher.register(store.handleActions.bind(store));
+//Dispatcher.register(store.handleActions.bind(store));

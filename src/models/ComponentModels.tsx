@@ -52,23 +52,16 @@ export class ActionType implements IFilterable{
     }
 }
 
-export interface IComponent {
-    readonly component_name: string
-}
-
 export interface IFilterable {
     toFilterNode(): FilterNode;
 }
 
 export class Filter {
     name: string;
-    component: string;
     nodes: Array<FilterNode>;
-    colored: boolean;
 
-    constructor(name: string, component: string, nodes: Array<FilterNode> = new Array<FilterNode>()) {
+    constructor(name: string, nodes: Array<FilterNode> = new Array<FilterNode>()) {
         this.name = name;
-        this.component = component;
         this.nodes = nodes;
     }
 }

@@ -6,7 +6,7 @@ import SmallContainer from "../../../Elements/SmallContainer";
 import FieldMap from "../../../Map"
 import {ActionComponent} from "./Action"
 import {IActionSummary} from "../../../../models/DatabaseModelsSummaries"
-import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../../models/ComponentModels"
+import {Filter, FilterNode, RGBColor, Size} from "../../../../models/ComponentModels"
 import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
 import {Toggle} from "material-ui";
 
@@ -21,10 +21,7 @@ export interface ILayoutState {
 }
 
 export class ActionMapComponent
-    extends React.Component<ILayoutProps, ILayoutState>
-    implements IComponent {
-
-    readonly component_name: string = "ActionMapComponent";
+    extends React.Component<ILayoutProps, ILayoutState> {
 
     constructor(props: ILayoutProps) {
         super(props);
@@ -71,10 +68,7 @@ export class ActionMapComponent
             }
         }
 
-        //console.log("ACTION IMPACT NODES");
-        //console.log(nodes);
-
-        let filter = new Filter("ACTION_IMPACT", this.component_name, nodes);
+        let filter = new Filter("ACTION_IMPACT", nodes);
         this.state.filters[filter.name] = filter;
     }
 
@@ -90,10 +84,7 @@ export class ActionMapComponent
             }
         }
 
-        //console.log("ACTION TYPE NODES");
-        //console.log(nodes);
-
-        let filter = new Filter("ACTION_TYPE", this.component_name, nodes);
+        let filter = new Filter("ACTION_TYPE", nodes);
         this.state.filters[filter.name] = filter;
     }
 
@@ -111,9 +102,6 @@ export class ActionMapComponent
     }
 
     render() {
-        //console.log(this.props.actions);
-        //console.log(this.state.filters);
-
         let actions = this.getFilteredActions().map((action) => {
             let color: RGBColor = this.state.action_impacts[action.impact.toString()];
             return <ActionComponent params={{action: action, color: color, parent_size: this.state.size}}/>
