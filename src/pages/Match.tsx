@@ -27,7 +27,7 @@ export default class MatchView extends React.Component<ILayoutProps, ILayoutStat
     render() {
         return (
             <BigContent>
-                <ActionMapComponent matchID={this.props.params.match_id}/>
+                <ActionMapComponent match_id={this.props.params.match_id}/>
             </BigContent>
         )
     }

@@ -6,21 +6,21 @@ import SmallContainer from "../../../Elements/SmallContainer";
 import FieldMap from "../../../Map"
 import {ActionComponent} from "./Action"
 import {IActionSummary} from "../../../../models/DatabaseModelsSummaries"
-import {Filter, FilterNode, RGBColor, Size} from "../../../../models/ComponentModels"
+import {RGBColor, Size} from "../../../../models/ComponentModels"
 import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
 import ActionStore from "../../../../components/Action/Store";
 import {Toggle} from "material-ui";
 import Spinner from "../../../Elements/Spinner";
 
 export interface ILayoutProps {
-    matchID: number
+    match_id: number
 }
 
 export interface ILayoutState {
     size?: Size,
-    action_impacts?: {[action_impact: string] : RGBColor},
-    filters?: {[name: string]  : Filter},
-    actions?: IActionSummary[]
+    actions?: IActionSummary[],
+    action_types?: ActionType[],
+    action_impacts?: ActionImpact[]
 }
 
 export class ActionMapComponent
@@ -31,28 +31,23 @@ export class ActionMapComponent
 
         this.state = {
             size: new Size(1200, 600),
-            action_impacts: {},
-            filters: {},
-            actions: ActionStore.getActionsForMatch(this.props.matchID)
+            actions: ActionStore.getActionsForMatch(this.props.match_id),
+            action_types: [],
+            action_impacts: []
         };
 
-        /*this.createActionTypeFilter = this.createActionTypeFilter.bind(this);
-        this.createActionImpactFilter = this.createActionImpactFilter.bind(this);*/
-
         this.setActions = this.setActions.bind(this);
-        this.getFilters = this.getFilters.bind(this);
         this.getActionImpacts = this.getActionImpacts.bind(this);
+        this.getActionTypes = this.getActionTypes.bind(this);
     }
 
     setActions() {
-        let actions: IActionSummary[] = ActionStore.getActionsForMatch(this.props.matchID);
-        let filters: {[name: string]  : Filter} = this.getFilters(actions);
-        let action_impacts:{[action_impact: string] : RGBColor} = this.getActionImpacts(filters["ACTION_IMPACT"]);
+        let actions: IActionSummary[] = ActionStore.getActionsForMatch(this.props.match_id);
 
         this.setState({
             actions: actions,
-            filters: filters,
-            action_impacts: action_impacts
+            action_types: this.getActionTypes(actions),
+            action_impacts: this.getActionImpacts(actions)
         })
     }
 
@@ -78,71 +73,46 @@ export class ActionMapComponent
         });
     }*/
 
-    getActionImpacts(filter: Filter) {
-        let action_impacts: {[action_impacts: string] : RGBColor} = {};
+    getActionImpacts(actions: IActionSummary[]) {
+        let action_impacts: Array<ActionImpact> = [];
 
-        for(let node of filter.nodes) {
-            if(!(node.value in action_impacts)) {
-                action_impacts[node.value] = node.color;
+        for(let action of actions) {
+            if(action_impacts.map((impact) => impact.id).indexOf(action.impact) === -1) {
+                action_impacts.push(new ActionImpact(action.impact));
             }
         }
 
         return action_impacts;
     }
 
-    getFilters(actions: IActionSummary[]) {
-        let impact_nodes: Array<FilterNode> = [];
+    getActionTypes(actions: IActionSummary[]) {
+        let action_types: Array<ActionType> = [];
 
         for(let action of actions) {
-            let nodes_values: string[] = impact_nodes.map((node) => {return node.value});
-
-            if(nodes_values.indexOf(action.impact.toString()) === -1) {
-                let node = new ActionImpact(action.impact).toFilterNode();
-                impact_nodes.push(node);
+            if(action_types.map((action_type) => action_type.id).indexOf(action.type.id) === -1) {
+                action_types.push(new ActionType(action.type.id, action.type.description));
             }
         }
 
-        let impact_filter = new Filter("ACTION_IMPACT", impact_nodes);
-
-        let type_nodes: Array<FilterNode> = [];
-
-        for(let action of actions) {
-            let nodes_values: string[] = type_nodes.map((node) => {return node.value});
-
-            if(nodes_values.indexOf(action.type.id.toString()) === -1) {
-                let node = new ActionType(action.type.id, action.type.description).toFilterNode();
-                type_nodes.push(node);
-            }
-        }
-
-        let type_filter = new Filter("ACTION_TYPE", type_nodes);
-
-        let filters: {[name: string]  : Filter} = {};
-        filters["ACTION_IMPACT"] = impact_filter;
-        filters["ACTION_TYPE"] = type_filter;
-
-        return filters
+        return action_types
     }
 
     getFilteredActions() {
-        let action_types = this.state.filters["ACTION_TYPE"].nodes.filter(node => node.used == true).map((node) => {
-            return node.value;
-        });
-
-        let action_impacts = this.state.filters["ACTION_IMPACT"].nodes.filter(node => node.used == true).map((node) => {
-            return node.value
-        });
-
-        return this.state.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1)
-                                 .filter(action => action_types.indexOf(action.type.id.toString()) !== -1);
+        return this.state.actions.filter(action => this.state.action_impacts.map((action_impact) => action_impact.id).indexOf(action.impact) !== -1)
+                                 .filter(action => this.state.action_types.map((action_type) => action_type.id).indexOf(action.type.id) !== -1)
     }
 
     onActionTypeToggle(e: React.FormEvent<HTMLInputElement>) {
-        let filter = this.state.filters["ACTION_TYPE"];
+        let value: number = parseInt(e.currentTarget.value);
 
-        this.setState({
+        let index = this.state.action_types.map((action_type) => {
+            return action_type.id
+        }).indexOf(value);
 
-        })
+        if(index != -1) {
+            //TODO: SOMEHOW UPDATE UN OBJET D'UNE ARRAY QUI SE TROUVE DANS LE STATE ET RE-RENDER :')
+            //this.state.action_types[index].used = e.currentTarget.checked;  -> NOT OK AND NOT WORKING.
+        }
     }
 
     onActionImpactToggle(e: React.FormEvent<HTMLInputElement>) {
@@ -159,18 +129,17 @@ export class ActionMapComponent
         }
 
         let actions = this.getFilteredActions().map((action) => {
-            let color: RGBColor = this.state.action_impacts[action.impact.toString()];
-            return <ActionComponent params={{action: action, color: color, parent_size: this.state.size}}/>
+            let color: RGBColor = this.state.action_impacts.filter((impact) => {return impact.id == action.impact})[0].getColor();
+            return <ActionComponent key={action.id} params={{action: action, color: color, parent_size: this.state.size}}/>
         });
 
-        let action_impact_filter = this.state.filters["ACTION_IMPACT"].nodes.map((node) => {
-            let style = {color: node.color.toString()};
-            return <li><Toggle labelStyle={style} onToggle={this.onActionImpactToggle.bind(this)} checked={node.used} value={node.value} label={node.label}/></li>;
+        let action_impact_filter = this.state.action_impacts.map((action_impact) => {
+            let style = {color: action_impact.getColor().toString()};
+            return <li key={action_impact.id}><Toggle labelStyle={style} onToggle={this.onActionImpactToggle.bind(this)} defaultToggled={action_impact.used} value={action_impact.id} label={action_impact.name}/></li>;
         });
 
-        let action_type_filter = this.state.filters["ACTION_TYPE"].nodes.map((node) => {
-            let style = {color: node.color};
-            return <li><Toggle labelStyle={style} onToggle={this.onActionTypeToggle.bind(this)} checked={node.used} value={node.value} label={node.label}/></li>;
+        let action_type_filter = this.state.action_types.map((action_type) => {
+            return <li key={action_type.id}><Toggle onToggle={this.onActionTypeToggle.bind(this)} defaultToggled={action_type.used} value={action_type.id} label={action_type.name}/></li>;
         });
 
         return (

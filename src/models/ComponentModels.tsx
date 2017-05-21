@@ -1,10 +1,11 @@
 import {ActionImpactId} from "./DatabaseModels";
 
-export class ActionImpact implements IFilterable {
+export class ActionImpact {
     id: number;
     name: string;
+    used: boolean;
 
-    constructor(id: number) {
+    constructor(id: number, used: boolean = true) {
         this.id = id;
 
         switch(id) {
@@ -18,9 +19,11 @@ export class ActionImpact implements IFilterable {
                 this.name = "Positif";
                 break;
         }
+
+        this.used = used;
     }
 
-    toFilterNode() {
+    getColor() {
         let color: RGBColor;
 
         switch(this.id) {
@@ -34,26 +37,20 @@ export class ActionImpact implements IFilterable {
                 color = new RGBColor(0, 128, 0);
                 break;
         }
-        return new FilterNode(this.id.toString(), this.name, true, color);
+        return color;
     }
 }
 
-export class ActionType implements IFilterable{
+export class ActionType {
     id: number;
     name: string;
+    used: boolean;
 
-    constructor(id: number, name: string) {
+    constructor(id: number, name: string, used: boolean = true) {
         this.id = id;
         this.name = name;
+        this.used = used;
     }
-
-    toFilterNode() {
-        return new FilterNode(this.id.toString(), this.name, true);
-    }
-}
-
-export interface IFilterable {
-    toFilterNode(): FilterNode;
 }
 
 export class Filter {
