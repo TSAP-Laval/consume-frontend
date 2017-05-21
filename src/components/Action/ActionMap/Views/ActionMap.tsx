@@ -57,8 +57,6 @@ export class ActionMapComponent
     }
 
     componentWillMount() {
-        //this.createActionTypeFilter();
-        //this.createActionImpactFilter();
         ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setActions);
     }
 
@@ -126,39 +124,6 @@ export class ActionMapComponent
         return filters
     }
 
-    /*createActionImpactFilter() {
-        let nodes: Array<FilterNode> = [];
-
-        for(let action of this.state.actions) {
-            let nodes_values: string[] = nodes.map((node) => {return node.value});
-
-            if(nodes_values.indexOf(action.impact.toString()) === -1) {
-                let node = new ActionImpact(action.impact).toFilterNode();
-                this.state.action_impacts[node.value] = node.color;
-                nodes.push(node);
-            }
-        }
-
-        let filter = new Filter("ACTION_IMPACT", nodes);
-        this.state.filters[filter.name] = filter;
-    }*/
-
-    /*createActionTypeFilter() {
-        let nodes: Array<FilterNode> = [];
-
-        for(let action of this.state.actions) {
-            let nodes_values: string[] = nodes.map((node) => {return node.value});
-
-            if(nodes_values.indexOf(action.type.id.toString()) === -1) {
-                let node = new ActionType(action.type.id, action.type.description).toFilterNode();
-                nodes.push(node);
-            }
-        }
-
-        let filter = new Filter("ACTION_TYPE", nodes);
-        this.state.filters[filter.name] = filter;
-    }*/
-
     getFilteredActions() {
         let action_types = this.state.filters["ACTION_TYPE"].nodes.filter(node => node.used == true).map((node) => {
             return node.value;
@@ -172,6 +137,18 @@ export class ActionMapComponent
                                  .filter(action => action_types.indexOf(action.type.id.toString()) !== -1);
     }
 
+    onActionTypeToggle(e: React.FormEvent<HTMLInputElement>) {
+        let filter = this.state.filters["ACTION_TYPE"];
+
+        this.setState({
+
+        })
+    }
+
+    onActionImpactToggle(e: React.FormEvent<HTMLInputElement>) {
+
+    }
+
     render() {
         if (this.state.actions.length === 0) {
             return(
@@ -180,14 +157,20 @@ export class ActionMapComponent
                 </SmallContainer>
             )
         }
+
         let actions = this.getFilteredActions().map((action) => {
             let color: RGBColor = this.state.action_impacts[action.impact.toString()];
             return <ActionComponent params={{action: action, color: color, parent_size: this.state.size}}/>
         });
 
+        let action_impact_filter = this.state.filters["ACTION_IMPACT"].nodes.map((node) => {
+            let style = {color: node.color.toString()};
+            return <li><Toggle labelStyle={style} onToggle={this.onActionImpactToggle.bind(this)} checked={node.used} value={node.value} label={node.label}/></li>;
+        });
+
         let action_type_filter = this.state.filters["ACTION_TYPE"].nodes.map((node) => {
             let style = {color: node.color};
-            return <li><Toggle style={style} checked={node.used} value={node.value} label={node.label}/></li>;
+            return <li><Toggle labelStyle={style} onToggle={this.onActionTypeToggle.bind(this)} checked={node.used} value={node.value} label={node.label}/></li>;
         });
 
         return (
@@ -200,7 +183,12 @@ export class ActionMapComponent
                         </Stage>
                     </div>
                 </LeftDiv>
-                <RightDiv><ul>{action_type_filter}</ul>></RightDiv>
+                <RightDiv>
+                    <h3>Impact de l'action</h3>
+                    <ul>{action_impact_filter}</ul>
+                    <h3>Type d'action</h3>
+                    <ul>{action_type_filter}</ul>
+                </RightDiv>
             </SmallContainer>
         );
     }

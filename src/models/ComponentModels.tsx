@@ -60,9 +60,17 @@ export class Filter {
     name: string;
     nodes: Array<FilterNode>;
 
-    constructor(name: string, nodes: Array<FilterNode> = new Array<FilterNode>()) {
+    constructor(name: string, nodes: Array<FilterNode> = []) {
         this.name = name;
         this.nodes = nodes;
+    }
+
+    getNodeByValue(value: string) {
+        for(let node of this.nodes) {
+            if(node.value === value) {
+                return node;
+            }
+        }
     }
 }
 
