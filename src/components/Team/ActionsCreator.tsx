@@ -5,6 +5,7 @@ import * as Actions from "./Actions"
 import { ITeam, IUser, ITeamMetricStats } from "../../models/DatabaseModels";
 import { CreateErrorAction } from "../Error/ErrorAction";
 import { ITeamSummary } from "../../models/DatabaseModelsSummaries";
+import LoginStore from "../Login/Store";
 
 
 export function FetchTeam(team_id: number, token: string) {
@@ -29,12 +30,10 @@ export function CreateGetTeamsAction(userId: number, token: string, isAdmin: boo
     Dispatcher.dispatch(new Actions.FetchTeams());
 
 let url: string = isAdmin ? serverUrl + "teams": serverUrl + "users/" + userId;
-    console.log(url);
 
     let instance = axios.create({
         headers: {"X-Auth-Token": token}
     });
-    console.log(token);
     instance.get(url).then((response: AxiosResponse) => {
         let data: Array<ITeamSummary> = isAdmin ? (response.data.hits as Array<ITeamSummary>) :
             (response.data.teams as Array<ITeamSummary>);
