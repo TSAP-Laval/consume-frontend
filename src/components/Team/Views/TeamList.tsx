@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import {ITeamSummary} from "../../../models/DatabaseModelsSummaries";
 import LoginStore from "../../Login/Store";
 import * as ActionsCreator from "../ActionsCreator";
-import TeamStore from "../Store";
+import TeamStore from "../Stores/TeamStore";
 import Spinner from "../../Elements/Spinner";
 
 export interface ILayoutProps {
@@ -42,7 +42,7 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
     setTeams() {
         this.setState({
             loading_teams: TeamStore.fetching,
-            teams: TeamStore.teams
+            teams: TeamStore.teamsList
         })
     }
 
