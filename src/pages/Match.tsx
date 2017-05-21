@@ -4,6 +4,7 @@ import ActionStore from "../components/Action/Store"
 import * as ActionsCreator from "../components/Action/ActionsCreator"
 import BigContent from "../components/Elements/BigContent";
 import {ActionMapComponent} from "../components/Action/ActionMap/Views/ActionMap";
+import Spinner from "../components/Elements/Spinner";
 
 export interface ILayoutProps {
     params: {
@@ -62,7 +63,7 @@ export default class MatchView extends React.Component<ILayoutProps, ILayoutStat
     }
 
     render() {
-        return(
+        return (
             <BigContent>
                 <ActionMapComponent actions={this.state.actions}/>
             </BigContent>

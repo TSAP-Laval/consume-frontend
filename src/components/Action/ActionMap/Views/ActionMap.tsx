@@ -7,19 +7,16 @@ import FieldMap from "../../../Map"
 import {ActionComponent} from "./Action"
 import {IActionSummary} from "../../../../models/DatabaseModelsSummaries"
 import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../../models/ComponentModels"
-import * as ActionsCreator from "../../../Filter/ActionsCreator"
-import FilterStore from "../../../Filter/Store"
-import FilterComponent from "../../../Filter"
 import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
-import Spinner from "../../../Elements/Spinner";
+import {Toggle} from "material-ui";
 
 export interface ILayoutProps {
     actions: IActionSummary[]
 }
 
 export interface ILayoutState {
-    loading?: boolean
-    size?: Size
+    size?: Size,
+    action_impacts?: {[action_impact: string] : RGBColor},
     filters?: {[name: string]  : Filter};
 }
 
@@ -28,13 +25,13 @@ export class ActionMapComponent
     implements IComponent {
 
     readonly component_name: string = "ActionMapComponent";
-    action_impacts: {[action_impact: string] : RGBColor};
 
     constructor(props: ILayoutProps) {
         super(props);
 
         this.state = {
-            loading: true,
+            size: new Size(1200, 600),
+            action_impacts: {},
             filters: {}
         };
 
@@ -43,23 +40,11 @@ export class ActionMapComponent
     }
 
     componentWillMount() {
-        FilterStore.on("CREATE_FILTERS", this.onFiltersCreated);
-        FilterStore.on("HANDLE_FILTER", this.handleFiltering);
-
-        /*let width = this.refs.mainStage.clientWidth;
-        let height = width / 2;
-
-        this.setState({
-            size: new Size(width, height)
-        });*/
-
         this.createActionTypeFilter();
         this.createActionImpactFilter();
-
-        console.log("ACTION MAP WILL MOUNT");
     }
 
-    refs: {
+    /*refs: {
         [string: string]: (Element);
         mainStage: (HTMLElement);
     };
@@ -71,27 +56,7 @@ export class ActionMapComponent
         this.setState({
             size: new Size(w, h)
         });
-    }
-
-    onFiltersCreated() {
-        let store_count: number = Object.keys(FilterStore.filters[this.component_name]).map((key) => {
-            return FilterStore.filters[this.component_name][key];
-        }).length;
-
-        console.log("STORE_COUNT: " + store_count);
-
-        let state_count: number = Object.keys(this.state.filters).map((key) => {
-            return this.state.filters[key];
-        }).length;
-
-        console.log("STATE_COUNT: " + state_count);
-
-        if(store_count === state_count) {
-            this.setState({
-                loading: false
-            })
-        }
-    }
+    }*/
 
     createActionImpactFilter() {
         let nodes: Array<FilterNode> = [];
@@ -101,15 +66,16 @@ export class ActionMapComponent
 
             if(nodes_values.indexOf(action.impact.toString()) === -1) {
                 let node = new ActionImpact(action.impact).toFilterNode();
-                this.action_impacts[node.value] = node.color;
+                this.state.action_impacts[node.value] = node.color;
                 nodes.push(node);
             }
         }
 
+        //console.log("ACTION IMPACT NODES");
+        //console.log(nodes);
+
         let filter = new Filter("ACTION_IMPACT", this.component_name, nodes);
         this.state.filters[filter.name] = filter;
-
-        //FilterActionsCreator.HandleFilter(filter);
     }
 
     createActionTypeFilter() {
@@ -124,26 +90,11 @@ export class ActionMapComponent
             }
         }
 
-        console.log(this.state.filters);
+        //console.log("ACTION TYPE NODES");
+        //console.log(nodes);
 
         let filter = new Filter("ACTION_TYPE", this.component_name, nodes);
         this.state.filters[filter.name] = filter;
-        //FilterActionsCreator.HandleFilter(filter);
-    }
-
-    getFilterComponents() {
-        let filters = [];
-
-        for(let key in this.state.filters) {
-            if(this.state.filters.hasOwnProperty(key)) {
-                let filter = this.state.filters[key];
-                filters.push(
-                    <FilterComponent filter={filter}/>
-                );
-            }
-        }
-
-        return filters;
     }
 
     getFilteredActions() {
@@ -159,36 +110,32 @@ export class ActionMapComponent
                                  .filter(action => action_types.indexOf(action.type.id.toString()) !== -1);
     }
 
-    handleFiltering() {
-        this.setState({
-            filters: FilterStore.getFiltersByComponent(this.component_name)
-        });
-    }
-
     render() {
-        if (!this.state.loading) {
-            let actions = this.getFilteredActions().map((action) => {
-                let color: RGBColor = this.action_impacts[action.impact.toString()];
-                return <ActionComponent params={{action: action, color: color, parent_size: this.state.size}}/>
-            });
+        //console.log(this.props.actions);
+        //console.log(this.state.filters);
 
-            let filters = this.getFilterComponents();
+        let actions = this.getFilteredActions().map((action) => {
+            let color: RGBColor = this.state.action_impacts[action.impact.toString()];
+            return <ActionComponent params={{action: action, color: color, parent_size: this.state.size}}/>
+        });
 
-            return (
-                <SmallContainer>
-                    <LeftDiv>
-                        <div ref="mainStage">
-                            <Stage width={this.state.size.width} height={this.state.size.height}>
-                                <FieldMap height={this.state.size.height}/>
-                                <Layer>{actions}</Layer>
-                            </Stage>
-                        </div>
-                    </LeftDiv>
-                    <RightDiv>{filters}</RightDiv>
-                </SmallContainer>
-            );
-        } else {
-            return(<Spinner/>)
-        }
+        let action_type_filter = this.state.filters["ACTION_TYPE"].nodes.map((node) => {
+            let style = {color: node.color};
+            return <li><Toggle style={style} checked={node.used} value={node.value} label={node.label}/></li>;
+        });
+
+        return (
+            <SmallContainer>
+                <LeftDiv>
+                    <div ref="mainStage">
+                        <Stage width={this.state.size.width} height={this.state.size.height}>
+                            <FieldMap height={this.state.size.height}/>
+                            <Layer>{actions}</Layer>
+                        </Stage>
+                    </div>
+                </LeftDiv>
+                <RightDiv><ul>{action_type_filter}</ul>></RightDiv>
+            </SmallContainer>
+        );
     }
 }
