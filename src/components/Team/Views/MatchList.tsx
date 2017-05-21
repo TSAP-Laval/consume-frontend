@@ -85,7 +85,7 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
                 let rowData: Array<any> = [match.home_team.name,
                     match.away_team.name,
                     date.toLocaleDateString(),
-                    <FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/matches/" + match.id}/>} />];
+                    <FlatButton primary={true} label="Voir" containerElement={<Link to={"/team/" + this.props.params.team_id + "/matches/" + match.id}/>} />];
 
                 return <CustomRow key={i} data={rowData}/>
             })
