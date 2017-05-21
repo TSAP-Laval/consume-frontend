@@ -10,6 +10,7 @@ import {Filter, FilterNode, RGBColor, Size} from "../../../../models/ComponentMo
 import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
 import ActionStore from "../../../../components/Action/Store";
 import {Toggle} from "material-ui";
+import Spinner from "../../../Elements/Spinner";
 
 export interface ILayoutProps {
     matchID: number
@@ -172,6 +173,13 @@ export class ActionMapComponent
     }
 
     render() {
+        if (this.state.actions.length === 0) {
+            return(
+                <SmallContainer>
+                    <Spinner/>
+                </SmallContainer>
+            )
+        }
         let actions = this.getFilteredActions().map((action) => {
             let color: RGBColor = this.state.action_impacts[action.impact.toString()];
             return <ActionComponent params={{action: action, color: color, parent_size: this.state.size}}/>
