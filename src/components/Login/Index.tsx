@@ -32,14 +32,10 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
 
     handleEmailChange(e: any) {
         this.setState({ email:  e.target.value})
-        console.log(e.target.value);
-        console.log(this.state.email);
     }
 
     handlePasswordChange(e: any) {
         this.setState({ password: e.target.value})
-        console.log(e.target.value);
-        console.log(this.state.password);
     }
 
     // Will fetch and load the data.
@@ -56,11 +52,11 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         return (
             <div style={{ paddingTop: '100px', maxWidth: '400px', margin: '0 auto' }}>
                 <AppBar
-                    title="Login" showMenuIconButton={false}
+                    title="Zone membre" showMenuIconButton={false}
                 />
                 <TextField
                     ref='email'
-                    floatingLabelText='Entrer votre email'
+                    floatingLabelText='Entrer votre courriel'
                     multiLine={false}
                     fullWidth={true}
                     value ={this.state.email}
@@ -78,7 +74,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                 onChange={this.handlePasswordChange}
                 />
                 <div style={{ float: 'right' }}>
-                    <FlatButton label="login" primary={true} onClick={this.onLogin} />
+                    <FlatButton label="Connexion" primary={true} onClick={this.onLogin} />
                 </div>
             </div>
         );

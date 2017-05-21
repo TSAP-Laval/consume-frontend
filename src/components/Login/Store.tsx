@@ -23,16 +23,8 @@ class LoginStore extends EventEmitter {
         return this.requestStatus;
     }
 
-    userIsLoggedIn():boolean{
-        return this.isLoggedIn == true;
-    }
-
     isAdmin(): boolean {
         return this.isLoggedIn && this.connectedUser.is_admin;
-    }
-
-    getConnectedUser(): IUser {
-        return this.connectedUser;
     }
 
     handleActions(action: IAction) {

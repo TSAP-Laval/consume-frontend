@@ -12,12 +12,10 @@ import Spinner from "../../Elements/Spinner";
 import TeamStore from "../Store";
 
 export interface ILayoutProps {
-    params: {
-        user: IUser
-    }
 }
 
 export interface ILayoutState {
+    user: IUser
 
 }
 
@@ -65,7 +63,7 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
             
                 let rowData: Array<any> = [team.name,
                    team.city,
-                    <FlatButton primary={true} label="Liste de matchs" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.user.id + "/matches/" + match.id}/>} /> 
+                    <FlatButton primary={true} label="Liste de matchs" linkButton={true} containerElement={<Link to={"/team/" + this.state.user.team.id + "/matches/" + match.id}/>} /> 
                     <FlatButton primary={true} label="Liste de joueurs" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/matches/" + match.id}/>} />];
 
                 return <CustomRow key={i} data={rowData}/>

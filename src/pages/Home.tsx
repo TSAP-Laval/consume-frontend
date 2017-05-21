@@ -17,7 +17,7 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
         super();
         this.userIsLoggedIn = this.userIsLoggedIn.bind(this);
         this.state ={
-            isLoggedIn : LoginStore.userIsLoggedIn()
+            isLoggedIn : LoginStore.isLoggedIn
         }
     }
 
@@ -31,7 +31,7 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
 
     userIsLoggedIn(){
         this.setState({
-           isLoggedIn : LoginStore.userIsLoggedIn()
+           isLoggedIn : LoginStore.isLoggedIn
         }) 
     }
 
