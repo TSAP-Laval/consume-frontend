@@ -10,7 +10,6 @@ import CustomTable from "../../CustomTable/CustomTable"
 import CustomRow from "../../CustomTable/CustomRow"
 import BigContent from "../../Elements/BigContent";
 import LoginStore from "../../Login/Store";
-import Login from "../../Login/index";
 
 export interface ILayoutProps {
     params: {
@@ -154,7 +153,6 @@ export default class PlayerList extends React.Component<ILayoutProps, ILayoutSta
                 return(
                     <BigContent>
                         <h2 className="text-center">Équipe <b>{this.state.team.name}</b></h2>
-                        <FlatButton primary={true} label={"Paramètres"} containerElement={<Link to={"/team/" + this.props.params.team_id + "/settings"} />} />
                         <CustomTable columns={columns}>
                             {data}
                         </CustomTable>
