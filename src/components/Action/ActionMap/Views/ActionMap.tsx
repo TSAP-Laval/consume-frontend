@@ -8,16 +8,19 @@ import {ActionComponent} from "./Action"
 import {IActionSummary} from "../../../../models/DatabaseModelsSummaries"
 import {Filter, FilterNode, RGBColor, Size} from "../../../../models/ComponentModels"
 import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
+import ActionStore from "../../../../components/Action/Store";
 import {Toggle} from "material-ui";
+import {Action} from "history";
 
 export interface ILayoutProps {
-    actions: IActionSummary[]
+    matchID: number
 }
 
 export interface ILayoutState {
     size?: Size,
     action_impacts?: {[action_impact: string] : RGBColor},
-    filters?: {[name: string]  : Filter};
+    filters?: {[name: string]  : Filter},
+    actions?: IActionSummary[]
 }
 
 export class ActionMapComponent
@@ -29,16 +32,33 @@ export class ActionMapComponent
         this.state = {
             size: new Size(1200, 600),
             action_impacts: {},
-            filters: {}
+            filters: {},
+            actions: ActionStore.getActionsForMatch(this.props.matchID)
         };
 
         this.createActionTypeFilter = this.createActionTypeFilter.bind(this);
         this.createActionImpactFilter = this.createActionImpactFilter.bind(this);
+
+        this.setActions = this.setActions.bind(this)
+    }
+
+    setActions() {
+        this.setState({
+            actions: ActionStore.getActionsForMatch(this.props.matchID)
+        }, () => {
+            this.createActionTypeFilter();
+            this.createActionImpactFilter();
+        });
     }
 
     componentWillMount() {
         this.createActionTypeFilter();
         this.createActionImpactFilter();
+        ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setActions);
+    }
+
+    componentWillUnmount() {
+        ActionStore.removeListener("RECEIVE_MATCH_ACTIONS", this.setActions);
     }
 
     /*refs: {
@@ -58,7 +78,7 @@ export class ActionMapComponent
     createActionImpactFilter() {
         let nodes: Array<FilterNode> = [];
 
-        for(let action of this.props.actions) {
+        for(let action of this.state.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});
 
             if(nodes_values.indexOf(action.impact.toString()) === -1) {
@@ -75,7 +95,7 @@ export class ActionMapComponent
     createActionTypeFilter() {
         let nodes: Array<FilterNode> = [];
 
-        for(let action of this.props.actions) {
+        for(let action of this.state.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});
 
             if(nodes_values.indexOf(action.type.id.toString()) === -1) {
@@ -97,7 +117,7 @@ export class ActionMapComponent
             return node.value
         });
 
-        return this.props.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1)
+        return this.state.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1)
                                  .filter(action => action_types.indexOf(action.type.id.toString()) !== -1);
     }
 

@@ -18,6 +18,10 @@ class ActionStore extends EventEmitter {
         this.actions[match_id.toString()] = actions;
     }
 
+    getActionsForMatch(match_id: number) {
+        return this.actions[match_id.toString()]? this.actions[match_id.toString()]: [];
+    }
+
     actionsExists(match_id: number) {
         return(match_id.toString() in this.actions);
     }
