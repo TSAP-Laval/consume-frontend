@@ -7,18 +7,18 @@ import FieldMap from "../../../Map"
 import {ActionComponent} from "./Action"
 import {IActionSummary} from "../../../../models/DatabaseModelsSummaries"
 import {Filter, FilterNode, IComponent, RGBColor, Size} from "../../../../models/ComponentModels"
-import * as FilterActionsCreator from "../../../Filter/ActionsCreator"
+import * as ActionsCreator from "../../../Filter/ActionsCreator"
 import FilterStore from "../../../Filter/Store"
 import FilterComponent from "../../../Filter"
 import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
+import Spinner from "../../../Elements/Spinner";
 
 export interface ILayoutProps {
-    params: {
-        actions: IActionSummary[]
-    }
+    actions: IActionSummary[]
 }
 
 export interface ILayoutState {
+    loading?: boolean
     size?: Size
     filters?: {[name: string]  : Filter};
 }
@@ -30,36 +30,73 @@ export class ActionMapComponent
     readonly component_name: string = "ActionMapComponent";
     action_impacts: {[action_impact: string] : RGBColor};
 
-    refs: {
-        [string: string]: (Element);
-        mainStage: (HTMLElement);
-    };
-
     constructor(props: ILayoutProps) {
         super(props);
+
+        this.state = {
+            loading: true,
+            filters: {}
+        };
 
         this.createActionTypeFilter = this.createActionTypeFilter.bind(this);
         this.createActionImpactFilter = this.createActionImpactFilter.bind(this);
     }
 
     componentWillMount() {
+        FilterStore.on("CREATE_FILTERS", this.onFiltersCreated);
         FilterStore.on("HANDLE_FILTER", this.handleFiltering);
 
-        let width = this.refs.mainStage.clientWidth;
+        /*let width = this.refs.mainStage.clientWidth;
         let height = width / 2;
 
         this.setState({
             size: new Size(width, height)
-        });
+        });*/
 
         this.createActionTypeFilter();
         this.createActionImpactFilter();
+
+        console.log("ACTION MAP WILL MOUNT");
+    }
+
+    refs: {
+        [string: string]: (Element);
+        mainStage: (HTMLElement);
+    };
+
+    componentDidMount() {
+        let w = this.refs.mainStage.clientWidth;
+        let h = w / 2;
+
+        this.setState({
+            size: new Size(w, h)
+        });
+    }
+
+    onFiltersCreated() {
+        let store_count: number = Object.keys(FilterStore.filters[this.component_name]).map((key) => {
+            return FilterStore.filters[this.component_name][key];
+        }).length;
+
+        console.log("STORE_COUNT: " + store_count);
+
+        let state_count: number = Object.keys(this.state.filters).map((key) => {
+            return this.state.filters[key];
+        }).length;
+
+        console.log("STATE_COUNT: " + state_count);
+
+        if(store_count === state_count) {
+            this.setState({
+                loading: false
+            })
+        }
     }
 
     createActionImpactFilter() {
         let nodes: Array<FilterNode> = [];
 
-        for(let action of this.props.params.actions) {
+        for(let action of this.props.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});
 
             if(nodes_values.indexOf(action.impact.toString()) === -1) {
@@ -70,13 +107,15 @@ export class ActionMapComponent
         }
 
         let filter = new Filter("ACTION_IMPACT", this.component_name, nodes);
-        FilterActionsCreator.handleFilter(filter);
+        this.state.filters[filter.name] = filter;
+
+        //FilterActionsCreator.HandleFilter(filter);
     }
 
     createActionTypeFilter() {
         let nodes: Array<FilterNode> = [];
 
-        for(let action of this.props.params.actions) {
+        for(let action of this.props.actions) {
             let nodes_values: string[] = nodes.map((node) => {return node.value});
 
             if(nodes_values.indexOf(action.type.id.toString()) === -1) {
@@ -85,8 +124,11 @@ export class ActionMapComponent
             }
         }
 
+        console.log(this.state.filters);
+
         let filter = new Filter("ACTION_TYPE", this.component_name, nodes);
-        FilterActionsCreator.handleFilter(filter);
+        this.state.filters[filter.name] = filter;
+        //FilterActionsCreator.HandleFilter(filter);
     }
 
     getFilterComponents() {
@@ -113,7 +155,7 @@ export class ActionMapComponent
             return node.value
         });
 
-        return this.props.params.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1)
+        return this.props.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1)
                                  .filter(action => action_types.indexOf(action.type.id.toString()) !== -1);
     }
 
@@ -124,6 +166,7 @@ export class ActionMapComponent
     }
 
     render() {
+        if (!this.state.loading) {
             let actions = this.getFilteredActions().map((action) => {
                 let color: RGBColor = this.action_impacts[action.impact.toString()];
                 return <ActionComponent params={{action: action, color: color, parent_size: this.state.size}}/>
@@ -131,7 +174,7 @@ export class ActionMapComponent
 
             let filters = this.getFilterComponents();
 
-            return(
+            return (
                 <SmallContainer>
                     <LeftDiv>
                         <div ref="mainStage">
@@ -144,5 +187,8 @@ export class ActionMapComponent
                     <RightDiv>{filters}</RightDiv>
                 </SmallContainer>
             );
+        } else {
+            return(<Spinner/>)
+        }
     }
 }

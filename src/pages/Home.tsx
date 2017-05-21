@@ -42,14 +42,14 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
         return(
             <BigContent>
                 <ul>
-                <Li><Link to="/team/3"><RaisedButton primary={true} label="Statistiques de l'équipe"/></Link></Li><br/>
+                <Li><Link to="/teams/3"><RaisedButton primary={true} label="Statistiques de l'équipe"/></Link></Li><br/>
                 <Li><Link to="/test-matchlist/3"><RaisedButton primary={true} label="Liste de matchs"/></Link></Li><br/>
-                <Li><Link to="/test-playerlist/3"><RaisedButton primary={true} label="Liste de joueurs"/></Link></Li>
+                <Li><Link to="/test-playerlist/3"><RaisedButton primary={true} label="Liste de joueurs"/></Link></Li><br/>
+                <Li><Link to="/teams/3/matches/1"><RaisedButton primary={true} label="ActionMap"/></Link></Li>
                 </ul>
             </BigContent>
         )
     }
-
     /*render() {
         if(this.state.isLoggedIn) {
             return(
