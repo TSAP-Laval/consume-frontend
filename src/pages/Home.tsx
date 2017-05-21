@@ -2,6 +2,7 @@ import * as React from "react";
 import BigContent from "../components/Elements/BigContent";
 import LoginStore from "../components/Login/Store";
 import Login from "../components/Login/Index";
+import TeamList from "../components/Team/Views/TeamList";
 
 
 export interface ILayoutProps {
@@ -39,9 +40,7 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
             return(
                 <BigContent>
                     <h1>Console TSAP</h1>
-                    <p>
-                        VOIR LA LISTE D'ÉQUIPES ICI...
-                    </p>
+                    <TeamList />
                 </BigContent>
             )
         } else {

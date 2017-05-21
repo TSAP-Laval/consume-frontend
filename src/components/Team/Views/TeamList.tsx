@@ -36,7 +36,7 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
 
         setTeams() {
         this.setState({
-            loading_team: TeamStore.fetching,
+            loading_teams: TeamStore.fetching,
             teams: TeamStore.teams
         })
     }
@@ -44,7 +44,7 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
     componentWillMount() {
         TeamStore.on("FETCH_TEAMS", this.setLoadingStatus);
         TeamStore.on("RECEIVE_TEAMS", this.setTeams);
-        ActionsCreator.CreateGetTeamsAction(LoginStore.connectedUser.id, this.state.token,
+        ActionsCreator.CreateGetTeamsAction(LoginStore.connectedUser.id, LoginStore.token,
          LoginStore.connectedUser.is_admin);
     }
 
