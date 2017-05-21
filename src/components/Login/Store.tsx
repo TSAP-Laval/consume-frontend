@@ -38,10 +38,10 @@ class LoginStore extends EventEmitter {
                 let succeeded: Actions.OnAuthenticationSucceeded = action as Actions.OnAuthenticationSucceeded;
                 this.connectedUser = succeeded.connectedUser;
                 this.isLoggedIn = true;
+                this.token = succeeded.token;
                 this.emit("AuthSucceed");
 
-                // Intialize the state.
-                this.requestStatus = Status.Started;
+                this.requestStatus = Status.Idle;
                 this.emit("requestState");
                 break;
         }

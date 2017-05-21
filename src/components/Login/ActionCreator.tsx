@@ -15,15 +15,14 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
     axios.post(url, {
         email: email,
         password: password
-    },)
+    })
         .then((response) => {
             //We fetch the informations of authenticated user.
             let user: IUser = response.data.user as IUser;
             let token: string = response.data.auth_token;
-
             Dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
         })
-        .catch(error => { 
+        .catch(error => {
             CreateErrorAction(error.response.data.message);
         });
 }

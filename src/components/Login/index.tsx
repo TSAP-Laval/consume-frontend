@@ -37,16 +37,6 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         this.setState({ password: e.target.value})
     }
 
-    // Will fetch and load the data.
-    componentWillMount() {
-        Store.on("AuthSucceed", this.onLogin);
-    }
-
-    // Pour la gestion de mémoire on supprime les listener d'events.
-    componentWillUnmount() {
-        Store.removeListener("AuthSucceed", this.onLogin);
-    }
-
     render() {
         return (
             <div style={{ paddingTop: '100px', maxWidth: '400px', margin: '0 auto' }}>

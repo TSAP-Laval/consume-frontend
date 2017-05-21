@@ -19,12 +19,16 @@ export class FetchUsers implements IAction {
 }
 
 
-export function CreateFetchUsersAction() {
+export function CreateFetchUsersAction(token: string) {
     Dispatcher.dispatch(new FetchUsers());
+
+    let instance = axios.create({
+        headers: {"X-Auth-Token": token}
+    });
 
     let url: string = Config.serverUrl + 'users';
 
-    axios.get(url).then(
+    instance.get(url).then(
         (resp: AxiosResponse) => {
             let users = resp.data.data.hits as IUser[];
             CreateUsersReceivedAction(users);
