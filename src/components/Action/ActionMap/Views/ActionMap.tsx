@@ -10,7 +10,6 @@ import {Filter, FilterNode, RGBColor, Size} from "../../../../models/ComponentMo
 import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
 import ActionStore from "../../../../components/Action/Store";
 import {Toggle} from "material-ui";
-import {Action} from "history";
 
 export interface ILayoutProps {
     matchID: number
@@ -36,24 +35,29 @@ export class ActionMapComponent
             actions: ActionStore.getActionsForMatch(this.props.matchID)
         };
 
-        this.createActionTypeFilter = this.createActionTypeFilter.bind(this);
-        this.createActionImpactFilter = this.createActionImpactFilter.bind(this);
+        /*this.createActionTypeFilter = this.createActionTypeFilter.bind(this);
+        this.createActionImpactFilter = this.createActionImpactFilter.bind(this);*/
 
-        this.setActions = this.setActions.bind(this)
+        this.setActions = this.setActions.bind(this);
+        this.getFilters = this.getFilters.bind(this);
+        this.getActionImpacts = this.getActionImpacts.bind(this);
     }
 
     setActions() {
+        let actions: IActionSummary[] = ActionStore.getActionsForMatch(this.props.matchID);
+        let filters: {[name: string]  : Filter} = this.getFilters(actions);
+        let action_impacts:{[action_impact: string] : RGBColor} = this.getActionImpacts(filters["ACTION_IMPACT"]);
+
         this.setState({
-            actions: ActionStore.getActionsForMatch(this.props.matchID)
-        }, () => {
-            this.createActionTypeFilter();
-            this.createActionImpactFilter();
-        });
+            actions: actions,
+            filters: filters,
+            action_impacts: action_impacts
+        })
     }
 
     componentWillMount() {
-        this.createActionTypeFilter();
-        this.createActionImpactFilter();
+        //this.createActionTypeFilter();
+        //this.createActionImpactFilter();
         ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setActions);
     }
 
@@ -75,7 +79,53 @@ export class ActionMapComponent
         });
     }*/
 
-    createActionImpactFilter() {
+    getActionImpacts(filter: Filter) {
+        let action_impacts: {[action_impacts: string] : RGBColor} = {};
+
+        for(let node of filter.nodes) {
+            if(!(node.value in action_impacts)) {
+                action_impacts[node.value] = node.color;
+            }
+        }
+
+        return action_impacts;
+    }
+
+    getFilters(actions: IActionSummary[]) {
+        let impact_nodes: Array<FilterNode> = [];
+
+        for(let action of actions) {
+            let nodes_values: string[] = impact_nodes.map((node) => {return node.value});
+
+            if(nodes_values.indexOf(action.impact.toString()) === -1) {
+                let node = new ActionImpact(action.impact).toFilterNode();
+                impact_nodes.push(node);
+            }
+        }
+
+        let impact_filter = new Filter("ACTION_IMPACT", impact_nodes);
+
+        let type_nodes: Array<FilterNode> = [];
+
+        for(let action of actions) {
+            let nodes_values: string[] = type_nodes.map((node) => {return node.value});
+
+            if(nodes_values.indexOf(action.type.id.toString()) === -1) {
+                let node = new ActionType(action.type.id, action.type.description).toFilterNode();
+                type_nodes.push(node);
+            }
+        }
+
+        let type_filter = new Filter("ACTION_TYPE", type_nodes);
+
+        let filters: {[name: string]  : Filter} = {};
+        filters["ACTION_IMPACT"] = impact_filter;
+        filters["ACTION_TYPE"] = type_filter;
+
+        return filters
+    }
+
+    /*createActionImpactFilter() {
         let nodes: Array<FilterNode> = [];
 
         for(let action of this.state.actions) {
@@ -90,9 +140,9 @@ export class ActionMapComponent
 
         let filter = new Filter("ACTION_IMPACT", nodes);
         this.state.filters[filter.name] = filter;
-    }
+    }*/
 
-    createActionTypeFilter() {
+    /*createActionTypeFilter() {
         let nodes: Array<FilterNode> = [];
 
         for(let action of this.state.actions) {
@@ -106,7 +156,7 @@ export class ActionMapComponent
 
         let filter = new Filter("ACTION_TYPE", nodes);
         this.state.filters[filter.name] = filter;
-    }
+    }*/
 
     getFilteredActions() {
         let action_types = this.state.filters["ACTION_TYPE"].nodes.filter(node => node.used == true).map((node) => {
