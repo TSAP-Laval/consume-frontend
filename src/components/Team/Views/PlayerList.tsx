@@ -46,6 +46,12 @@ export default class PlayerList extends React.Component<ILayoutProps, ILayoutSta
         TeamStore.on("RECEIVE_TEAM", this.setTeam);
         MetricStatsStore.on("FETCH_TEAM_METRIC_STATS", this.setLoadingStatus);
         MetricStatsStore.on("RECEIVE_TEAM_METRIC_STATS", this.setTeamMetricStats);
+        MetricStatsStore.on("METRICS_RECEIVED", this.onMetricChange)
+    }
+
+    onMetricChange() {
+        ActionsCreator.FetchTeam(this.props.params.team_id, LoginStore.token);
+        ActionsCreator.FetchTeamMetricStats(this.props.params.team_id, LoginStore.token);
     }
 
     componentDidMount() {
@@ -67,6 +73,7 @@ export default class PlayerList extends React.Component<ILayoutProps, ILayoutSta
         TeamStore.removeListener("RECEIVE_TEAM", this.setTeam);
         MetricStatsStore.removeListener("FETCH_TEAM_METRIC_STATS", this.setLoadingStatus);
         MetricStatsStore.removeListener("RECEIVE_TEAM_METRIC_STATS", this.setTeamMetricStats);
+        MetricStatsStore.removeListener("METRICS_RECEIVED", this.onMetricChange)
     }
 
     setLoadingStatus() {
