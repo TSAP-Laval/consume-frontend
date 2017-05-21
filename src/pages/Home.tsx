@@ -1,10 +1,9 @@
 import * as React from "react";
 import BigContent from "../components/Elements/BigContent";
+import Li from '../components/Elements/Li';
 import LoginStore from "../components/Login/Store";
-import Login from "../components/Login/index";
 import {RaisedButton} from "material-ui";
 import { Link } from 'react-router';
-import Li from "../components/Elements/Li";
 
 
 export interface ILayoutProps {
@@ -42,9 +41,13 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
         return(
             <BigContent>
                 <ul>
+
                 <Li><Link to="/team/3"><RaisedButton primary={true} label="Statistiques de l'équipe"/></Link></Li><br/>
                 <Li><Link to="/test-matchlist/3"><RaisedButton primary={true} label="Liste de matchs"/></Link></Li><br/>
                 <Li><Link to="/test-playerlist/3"><RaisedButton primary={true} label="Liste de joueurs"/></Link></Li>
+                <Li>
+                    <Link to="/users"><RaisedButton primary={true} label="Gestion des utilisateurs" /></Link>
+                </Li>
                 </ul>
             </BigContent>
         )
