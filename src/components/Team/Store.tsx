@@ -3,10 +3,12 @@ import Dispatcher from "../Dispatcher"
 import {IAction} from "../../models/ActionCreation";
 import {ITeam} from "../../models/DatabaseModels";
 import * as Actions from "./Actions"
+import { ITeamSummary } from "../../Models/DatabaseModelsSummaries";
 
 class TeamStore extends EventEmitter {
     fetching: boolean;
     team: ITeam;
+    teams: Array<ITeamSummary>;
 
     constructor() {
         super();
@@ -21,11 +23,24 @@ class TeamStore extends EventEmitter {
                 this.fetching = true;
                 this.emit(action.type);
                 break;
+
+            case "FETCH_TEAMS":
+                this.fetching = true;
+                this.emit(action.type);
+                break;
+
             case "RECEIVE_TEAM":
                 this.team = (action as Actions.ReceiveTeam).team;
                 this.fetching = false;
                 this.emit(action.type);
                 break;
+                
+            case "RECEIVE_TEAMS":
+                this.teams = (action as Actions.ReceiveTeams).teams;
+                this.fetching = false;
+                this.emit(action.type);
+                break;
+
         }
     }
 }

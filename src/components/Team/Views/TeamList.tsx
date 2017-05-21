@@ -16,7 +16,6 @@ export interface ILayoutProps {
 
 export interface ILayoutState {
     teams?: Array<ITeamSummary>;
-    token?: string;
     loading_teams?: boolean;
 
 }
@@ -29,34 +28,35 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
         this.getTableData = this.getTableData.bind(this);
     }
 
-        getToken(){
-          this.setState({
-            token: LoginStore.token 
-        });
-    }
-
         setLoadingStatus() {
         this.setState({
             loading_teams: TeamStore.fetching,
         });
     }
 
+        setTeams() {
+        this.setState({
+            loading_team: TeamStore.fetching,
+            teams: TeamStore.teams
+        })
+    }
+
     componentWillMount() {
         TeamStore.on("FETCH_TEAMS", this.setLoadingStatus);
         TeamStore.on("RECEIVE_TEAMS", this.setTeams);
-
-        ActionsCreator.getTeam(this.props.params.team_id, this.state.token);
+        ActionsCreator.CreateGetTeamsAction(LoginStore.connectedUser.id, this.state.token,
+         LoginStore.connectedUser.is_admin);
     }
 
     componentWillUnmount() {
         TeamStore.removeListener("FETCH_TEAMS", this.setLoadingStatus);
-        TeamStore.removeListener("RECEIVE_TEAMS", this.setTeam);
+        TeamStore.removeListener("RECEIVE_TEAMS", this.setTeams);
     }
 
     getTableColumns() {
         let columns: Array<String> = [];
 
-        if(this.props.params.user.teams.length > 0) {
+        if(this.state.teams.length > 0) {
             columns = ["Nom d'équipe", "Ville", "Action"]
         }
 
