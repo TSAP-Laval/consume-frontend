@@ -2,15 +2,17 @@ import Dispatcher from "../Dispatcher"
 import {serverUrl} from "Config"
 import axios, {AxiosResponse} from "axios"
 import * as Actions from "./Actions"
-import {ITeam, ITeamMetricStats} from "../../models/DatabaseModels";
+import { ITeam, IUser, ITeamMetricStats } from "../../models/DatabaseModels";
 import { CreateErrorAction } from "../Error/ErrorAction";
+import { ITeamSummary } from "../../models/DatabaseModelsSummaries";
 
-const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6NSwiaWF0IjoxNDk1MjQ0MTQ4fQ.-xpppidIjMRqfGTMqo5fDYBOntGz7VmTaGFGSzUPe3g";
-const instance = axios.create({
-    headers: {"X-Auth-Token":token}
-});
 
-export function FetchTeam(team_id: number) {
+export function FetchTeam(team_id: number, token: string) {
+
+    let instance = axios.create({
+        headers: {"X-Auth-Token":token}
+    });
+
     Dispatcher.dispatch(new Actions.FetchTeam());
 
     let url: string = serverUrl + "teams/" + team_id;
@@ -23,7 +25,30 @@ export function FetchTeam(team_id: number) {
     });
 }
 
-export function FetchTeamMetricStats(team_id: number) {
+export function CreateGetTeamsAction(userId: number, token: string, isAdmin: boolean) {
+    Dispatcher.dispatch(new Actions.FetchTeams());
+
+let url: string = isAdmin ? serverUrl + "teams": serverUrl + "users/" + userId;
+    console.log(url);
+
+    let instance = axios.create({
+        headers: {"X-Auth-Token": token}
+    });
+    console.log(token);
+    instance.get(url).then((response: AxiosResponse) => {
+        let data: Array<ITeamSummary> = isAdmin ? (response.data.hits as Array<ITeamSummary>) :
+            (response.data.teams as Array<ITeamSummary>);
+        Dispatcher.dispatch(new Actions.ReceiveTeams(data))
+    }).catch((error) => {
+        CreateErrorAction(error);
+    });
+}
+
+export function FetchTeamMetricStats(team_id: number, token: string) {
+    let instance = axios.create({
+        headers: {"X-Auth-Token": token}
+    });
+
     const fetch_metrics = new Actions.FetchTeamMetricStats();
     Dispatcher.dispatch(fetch_metrics);
 

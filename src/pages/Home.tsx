@@ -7,7 +7,6 @@ import { Link } from 'react-router';
 
 
 export interface ILayoutProps {
-
 }
 
 export interface ILayoutState {
@@ -17,51 +16,26 @@ export interface ILayoutState {
 export default class Home extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
         super();
-        this.userIsLoggedIn = this.userIsLoggedIn.bind(this);
-        this.state ={
-            isLoggedIn : LoginStore.userIsLoggedIn()
+        this.state = {
+            isLoggedIn: LoginStore.isLoggedIn
         }
     }
 
-    componentWillMount(){
-        LoginStore.on("AuthSucceed", this.userIsLoggedIn);
-    }
-
-    componentWillUnmount(){
-        LoginStore.removeListener("AuthSucceed", this.userIsLoggedIn);
-    }
-
-    userIsLoggedIn(){
-        this.setState({
-           isLoggedIn : LoginStore.userIsLoggedIn()
-        }) 
-    }
-
     render() {
-        return(
+        return (
             <BigContent>
                 <ul>
-                <Li><Link to="/team/3"><RaisedButton primary={true} label="Statistiques de l'équipe"/></Link></Li><br/>
-                <Li><Link to="/team/3/matches"><RaisedButton primary={true} label="Liste de matchs"/></Link></Li><br/>
-                <Li><Link to="/team/3/players"><RaisedButton primary={true} label="Liste de joueurs"/></Link></Li>
-                <Li><Link to="/teams/3/matches/1"><RaisedButton primary={true} label="ActionMap"/></Link></Li>
-                <Li><Link to="/users"><RaisedButton primary={true} label="Gestion des utilisateurs" /></Link></Li>
+                    <Li><Link to="/team/3"><RaisedButton primary={true}
+                                                         label="Statistiques de l'équipe"/></Link></Li><br/>
+                    <Li><Link to="/team/3/matches"><RaisedButton primary={true}
+                                                                 label="Liste de matchs"/></Link></Li><br/>
+                    <Li><Link to="/team/3/players"><RaisedButton primary={true}
+                                                                 label="Liste de joueurs"/></Link></Li>
+                    <Li><Link to="/teams/3/matches/1"><RaisedButton primary={true} label="ActionMap"/></Link></Li>
+                    <Li><Link to="/users"><RaisedButton primary={true}
+                                                        label="Gestion des utilisateurs"/></Link></Li>
                 </ul>
             </BigContent>
         )
     }
-    /*render() {
-        if(this.state.isLoggedIn) {
-            return(
-                <BigContent>
-                    <h1>Console TSAP</h1>
-                    <p>
-                        VOIR LA LISTE D'ÉQUIPES ICI...
-                    </p>
-                </BigContent>
-            )
-        } else {
-            return (<Login />)
-        }
-    }*/
 }

@@ -8,6 +8,7 @@ import Spinner from "../../Elements/Spinner";
 import TeamStore from "../Stores/TeamStore"
 import * as ActionsCreator from "../ActionsCreator"
 import BigContent from "../../Elements/BigContent";
+import LoginStore from "../../Login/Store";
 
 export interface ILayoutProps {
     params: {
@@ -43,7 +44,7 @@ export default class MatchList extends React.Component<ILayoutProps, ILayoutStat
         if(TeamStore.teamExists(this.props.params.team_id)) {
             this.setMatches();
         } else {
-            ActionsCreator.FetchTeam(this.props.params.team_id);
+            ActionsCreator.FetchTeam(this.props.params.team_id, LoginStore.token);
         }
     }
 

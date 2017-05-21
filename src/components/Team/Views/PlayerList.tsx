@@ -9,6 +9,8 @@ import FlatButton from 'material-ui/FlatButton';
 import CustomTable from "../../CustomTable/CustomTable"
 import CustomRow from "../../CustomTable/CustomRow"
 import BigContent from "../../Elements/BigContent";
+import LoginStore from "../../Login/Store";
+import Login from "../../Login/index";
 
 export interface ILayoutProps {
     params: {
@@ -50,13 +52,13 @@ export default class PlayerList extends React.Component<ILayoutProps, ILayoutSta
         if(TeamStore.teamExists(this.props.params.team_id)) {
             this.setTeam();
         } else {
-            ActionsCreator.FetchTeam(this.props.params.team_id);
+            ActionsCreator.FetchTeam(this.props.params.team_id, LoginStore.token);
         }
 
         if(MetricStatsStore.teamMetricStatsExists(this.props.params.team_id)) {
             this.setTeamMetricStats()
         } else {
-            ActionsCreator.FetchTeamMetricStats(this.props.params.team_id);
+            ActionsCreator.FetchTeamMetricStats(this.props.params.team_id, LoginStore.token);
         }
     }
 
