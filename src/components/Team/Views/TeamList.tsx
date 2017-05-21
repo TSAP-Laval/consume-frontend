@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Link } from 'react-router';
-import CustomTable from "../../CustomTable/CustomTable"
-import CustomRow from "../../CustomTable/CustomRow"
+import CustomTable from "../../CustomTable/CustomTable";
+import CustomRow from "../../CustomTable/CustomRow";
 import FlatButton from 'material-ui/FlatButton';
 import {ITeamSummary} from "../../../models/DatabaseModelsSummaries";
 import LoginStore from "../../Login/Store";
 import * as ActionsCreator from "../ActionsCreator";
 import TeamStore from "../Store";
+import Spinner from "../../Elements/Spinner";
 
 export interface ILayoutProps {
 }
@@ -26,15 +27,19 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
         this.getTableData = this.getTableData.bind(this);
         this.setTeams = this.setTeams.bind(this);
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
+
+        this.state = {
+            loading_teams: true
+        };
     }
 
-        setLoadingStatus() {
+    setLoadingStatus() {
         this.setState({
             loading_teams: TeamStore.fetching,
         });
     }
 
-        setTeams() {
+    setTeams() {
         this.setState({
             loading_teams: TeamStore.fetching,
             teams: TeamStore.teams
@@ -44,8 +49,13 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
     componentWillMount() {
         TeamStore.on("FETCH_TEAMS", this.setLoadingStatus);
         TeamStore.on("RECEIVE_TEAMS", this.setTeams);
-        ActionsCreator.CreateGetTeamsAction(LoginStore.connectedUser.id, LoginStore.token,
-        LoginStore.connectedUser.is_admin);
+    }
+
+    componentDidMount() {
+        if (LoginStore.isLoggedIn){
+            ActionsCreator.CreateGetTeamsAction(LoginStore.connectedUser.id, LoginStore.token,
+                LoginStore.connectedUser.is_admin);
+        }
     }
 
     componentWillUnmount() {
@@ -64,14 +74,12 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
 
     getTableData() {
         let data: Array<any> = [];
-    console.log("Avant le data");
         if(this.state.teams.length > 0) {
             data = this.state.teams.map((team, i) => {
-            console.log(data);
                 let rowData: Array<any> = [team.name,
                    team.city,
-                    <FlatButton primary={true} label="Liste de matchs" linkButton={true} containerElement={<Link to={"/team/" + team.id + "matches"}/>} /> ,
-                    <FlatButton primary={true} label="Liste de joueurs" linkButton={true} containerElement={<Link to={"/team/" + team.id + "/players"}/>} />];
+                    <FlatButton primary={true} label="Liste de matchs" containerElement={<Link to={"/team/" + team.id + "/matches"}/>} /> ,
+                    <FlatButton primary={true} label="Liste de joueurs" containerElement={<Link to={"/team/" + team.id + "/players"}/>} />];
 
                 return <CustomRow key={i} data={rowData}/>
             })
@@ -81,10 +89,13 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
     }
 
     render() {
+
+        if (this.state.loading_teams) {
+            return (<Spinner/>);
+        }
+
         let columns = this.getTableColumns();
-        console.log("Avant le data dans Render");
         let data = this.getTableData();
-        console.log("après le data dans Render");
 
         if((columns.length + data.length) == 0) {
             return(
