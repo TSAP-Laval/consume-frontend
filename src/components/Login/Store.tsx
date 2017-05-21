@@ -37,6 +37,7 @@ class LoginStore extends EventEmitter {
             case "AUTHENTICATION_SUCCEEDED":
                 let succeeded: Actions.OnAuthenticationSucceeded = action as Actions.OnAuthenticationSucceeded;
                 this.connectedUser = succeeded.connectedUser;
+                this.token = succeeded.token;
                 this.isLoggedIn = true;
                 this.emit("AuthSucceed");
 

@@ -36,7 +36,7 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
     }
 
     render() {
-        if(this.userIsLoggedIn()) {
+        if(this.state.isLoggedIn) {
             return(
                 <BigContent>
                     <h1>Console TSAP</h1>

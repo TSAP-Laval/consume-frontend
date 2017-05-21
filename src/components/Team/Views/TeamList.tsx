@@ -26,6 +26,8 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
 
         this.getTableColumns = this.getTableColumns.bind(this);
         this.getTableData = this.getTableData.bind(this);
+        this.setTeams = this.setTeams.bind(this);
+        this.setLoadingStatus = this.setLoadingStatus.bind(this);
     }
 
         setLoadingStatus() {
@@ -45,7 +47,7 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
         TeamStore.on("FETCH_TEAMS", this.setLoadingStatus);
         TeamStore.on("RECEIVE_TEAMS", this.setTeams);
         ActionsCreator.CreateGetTeamsAction(LoginStore.connectedUser.id, LoginStore.token,
-         LoginStore.connectedUser.is_admin);
+        LoginStore.connectedUser.is_admin);
     }
 
     componentWillUnmount() {
@@ -55,7 +57,7 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
 
     getTableColumns() {
         let columns: Array<String> = [];
-
+        console.log(this.state.teams);
         if(this.state.teams.length > 0) {
             columns = ["Nom d'équipe", "Ville", "Action"]
         }
@@ -65,10 +67,10 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
 
     getTableData() {
         let data: Array<any> = [];
-
+    console.log("Avant le data");
         if(this.state.teams.length > 0) {
             data = this.state.teams.map((team, i) => {
-            
+            console.log(data);
                 let rowData: Array<any> = [team.name,
                    team.city,
                     <FlatButton primary={true} label="Liste de matchs" linkButton={true} containerElement={<Link to={"/team/" + team.id + "matches"}/>} /> ,
@@ -83,7 +85,9 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
 
     render() {
         let columns = this.getTableColumns();
+        console.log("Avant le data dans Render");
         let data = this.getTableData();
+        console.log("après le data dans Render");
 
         if((columns.length + data.length) == 0) {
             return(

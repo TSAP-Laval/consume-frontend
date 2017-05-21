@@ -26,18 +26,19 @@ export function getTeam(team_id: number, token: string) {
 export function CreateGetTeamsAction(userId: number, token: string, isAdmin: boolean) {
     Dispatcher.dispatch(new Actions.FetchTeams());
 
-let url: string = isAdmin ? serverUrl + "/teams":  serverUrl + "/users/" + userId;
-
+let url: string = isAdmin ? serverUrl + "teams": serverUrl + "users/" + userId;
+    console.log(url);
     let instance = axios.create({
         headers: {"X-Auth-Token":token}
     });
-
+    console.log(token);
     instance.get(url).then((response: AxiosResponse) => {
-        
-        let data: Array<ITeamSummary> = isAdmin? (response.data.hits as Array<ITeamSummary>):
-        (response.data.teams as Array<ITeamSummary>);
-        Dispatcher.dispatch(new Actions.ReceiveTeams(data))
+        console.log(response);
+        let data: Array<ITeamSummary> = isAdmin ? (response.data.data.hits as Array<ITeamSummary>):
+        (response.data.data.teams as Array<ITeamSummary>);
+        Dispatcher.dispatch(new Actions.ReceiveTeams(data));
+        console.log("Dans le axios" + data);
     }).catch((error) => {
-        CreateErrorAction(error.response.data.message);
+        CreateErrorAction(error);
     });
 }

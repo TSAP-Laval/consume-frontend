@@ -8,7 +8,6 @@ import * as Config from 'Config';
 export function CreateAuthenticateUserAction(email: string, password: string) {
     Dispatcher.dispatch(new Actions.AuthenticateUser());
 
-
     // Define the url
     const url: string = Config.serverUrl + "auth/login";
 
@@ -24,6 +23,6 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
             Dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
         })
         .catch(error => { 
-            CreateErrorAction(error.response.data.message);
+            CreateErrorAction(error);
         });
 }
