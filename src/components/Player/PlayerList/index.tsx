@@ -67,7 +67,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
                     }
                 }
 
-                rowData.push(<FlatButton primary={true} label="Voir" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id+ "/player/" + player.id}/>} />);
+                rowData.push(<FlatButton primary={true} label="Voir" containerElement={<Link to={"/team/" + this.props.params.team_id+ "/player/" + player.id}/>} />);
 
                 return <CustomRow key={i} data={rowData}/>
             })
@@ -113,7 +113,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
                 return(
                     <div>
                         <h2 className="text-center">Équipe <b>{this.props.params.team_name}</b></h2>
-                        <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/settings"} />} />
+                        <FlatButton primary={true} label={"Paramètres"} containerElement={<Link to={"/team/" + this.props.params.team_id + "/settings"} />} />
                         <h3 className="text-center"><b>Aucun joueur trouvé</b></h3>
                     </div>
                 )
@@ -121,7 +121,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
                 return(
                     <div>
                         <h2 className="text-center">Équipe <b>{this.props.params.team_name}</b></h2>
-                        <FlatButton primary={true} label={"Paramètres"} linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/settings"} />} />
+                        <FlatButton primary={true} label={"Paramètres"} containerElement={<Link to={"/team/" + this.props.params.team_id + "/settings"} />} />
                         <CustomTable columns={columns}>
                             {data}
                         </CustomTable>
