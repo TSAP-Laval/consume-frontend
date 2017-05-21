@@ -4,15 +4,16 @@ import {CreateErrorAction} from "../Error/ErrorAction";
 import {serverUrl} from "Config"
 import * as Actions from "./Actions"
 import {IActionSummary} from "../../models/DatabaseModelsSummaries"
+import LoginStore from "../Login/Store";
 
-const token: string = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoIiwidXNlciI6NSwiaWF0IjoxNDk1MzI1NDc3fQ.68v_Y8ooJrJmUETEJlcddPJUdOg0TqjnJzfAwWWVAbc";
-const instance = axios.create({
-    headers: {"X-Auth-Token":token}
-});
 
 export function FetchMatchActions(team_id: number, match_id: number) {
     const fetch_match_actions = new Actions.FetchMatchActions;
     Dispatcher.dispatch(fetch_match_actions);
+
+    let instance = axios.create({
+        headers: {"X-Auth-Token": LoginStore.token}
+    });
 
     let url = serverUrl + "teams/" + team_id + "/matches/" + match_id;
 
