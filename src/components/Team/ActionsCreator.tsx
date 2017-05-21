@@ -6,6 +6,7 @@ import { ITeam, IUser, ITeamMetricStats } from "../../models/DatabaseModels";
 import { CreateErrorAction } from "../Error/ErrorAction";
 import { ITeamSummary } from "../../models/DatabaseModelsSummaries";
 import LoginStore from "../Login/Store";
+import {ClearTeamStats} from "./Actions";
 
 
 export function FetchTeam(team_id: number, token: string) {
@@ -60,4 +61,8 @@ export function FetchTeamMetricStats(team_id: number, token: string) {
     }).catch((error => {
         CreateErrorAction(error);
     }));
+}
+
+export function CreateClearTeamStatsAction(teamId: number) {
+    Dispatcher.dispatch(new ClearTeamStats(teamId));
 }
