@@ -3,8 +3,8 @@ import axios, {AxiosResponse} from 'axios';
 import Dispatcher from "../../Dispatcher";
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import { CreateMetricsReceivedAction } from './MetricsReceived';
-import { Metric } from '../MetricModel';
 import * as Config from 'Config';
+import {Metric} from "../MetricModel";
 
 export class FetchMetrics implements IAction {
     type: string;
@@ -17,11 +17,11 @@ export class FetchMetrics implements IAction {
 export function CreateFetchMetricsAction(teamId: number) {
     Dispatcher.dispatch(new FetchMetrics());
 
-    let url: string = Config.serverUrl + "/teams/" + teamId + "/metrics";
+    let url: string = Config.serverUrl + "teams/" + teamId;
 
     axios.get(url).then(
         (resp: AxiosResponse) => {
-            let metrics = resp.data as Array<Metric>;
+            let metrics = resp.data.metrics as Array<Metric>;
             CreateMetricsReceivedAction(metrics);
         },
         (err) => {

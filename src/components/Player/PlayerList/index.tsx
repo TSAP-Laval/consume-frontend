@@ -1,7 +1,6 @@
 import * as React from "react";
-import TeamMetricStatsStore from "./Store";
+import TeamMetricStatsStore from "../../Team/Stores/MetricStatsStore";
 import {IPlayer, ITeamMetricStats} from "../../../models/DatabaseModels";
-import * as ActionCreator from "./ActionsCreator";
 import Spinner from "../../Elements/Spinner";
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
@@ -44,7 +43,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
     onStatsReceived() {
         this.setState({
             loading: TeamMetricStatsStore.fetching,
-            stats: TeamMetricStatsStore.stats
+            stats: TeamMetricStatsStore.metric_stats[this.props.params.team_id]
         });
     }
 
@@ -77,10 +76,10 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
     }
 
     getTableColumns() {
-        let columns: Array<string> = [];
+        let columns: string[][] = [];
 
         if(this.props.params.players.length > 0) {
-            columns = ["Prénom", "Nom"];
+            columns = [["Prénom"], ["Nom"]];
 
             if(this.props.params.metrics.length > 0) {
                 columns = columns.concat(this.props.params.metrics.map((metric) => {
@@ -88,7 +87,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
                 }));
             }
 
-            columns.push("Voir Détails");
+            columns.push(["Voir Détails"]);
         }
 
         return columns;

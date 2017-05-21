@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Table, TableBody, TableRow, TableHeader, TableHeaderColumn } from 'material-ui/Table';
 
 export interface IDataProps {
-    columns: Array<String>
+    columns: Array<Array<String>>
 }
 
 export interface IDataStates {
@@ -17,7 +17,9 @@ const StyledTable = styled(Table)`
 export default class CustomTable extends React.Component<IDataProps, IDataStates> {
     render() {
         let headers = this.props.columns.map((h, i) => {
-            return <TableHeaderColumn key={ i.toString() }>{h}</TableHeaderColumn>
+            let header_lines = [].concat(...h.map(e => [<br/>, e])).slice(1);
+
+            return <TableHeaderColumn key={ i.toString() }>{header_lines}</TableHeaderColumn>
         });
 
         return (

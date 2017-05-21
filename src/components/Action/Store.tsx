@@ -6,11 +6,24 @@ import * as Actions from "./Actions"
 
 class ActionStore extends EventEmitter {
     fetching: boolean;
-    actions: IActionSummary[];
+    actions: {[match_id: string] : IActionSummary[]};
 
     constructor() {
         super();
         this.fetching = false;
+        this.actions = {};
+    }
+
+    addActions(match_id: number, actions: IActionSummary[]) {
+        this.actions[match_id.toString()] = actions;
+    }
+
+    getActionsForMatch(match_id: number) {
+        return this.actions[match_id.toString()]? this.actions[match_id.toString()]: [];
+    }
+
+    actionsExists(match_id: number) {
+        return(match_id.toString() in this.actions);
     }
 
     handleActions(action: IAction) {
@@ -21,7 +34,7 @@ class ActionStore extends EventEmitter {
                 break;
             case "RECEIVE_MATCH_ACTIONS":
                 this.fetching = false;
-                this.actions = ((action as Actions.ReceiveMatchActions)).actions;
+                this.addActions((action as Actions.ReceiveMatchActions).match_id, (action as Actions.ReceiveMatchActions).actions);
                 this.emit(action.type);
                 break;
         }

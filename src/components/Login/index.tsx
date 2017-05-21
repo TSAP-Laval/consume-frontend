@@ -1,16 +1,15 @@
 import * as React from "react";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { TextField, FlatButton } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
 import Store from "./Store";
 import * as ActionCreator from "./ActionCreator"
 
-export interface ILoginProps { }
+export interface ILoginProps {
+}
 
 export interface ILoginState {
     email?: string,
-    password?: string
+    password?: string,
 }
 
 export default class Login extends React.Component<ILoginProps, ILoginState> {
@@ -79,5 +78,4 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             </div>
         );
     }
-
 }

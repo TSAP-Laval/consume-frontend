@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { IAction } from "../../Models/ActionCreation";
+import { IAction } from "../../models/ActionCreation";
 import * as Actions from "./Actions"
 //import { ZoneData, Coordinate, Zone, Size } from "../../Models/ComponentModels";
 import Dispatcher from "../Dispatcher"

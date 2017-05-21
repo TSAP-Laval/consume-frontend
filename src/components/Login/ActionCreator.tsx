@@ -2,7 +2,7 @@ import * as Actions from "./Actions"
 import Dispatcher from "../Dispatcher";
 import axios from 'axios';
 import { CreateErrorAction } from "../Error/ErrorAction";
-import {IUser} from "../../Models/DatabaseModels";
+import {IUser} from "../../models/DatabaseModels";
 import * as Config from 'Config';
 
 export function CreateAuthenticateUserAction(email: string, password: string) {

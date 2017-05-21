@@ -1,33 +1,28 @@
-var debug = !(process.env.ENV === 'production');
-var webpack = require('webpack');
-var path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+let debug = !(process.env.ENV === 'production');
+let webpack = require('webpack');
+let path = require('path');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const sassLoaders = [
-    'css-loader',
-    'postcss-loader',
-    'sass-loader?includePaths[]=' + path.resolve(__dirname, 'node_modules')
-];
-
 module.exports = {
-    entry: "./src/Index.tsx",
+    entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
-        path: "dist",
-        publicPath: '/'
+        path: path.resolve(__dirname, 'dist'),
     },
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: debug ? "eval-cheap-source-map" : "source-map",
 
+    devServer: {
+        historyApiFallback: true,
+        hot: true
+    },
+
     plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.optimize.DedupePlugin(),
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('production')
+                'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
             }
         }),
 
@@ -37,7 +32,6 @@ module.exports = {
                 warnings: false
             }
         }),
-        new ExtractTextPlugin('bundle.css'),
         new HtmlWebpackPlugin({
             title: "TSAP",
             template: "templates/index.ejs"
@@ -50,39 +44,16 @@ module.exports = {
         })
     },
 
-    postcss: [
-        autoprefixer({
-            browsers: ['last 2 versions']
-        })
-    ],
-
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".scss"]
+        extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".scss"]
     },
 
     module: {
-        loaders: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
-            {
-                test: /\.tsx?$/,
-                exclude: /node_modules/,
-                loader: "ts-loader"
-            },
-            {
-                test: /\.scss?$/,
-                loader: ExtractTextPlugin.extract('style-loader', sassLoaders.join('!'))
-            },
-            {
-                test: /\.css$/,
-                loader: 'style!css?modules',
-                include: /flexboxgrid/,
-            }
-        ],
-
-        preLoaders: [
+        rules: [
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            { test: /\.js$/, loader: "source-map-loader" }
+            { test: /\.js$/, loader: "source-map-loader" },
+            { test: /\.tsx?$/, use: 'ts-loader'}
         ]
     },
 };

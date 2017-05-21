@@ -4,11 +4,8 @@ import CustomTable from "../../CustomTable/CustomTable"
 import CustomRow from "../../CustomTable/CustomRow"
 import FlatButton from 'material-ui/FlatButton';
 import {ITeamSummary} from "../../../models/DatabaseModelsSummaries";
-import { IUser } from "../../../Models/DatabaseModels";
 import LoginStore from "../../Login/Store";
-import BigContent from "../../Elements/BigContent";
 import * as ActionsCreator from "../ActionsCreator";
-import Spinner from "../../Elements/Spinner";
 import TeamStore from "../Store";
 
 export interface ILayoutProps {
@@ -54,10 +51,10 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
     }
 
     getTableColumns() {
-        let columns: Array<String> = [];
+        let columns: string[][] = [];
 
         if(this.state.teams.length > 0) {
-            columns = ["Nom d'équipe", "Ville", "Action"]
+            columns = [["Nom d'équipe"], ["Ville"], ["Action"]]
         }
 
         return columns;
