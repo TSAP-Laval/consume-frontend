@@ -23,6 +23,7 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
 
         this.getTableColumns = this.getTableColumns.bind(this);
         this.getTableData = this.getTableData.bind(this);
+        this.getTableData = this.getTableData.bind(this);
         this.setTeams = this.setTeams.bind(this);
         this.setLoadingStatus = this.setLoadingStatus.bind(this);
     }

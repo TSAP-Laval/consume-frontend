@@ -22,6 +22,6 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
             Dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
         })
         .catch(error => {
-            CreateErrorAction(error.response.data.message);
+            CreateErrorAction(error.response.message);
         });
 }
