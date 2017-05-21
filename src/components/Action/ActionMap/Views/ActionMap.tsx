@@ -98,25 +98,49 @@ export class ActionMapComponent
     }
 
     getFilteredActions() {
-        return this.state.actions.filter(action => this.state.action_impacts.map((action_impact) => action_impact.id).indexOf(action.impact) !== -1)
-                                 .filter(action => this.state.action_types.map((action_type) => action_type.id).indexOf(action.type.id) !== -1)
+        let usedImpacts = this.state.action_impacts.filter((i) => i.used).map(i => i.id);
+
+        let usedTypes = this.state.action_types.filter((t) => t.used).map(t => t.id);
+
+        return this.state.actions.filter(action =>
+            usedImpacts.indexOf(action.impact) !== -1 && usedTypes.indexOf(action.type.id) !== -1
+        );
+
     }
 
     onActionTypeToggle(e: React.FormEvent<HTMLInputElement>) {
+
         let value: number = parseInt(e.currentTarget.value);
 
-        let index = this.state.action_types.map((action_type) => {
-            return action_type.id
-        }).indexOf(value);
+        let currentDisplayState = this.state.action_types;
 
-        if(index != -1) {
-            //TODO: SOMEHOW UPDATE UN OBJET D'UNE ARRAY QUI SE TROUVE DANS LE STATE ET RE-RENDER :')
-            //this.state.action_types[index].used = e.currentTarget.checked;  -> NOT OK AND NOT WORKING.
-        }
+        let newState = currentDisplayState.map((actType) => {
+            if (actType.id === value) {
+                actType.used = (e.target as any).checked;
+            }
+            return actType;
+        });
+
+        this.setState({
+            action_types: newState
+        });
     }
 
     onActionImpactToggle(e: React.FormEvent<HTMLInputElement>) {
+        let value = parseInt(e.currentTarget.value);
 
+        let currentDisplayState = this.state.action_impacts;
+
+        let newState = currentDisplayState.map(actImpact => {
+            if (actImpact.id === value) {
+                actImpact.used = (e.target as any).checked;
+            }
+            return actImpact
+        });
+
+        this.setState({
+            action_impacts: newState
+        });
     }
 
     render() {
