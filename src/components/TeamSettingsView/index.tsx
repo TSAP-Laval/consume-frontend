@@ -5,6 +5,7 @@ import MetricStore from './Store';
 import { CreateFetchMetricsAction } from './Actions/FetchMetrics';
 import Form from "../Elements/Form";
 import Spinner from "../Elements/Spinner";
+import LoginStore from "../Login/Store";
 
 
 export interface IMetricEditorProps {
@@ -33,7 +34,7 @@ export default class MetricEditor extends React.Component<IMetricEditorProps, IM
         MetricStore.on("fetchStatusChanged", this.getFetching);
         MetricStore.on("metricsChanged", this.getMetrics);
 
-        CreateFetchMetricsAction(this.props.teamId);
+        CreateFetchMetricsAction(this.props.teamId, LoginStore.token);
     }
 
     componentWillUnmount() {

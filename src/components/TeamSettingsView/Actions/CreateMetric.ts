@@ -2,7 +2,7 @@ import { IAction } from "../../../models/ActionCreation";
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import { CreateFetchMetricsAction } from './FetchMetrics';
 import { Metric } from "../MetricModel";
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 import Dispatcher from "../../Dispatcher";
 import * as Config from 'Config';
 
@@ -17,15 +17,19 @@ export class CreateMetricAction implements IAction {
     }
 }
 
-export function CreateCreateMetricAction(metric: Metric, teamID: number) {
+export function CreateCreateMetricAction(metric: Metric, teamID: number, token: string) {
     Dispatcher.dispatch(new CreateMetricAction(metric));
 
-    let url: string = Config.serverUrl + "/teams/" + teamID + "/metrics";
+    let instance = axios.create({
+        headers: {"X-Auth-Token": token}
+    });
 
-    axios.post(url, metric)
+    let url: string = Config.serverUrl + "teams/" + teamID + "/metrics";
+
+    instance.post(url, metric)
     .then(
-        (resp: AxiosResponse) => {
-            CreateFetchMetricsAction(teamID);
+        () => {
+            CreateFetchMetricsAction(teamID, token);
         },
         (err) => {
             CreateErrorAction(err.toString());
