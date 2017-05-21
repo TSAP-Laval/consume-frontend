@@ -4,7 +4,6 @@ import Li from '../components/Elements/Li';
 import LoginStore from "../components/Login/Store";
 import {RaisedButton} from "material-ui";
 import { Link } from 'react-router';
-import Li from "../components/Elements/Li";
 
 
 export interface ILayoutProps {

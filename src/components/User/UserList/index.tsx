@@ -82,8 +82,8 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
         CreateFetchUsersAction();
     }
 
-    private static getColumns(): String[] {
-        return ["Prénom", "Nom", "Courriel", "Administrateur"];
+    private static getColumns(): String[][] {
+        return [["Prénom"], ["Nom"], ["Courriel"], ["Administrateur"]];
     }
 
     private getUserRows(): any[] {
