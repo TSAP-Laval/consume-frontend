@@ -28,6 +28,7 @@ class TeamMetricStatsStore extends EventEmitter {
                 this.fetching = true;
                 this.emit(action.type);
                 break;
+
             case "RECEIVE_TEAM_METRIC_STATS":
                 this.fetching = false;
                 this.addTeamMetricStats((action as Actions.ReceiveTeamMetricStats).team_id, (action as Actions.ReceiveTeamMetricStats).stats);
@@ -36,7 +37,8 @@ class TeamMetricStatsStore extends EventEmitter {
 
             case "CLEAR_TEAM_STATS":
                 let act = action as Actions.ClearTeamStats;
-                this.metric_stats[act.team_id.toString()] = null;
+                this.metric_stats = {};
+                break;
         }
     }
 }

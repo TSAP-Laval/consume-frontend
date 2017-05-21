@@ -4,6 +4,7 @@ import { CreateFetchMetricsAction } from './FetchMetrics';
 import axios from 'axios';
 import Dispatcher from "../../Dispatcher";
 import * as Config from 'Config';
+import {CreateClearTeamStatsAction} from "../../Team/ActionsCreator";
 
 
 export class DeleteMetricAction implements IAction {
@@ -31,6 +32,9 @@ export function CreateDeleteMetricAction(metricID: number, teamID: number, token
     .then(
         () => {
             CreateFetchMetricsAction(teamID, token);
+
+            // Invalidate cache
+            CreateClearTeamStatsAction(teamID);
         },
         (err) => {
             CreateErrorAction(err.toString());

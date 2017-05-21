@@ -5,6 +5,7 @@ import { Metric } from "../MetricModel";
 import axios from 'axios';
 import Dispatcher from "../../Dispatcher";
 import * as Config from 'Config';
+import {CreateClearTeamStatsAction} from "../../Team/ActionsCreator";
 
 export class UpdateMetricAction implements IAction {
     type: string;
@@ -35,6 +36,9 @@ export function CreateUpdateMetricAction(metric: Metric, teamID: number, token: 
     .then(
         () => {
             CreateFetchMetricsAction(teamID, token);
+
+            // Invalidate cache
+            CreateClearTeamStatsAction(teamID);
         },
         (err) => {
             CreateErrorAction(err.toString());
