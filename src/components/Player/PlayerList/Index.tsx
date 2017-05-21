@@ -97,7 +97,7 @@ export default class PlayerList extends React.Component<IDataProps, IDataState> 
     componentWillMount(){
         TeamMetricStatsStore.on("FETCH_TEAM_METRIC_STATS", this.setLoadingStatus);
         TeamMetricStatsStore.on("RECEIVE_TEAM_METRIC_STATS", this.onStatsReceived);
-        ActionCreator.FetchTeamMetricStats(this.props.params.team_id);
+        //ActionCreator.FetchTeamMetricStats(this.props.params.team_id);
     }
 
     componentWillUnmount(){

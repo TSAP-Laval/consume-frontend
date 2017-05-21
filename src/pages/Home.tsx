@@ -5,7 +5,6 @@ import Login from "../components/Login/Index";
 
 
 export interface ILayoutProps {
-
 }
 
 export interface ILayoutState {
@@ -36,7 +35,7 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
     }
 
     render() {
-        if(this.state.isLoggedIn) {
+        if(this.userIsLoggedIn()) {
             return(
                 <BigContent>
                     <h1>Console TSAP</h1>

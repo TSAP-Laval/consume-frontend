@@ -15,7 +15,9 @@ export interface ILayoutProps {
 }
 
 export interface ILayoutState {
-    user: IUser
+    teams?: Array<ITeamSummary>;
+    token?: string;
+    loading_teams?: boolean;
 
 }
 
@@ -33,16 +35,22 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
         });
     }
 
+        setLoadingStatus() {
+        this.setState({
+            loading_teams: TeamStore.fetching,
+        });
+    }
+
     componentWillMount() {
-        TeamStore.on("FETCH_TEAM", this.setLoadingStatus);
-        TeamStore.on("RECEIVE_TEAM", this.setTeam);
+        TeamStore.on("FETCH_TEAMS", this.setLoadingStatus);
+        TeamStore.on("RECEIVE_TEAMS", this.setTeams);
 
         ActionsCreator.getTeam(this.props.params.team_id, this.state.token);
     }
 
     componentWillUnmount() {
-        TeamStore.removeListener("FETCH_TEAM", this.setLoadingStatus);
-        TeamStore.removeListener("RECEIVE_TEAM", this.setTeam);
+        TeamStore.removeListener("FETCH_TEAMS", this.setLoadingStatus);
+        TeamStore.removeListener("RECEIVE_TEAMS", this.setTeam);
     }
 
     getTableColumns() {
@@ -58,13 +66,13 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
     getTableData() {
         let data: Array<any> = [];
 
-        if(this.props.params.user.teams.length > 0) {
-            data = this.props.params.user.teams.map((team, i) => {
+        if(this.state.teams.length > 0) {
+            data = this.state.teams.map((team, i) => {
             
                 let rowData: Array<any> = [team.name,
                    team.city,
-                    <FlatButton primary={true} label="Liste de matchs" linkButton={true} containerElement={<Link to={"/team/" + this.state.user.team.id + "/matches/" + match.id}/>} /> 
-                    <FlatButton primary={true} label="Liste de joueurs" linkButton={true} containerElement={<Link to={"/team/" + this.props.params.team_id + "/matches/" + match.id}/>} />];
+                    <FlatButton primary={true} label="Liste de matchs" linkButton={true} containerElement={<Link to={"/team/" + team.id + "matches"}/>} /> ,
+                    <FlatButton primary={true} label="Liste de joueurs" linkButton={true} containerElement={<Link to={"/team/" + team.id + "/players"}/>} />];
 
                 return <CustomRow key={i} data={rowData}/>
             })

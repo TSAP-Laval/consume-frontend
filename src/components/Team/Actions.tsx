@@ -1,5 +1,6 @@
 import {IAction} from "../../models/ActionCreation"
 import { ITeam, IUser } from "../../models/DatabaseModels"
+import { ITeamSummary } from "../../Models/DatabaseModelsSummaries";
 
 export class FetchTeam implements IAction {
     type: string;
@@ -29,10 +30,10 @@ export class FetchTeams implements IAction {
 
 export class ReceiveTeams implements IAction {
     type: string;
-    user: IUser;
+    teams: Array<ITeamSummary>;
 
-    constructor(user: IUser) {
+    constructor(teams: Array<ITeamSummary>) {
         this.type = "RECEIVE_TEAMS";
-        this.user = user;
+        this.teams = teams;
     }
 }
