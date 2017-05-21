@@ -15,7 +15,8 @@ module.exports = {
     devtool: debug ? "eval-cheap-source-map" : "source-map",
 
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
+        hot: true
     },
 
     plugins: [

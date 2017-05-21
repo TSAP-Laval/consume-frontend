@@ -16,15 +16,15 @@ const root = document.getElementById("root");
 
 ReactDOM.render(
 
-  <Router history={browserHistory}>
-    <Route path="/" component={Layout}>
-      <IndexRoute component={Home}/>
-      <Route path="users" component={Users} />
-      <Route path="team/:teamID/player/:playerID" component={Player}/>
-      <Route path="team/:teamID/settings" component={TeamSettings}/>
-      <Route path="team/:team_id/matches/:match_id" component={Match}/>
-      <Route path="test-matchlist/:team_id" component={MatchList}/>
-      <Route path="test-playerlist/:team_id" component={PlayerList}/>
-    </Route>
-  </Router>,
+    <Router history={browserHistory}>
+        <Route path="/" component={Layout}>
+            <IndexRoute component={Home}/>
+            <Route path="users" component={Users} />
+            <Route path="team/:teamID/settings" component={TeamSettings}/>
+            <Route path="team/:team_id/matches/:match_id" component={Match}/>
+            <Route path="team/:team_id/matches" component={MatchList}/>
+            <Route path="team/:team_id/players" component={PlayerList}/>
+            <Route path="team/:teamID/players/:playerID" component={Player}/>
+        </Route>
+    </Router>,
 root);
