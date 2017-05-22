@@ -41,7 +41,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         return (
             <div style={{ paddingTop: '100px', maxWidth: '400px', margin: '0 auto' }}>
                 <AppBar
-                    title="Zone membre" showMenuIconButton={false}
+                    title="Connexion" showMenuIconButton={false}
                 />
                 <TextField
                     ref='email'
