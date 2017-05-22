@@ -14,6 +14,7 @@ const StyledPaper = styled(Paper)`
     margin-bottom: 4em;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 4em;
 `;
 
 export class DataPanel extends React.Component<IDataPanelProps, any> {
