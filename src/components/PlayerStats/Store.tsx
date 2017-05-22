@@ -1,28 +1,32 @@
 import { EventEmitter } from "events";
 import Dispatcher from "../Dispatcher";
 import {IAction} from "../../models/ActionCreation";
-import {IPlayer, IPlayerStats} from "../../models/DatabaseModels";
+import {IPlayer, IPlayerStats, ISeason} from "../../models/DatabaseModels";
 import {PlayerReceivedAction} from "./Actions/PlayerReceived";
 import {PlayerStatsReceivedAction} from "./Actions/PlayerStatsReceived";
+import {SeasonsReceivedAction} from "./Actions/SeasonsReceived";
 
 
 class StatsTableStore extends EventEmitter {
 
     player: IPlayer;
     playerStats: IPlayerStats[];
+    seasons: ISeason[];
 
     playerFetching: boolean;
     statsFetching: boolean;
+    seasonsFetching: boolean;
 
     constructor() {
         super();
         this.player = null;
         this.playerFetching = false;
         this.statsFetching = false;
+        this.seasonsFetching = false;
     }
 
     isFetching(): boolean {
-        return this.playerFetching || this.statsFetching;
+        return this.playerFetching || this.statsFetching || this.seasonsFetching;
     }
 
     handleActions(action: IAction){
@@ -53,6 +57,19 @@ class StatsTableStore extends EventEmitter {
 
                 this.emit("FetchingStateChanged");
                 this.emit("PlayerStatsChanged");
+                break;
+
+            case "FETCH_SEASONS":
+                this.seasonsFetching = true;
+                this.emit("FetchingStateChanged");
+                break;
+
+            case "SEASONS_RECEIVED":
+                this.seasonsFetching = false;
+                let sAct = action as SeasonsReceivedAction;
+                this.seasons = sAct.seasons;
+                this.emit("FetchingStateChanged");
+                this.emit("SeasonsChanged");
                 break;
         }
     }

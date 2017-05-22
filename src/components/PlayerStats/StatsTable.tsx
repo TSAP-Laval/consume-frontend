@@ -120,11 +120,9 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
 
         return (
             <SmallContainer>
-                <LeftDiv>
-                    <CustomTable columns={this.getColumns()}>
-                        {this.getRows()}
-                    </CustomTable>
-                </LeftDiv>
+                <CustomTable columns={this.getColumns()}>
+                    {this.getRows()}
+                </CustomTable>
             </SmallContainer>
         );
     }

@@ -15,14 +15,14 @@ export class FetchPlayerStatsAction implements IAction {
     }
 }
 
-export function CreateFetchPlayerStatsAction(teamID: number, playerID: number, token: string) {
+export function CreateFetchPlayerStatsAction(teamID: number, playerID: number, seasonID: number, token: string) {
     let instance = axios.create({
         headers: {"X-Auth-Token": token}
     });
 
     Dispatcher.dispatch(new FetchPlayerStatsAction());
 
-    let url: string = serverUrl + "stats/teams/" + teamID + "/players/" + playerID;
+    let url: string = serverUrl + "stats/teams/" + teamID + "/players/" + playerID + '?season_id=' + seasonID;
 
     instance.get(url).then(
         (resp: AxiosResponse) => {
