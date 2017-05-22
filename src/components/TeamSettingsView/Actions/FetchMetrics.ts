@@ -14,14 +14,18 @@ export class FetchMetrics implements IAction {
     }
 }
 
-export function CreateFetchMetricsAction(teamId: number) {
+export function CreateFetchMetricsAction(teamId: number, token: string) {
     Dispatcher.dispatch(new FetchMetrics());
+
+    let instance = axios.create({
+        headers: {"X-Auth-Token": token}
+    });
 
     let url: string = Config.serverUrl + "teams/" + teamId;
 
-    axios.get(url).then(
+    instance.get(url).then(
         (resp: AxiosResponse) => {
-            let metrics = resp.data.metrics as Array<Metric>;
+            let metrics = resp.data.data.metrics as Array<Metric>;
             CreateMetricsReceivedAction(metrics);
         },
         (err) => {

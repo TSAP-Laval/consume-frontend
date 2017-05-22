@@ -1,9 +1,10 @@
 import { IAction } from "../../../models/ActionCreation";
 import { CreateErrorAction } from "../../Error/ErrorAction";
 import { CreateFetchMetricsAction } from './FetchMetrics';
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 import Dispatcher from "../../Dispatcher";
 import * as Config from 'Config';
+import {CreateClearTeamStatsAction} from "../../Team/ActionsCreator";
 
 
 export class DeleteMetricAction implements IAction {
@@ -14,19 +15,26 @@ export class DeleteMetricAction implements IAction {
     }
 }
 
-export function CreateDeleteMetricAction(metricID: number, teamID: number) {
+export function CreateDeleteMetricAction(metricID: number, teamID: number, token: string) {
     Dispatcher.dispatch(new DeleteMetricAction());
 
-    let url: string = Config.serverUrl + "/teams/" + teamID + "/metrics/" + metricID.toString();
+    let instance = axios.create({
+        headers: {"X-Auth-Token": token}
+    });
+
+    let url: string = Config.serverUrl + "teams/" + teamID + "/metrics/" + metricID.toString();
 
     if (!metricID) {
         return;
     }
 
-    axios.delete(url)
+    instance.delete(url)
     .then(
-        (resp: AxiosResponse) => {
-            CreateFetchMetricsAction(teamID);
+        () => {
+            CreateFetchMetricsAction(teamID, token);
+
+            // Invalidate cache
+            CreateClearTeamStatsAction(teamID);
         },
         (err) => {
             CreateErrorAction(err.toString());

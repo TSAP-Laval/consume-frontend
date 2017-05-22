@@ -4,6 +4,7 @@ import Li from '../components/Elements/Li';
 import LoginStore from "../components/Login/Store";
 import {RaisedButton} from "material-ui";
 import { Link } from 'react-router';
+import TeamList from "../components/Team/Views/TeamList";
 
 
 export interface ILayoutProps {
@@ -22,19 +23,20 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
     }
 
     render() {
+        let adminOptions;
+        if (LoginStore.isAdmin()) {
+            adminOptions = <Link to="/users"><RaisedButton primary={true} label="Gestion des utilisateurs"/></Link>
+        } else {
+            adminOptions = null;
+        }
+
         return (
             <BigContent>
-                <ul>
-                    <Li><Link to="/team/3"><RaisedButton primary={true}
-                                                         label="Statistiques de l'équipe"/></Link></Li><br/>
-                    <Li><Link to="/team/3/matches"><RaisedButton primary={true}
-                                                                 label="Liste de matchs"/></Link></Li><br/>
-                    <Li><Link to="/team/3/players"><RaisedButton primary={true}
-                                                                 label="Liste de joueurs"/></Link></Li>
-                    <Li><Link to="/teams/3/matches/1"><RaisedButton primary={true} label="ActionMap"/></Link></Li>
-                    <Li><Link to="/users"><RaisedButton primary={true}
-                                                        label="Gestion des utilisateurs"/></Link></Li>
-                </ul>
+                {
+                    LoginStore.isAdmin()?
+                        <Link to="/users"><RaisedButton primary={true} label="Gestion des Utilisateurs"/></Link>: null
+                }
+                <TeamList />
             </BigContent>
         )
     }

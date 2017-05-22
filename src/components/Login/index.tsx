@@ -45,7 +45,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                 />
                 <TextField
                     ref='email'
-                    floatingLabelText='Entrer votre courriel'
+                    floatingLabelText='Courriel'
                     multiLine={false}
                     fullWidth={true}
                     value ={this.state.email}
@@ -55,7 +55,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                 <br />
                 <TextField
                     ref='password'
-                    floatingLabelText='Entrer votre mot de passe'
+                    floatingLabelText='Mot de passe'
                     multiLine={false}
                     fullWidth={true}
                     type="password"

@@ -5,6 +5,7 @@ import { CreateCreateMetricAction } from "./Actions/CreateMetric";
 import { CreateDeleteMetricAction } from "./Actions/DeleteMetric";
 import { Metric } from './MetricModel';
 import FormInput from "../Elements/FormInput";
+import LoginStore from "../Login/Store";
 
 export interface IMetricRowProps {
     metric?: Metric
@@ -41,7 +42,7 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
     }
 
     deleteMetric() {
-        CreateDeleteMetricAction(this.state.metric.id, this.props.teamID)
+        CreateDeleteMetricAction(this.state.metric.id, this.props.teamID, LoginStore.token)
     }
 
     changeName(e: any) {
@@ -99,9 +100,9 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
         }
 
         if (this.state.metric.id) {
-            CreateUpdateMetricAction(this.state.metric, this.props.teamID);
+            CreateUpdateMetricAction(this.state.metric, this.props.teamID, LoginStore.token);
         } else {
-            CreateCreateMetricAction(this.state.metric, this.props.teamID);
+            CreateCreateMetricAction(this.state.metric, this.props.teamID, LoginStore.token);
         }
     }
 
