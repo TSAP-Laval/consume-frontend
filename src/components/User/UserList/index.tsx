@@ -83,6 +83,11 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
         CreateFetchUsersAction(LoginStore.token);
     }
 
+    componentWillUnmount() {
+        UserStore.removeListener("fetchStatusChanged", this.getFetching);
+        UserStore.removeListener("usersChanged", this.getUsers);
+    }
+
     private static getColumns(): String[][] {
         return [["Prénom"], ["Nom"], ["Courriel"], ["Administrateur"]];
     }
