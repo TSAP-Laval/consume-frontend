@@ -30,8 +30,7 @@ export function CreateFetchSeasonsAction(teamID: number, playerID: number, token
         (resp: AxiosResponse) => {
             let seasons = resp.data.data.hits as ISeason[];
             CreateSeasonsReceivedAction(seasons);
-            CreateFetchPlayerAction(teamID, playerID, token);
-            CreateFetchPlayerStatsAction(teamID, playerID, seasons[seasons.length - 1].id, token);
+            CreateFetchPlayerAction(teamID, playerID, seasons[seasons.length - 1].id, token);
         },
         (err) => {
             CreateErrorAction(err.toString());
