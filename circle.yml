@@ -6,6 +6,7 @@ dependencies:
   pre:
     - pip install ansible
     - pip install --upgrade setuptools
+    - webpack
 
 general:
   artifacts:
