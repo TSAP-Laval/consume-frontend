@@ -23,12 +23,12 @@ export class ZoneRatioComponent extends React.Component<ILayoutProps, ILayoutSta
         let zoneHeight = this.props.parent_size.height / this.props.zone_size.height;
         let numberFormatted = parseFloat((this.props.zone.percentage * 100).toFixed(2));
         let text = !isNaN(numberFormatted)? (numberFormatted.toString() + '%') : '0%';
-        let startX = (zoneWidth * this.props.zone.x) + (zoneWidth/2);
+        let startX = (zoneWidth * this.props.zone.x) + (zoneWidth * 0.3);
         let ys = [];
         for(let _i = this.props.zone_size.height - 1; _i > -1; _i--) {
             ys.push(_i);
         }
-        let startY = (zoneHeight * ys[this.props.zone.y]) + (zoneHeight/2);
+        let startY = (zoneHeight * ys[this.props.zone.y]) + (zoneHeight * 0.4);
 
         return <Text x={startX} y={startY} text={text} fontSize={26}/>
     }

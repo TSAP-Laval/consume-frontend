@@ -5,6 +5,7 @@ import {serverUrl} from "Config";
 import {CreateErrorAction} from "../../Error/ErrorAction";
 import {CreatePlayerReceivedAction} from "./PlayerReceived";
 import {IPlayer} from "../../../models/DatabaseModels";
+import {CreateFetchPlayerStatsAction} from "./FetchPlayerStats";
 
 
 export class FetchPlayerAction implements IAction {
@@ -15,7 +16,7 @@ export class FetchPlayerAction implements IAction {
     }
 }
 
-export function CreateFetchPlayerAction(teamID: number, playerID: number, token: string) {
+export function CreateFetchPlayerAction(teamID: number, playerID: number, seasonID: number, token: string) {
     let instance = axios.create({
         headers: {"X-Auth-Token": token}
     });
@@ -27,6 +28,7 @@ export function CreateFetchPlayerAction(teamID: number, playerID: number, token:
     instance.get(url).then(
         (resp: AxiosResponse) => {
             CreatePlayerReceivedAction(resp.data.data as IPlayer);
+            CreateFetchPlayerStatsAction(teamID, playerID, seasonID, token);
         },
         (err) => {
             CreateErrorAction(err.toString());

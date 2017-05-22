@@ -21,3 +21,13 @@ export class OnAuthenticationSucceeded implements IAction {
     }
 
 }
+
+export class OnLoginErrorAction implements IAction {
+    type: string;
+    message: string;
+
+    constructor(message: string) {
+        this.type = "AUTHENTICATION_ERROR";
+        this.message = message;
+    }
+}

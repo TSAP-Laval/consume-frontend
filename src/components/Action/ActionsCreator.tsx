@@ -22,7 +22,7 @@ export function FetchMatchActions(team_id: number, match_id: number, token: stri
         let data: IActionSummary[] = (response.data.data.actions as IActionSummary[]);
         const receive_match_actions = new Actions.ReceiveMatchActions(match_id, data);
         Dispatcher.dispatch(receive_match_actions);
-    }, (err) => {
-        CreateErrorAction(err);
+    },(error) => {
+        CreateErrorAction(error);
     });
 }

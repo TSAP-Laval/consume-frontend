@@ -46,7 +46,7 @@ export default class MatchView extends React.Component<ILayoutProps, ILayoutStat
 
     render() {
         return (
-            <BigContent>
+            <div>
                 <DataPanel Name={this.state.team_name} Header={this.actions_title}>
                     <ActionMapComponent match_id={this.props.params.match_id}/>
                 </DataPanel>
@@ -54,7 +54,7 @@ export default class MatchView extends React.Component<ILayoutProps, ILayoutStat
                 <DataPanel Name={this.state.team_name} Header={this.heatmap_title}>
                     <HeatMapComponent match_id={this.props.params.match_id} team_id={this.props.params.team_id}/>
                 </DataPanel>
-            </BigContent>
+            </div>
         )
     }
 }

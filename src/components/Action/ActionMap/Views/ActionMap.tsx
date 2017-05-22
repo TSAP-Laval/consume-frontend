@@ -26,16 +26,27 @@ export interface ILayoutState {
 
 export class ActionMapComponent
     extends React.Component<ILayoutProps, ILayoutState> {
+    size_set: Boolean = false;
 
     constructor(props: ILayoutProps) {
         super(props);
-
-        this.state = {
-            size: new Size(600, 300),
-            actions: ActionStore.getActionsForMatch(this.props.match_id),
-            action_types: [],
-            action_impacts: []
-        };
+        if(Object.keys(ActionStore.actions).length != 0){
+            let actions: IActionSummary[] = ActionStore.getActionsForMatch(this.props.match_id);
+            this.state = {
+                size: new Size(1200, 600),
+                actions: actions,
+                action_types: this.getActionTypes(actions),
+                action_impacts: this.getActionImpacts(actions)
+            };
+        }
+        else {
+            this.state = {
+                size: new Size(600, 300),
+                actions: ActionStore.getActionsForMatch(this.props.match_id),
+                action_types: [],
+                action_impacts: []
+            };
+        }
 
         this.setActions = this.setActions.bind(this);
         this.getActionImpacts = this.getActionImpacts.bind(this);
@@ -146,7 +157,7 @@ export class ActionMapComponent
     }
 
     render() {
-        if (this.state.actions.length != 0) {
+        if (this.state.actions.length != 0 && this.size_set) {
             let actions = this.getFilteredActions().map((action) => {
                 let color: RGBColor = this.state.action_impacts.filter((impact) => {return impact.id == action.impact})[0].getColor();
                 return <ActionComponent key={action.id} params={{action: action, color: color, parent_size: this.state.size}}/>
@@ -180,6 +191,7 @@ export class ActionMapComponent
                 </SmallContainer>
             );
         }
+        this.size_set = true;
         return(
             <div ref="mainStage">
                 <SmallContainer>

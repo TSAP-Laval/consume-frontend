@@ -37,17 +37,28 @@ export class HeatMapComponent
     extends React.Component<ILayoutProps, ILayoutState> {
     readonly widthChoices = [2,3,4,5,6,7,8,9,10,11,12];
     readonly heightChoices = [1,2,3,4,5,6,7,8];
+    size_set: Boolean = false;
 
     constructor(props: ILayoutProps) {
         super(props);
-
-        this.state = {
-            size: new Size(1200, 600),
-            actions: ActionStore.getActionsForMatch(this.props.match_id),
-            action_types: [],
-            action_impacts: [],
-            zones_size: new Size(0,0)
-        };
+        if(Object.keys(ActionStore.actions).length != 0){
+            let actions: IActionSummary[] = ActionStore.getActionsForMatch(this.props.match_id);
+            this.state = {
+                size: new Size(1200, 600),
+                actions: actions,
+                action_types: this.getActionTypes(actions),
+                action_impacts: this.getActionImpacts(actions),
+                zones_size: PreferencesStore.getMapSize(),
+            };
+        } else {
+            this.state = {
+                size: new Size(1200, 600),
+                actions: ActionStore.getActionsForMatch(this.props.match_id),
+                action_types: [],
+                action_impacts: [],
+                zones_size: new Size(0,0),
+            };
+        }
 
         this.setActions = this.setActions.bind(this);
         this.setMapSize = this.setMapSize.bind(this);
@@ -56,6 +67,7 @@ export class HeatMapComponent
         this.handleHeightChange = this.handleHeightChange .bind(this);
         this.handleWidthChange = this.handleWidthChange.bind(this);
     }
+
 
     setActions() {
         let actions: IActionSummary[] = ActionStore.getActionsForMatch(this.props.match_id);
@@ -87,6 +99,7 @@ export class HeatMapComponent
         [string: string]: (Element);
         mainStage: (HTMLElement);
     };
+
 
     componentDidMount() {
         let w = this.refs.mainStage.clientWidth * 0.8;
@@ -123,7 +136,6 @@ export class HeatMapComponent
 
     getFilteredActions() {
         let usedImpacts = this.state.action_impacts.filter((i) => i.used).map(i => i.id);
-
         let usedTypes = this.state.action_types.filter((t) => t.used).map(t => t.id);
 
         return this.state.actions.filter(action =>
@@ -218,7 +230,7 @@ export class HeatMapComponent
     }
 
     render() {
-        if (this.state.actions.length != 0) {
+        if (this.state.actions.length != 0 && this.size_set) {
             let rawZones = this.getZones();
             let zones = rawZones.map((zone, i) => {
                 return <ZoneComponent key={i} zone={zone} zone_size={this.state.zones_size}
@@ -292,12 +304,13 @@ export class HeatMapComponent
                 </SmallContainer>
             );
         }
+        this.size_set = true;
         return(
             <div ref="mainStage">
                 <SmallContainer>
                     <Spinner/>
                 </SmallContainer>
             </div>
-        )
+        );
     }
 }
