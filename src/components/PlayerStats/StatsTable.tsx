@@ -4,7 +4,6 @@ import StatStore from "./Store";
 import Spinner from "../Elements/Spinner";
 import {IPlayer, IPlayerStats} from "../../models/DatabaseModels";
 import SmallContainer from "../Elements/SmallContainer";
-import LeftDiv from "../Elements/LeftDiv";
 import CustomTable from "../CustomTable/CustomTable";
 import {ITeamSummary} from "../../models/DatabaseModelsSummaries";
 import CustomRow from "../CustomTable/CustomRow";
@@ -102,7 +101,7 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
             let date = p.match.date;
 
             let metrics = this.getMetricNames().map(mname => {
-                return p.metrics[mname].toString();
+                return p.metrics[mname].toFixed(2).toString();
             });
 
             let m_data = [adv.name, date].concat(metrics);
