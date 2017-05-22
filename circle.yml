@@ -7,10 +7,6 @@ dependencies:
     - pip install ansible
     - pip install --upgrade setuptools
 
-test:
-  override:
-    - webpack
-
 general:
   artifacts:
     - "dist/"

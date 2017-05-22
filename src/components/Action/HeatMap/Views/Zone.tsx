@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Rect} from 'react-konva';
-import {Zone, Size} from "../../../../Models/ComponentModels"
+import {Zone, Size} from "../../../../models/ComponentModels"
 
 export interface ILayoutProps {
     zone: Zone

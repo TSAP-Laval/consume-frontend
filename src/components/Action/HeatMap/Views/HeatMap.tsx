@@ -6,7 +6,7 @@ import SmallContainer from "../../../Elements/SmallContainer";
 import FieldMap from "../../../Map"
 import {ZoneComponent} from "./Zone"
 import {ZoneRatioComponent} from "./ZoneRatio"
-import {IActionSummary} from "../../../../Models/DatabaseModelsSummaries"
+import {IActionSummary} from "../../../../models/DatabaseModelsSummaries"
 import ActionStore from "../../../../components/Action/Store";
 import PreferencesStore from "../../../../components/Preferences/Store";
 import {ActionImpact, ActionType, Size, Zone, ZoneData} from "../../../../models/ComponentModels";
