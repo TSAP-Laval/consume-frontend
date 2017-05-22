@@ -31,7 +31,7 @@ export class ActionMapComponent
         super(props);
 
         this.state = {
-            size: new Size(1200, 600),
+            size: new Size(600, 300),
             actions: ActionStore.getActionsForMatch(this.props.match_id),
             action_types: [],
             action_impacts: []
@@ -187,5 +187,6 @@ export class ActionMapComponent
                 </SmallContainer>
             </div>
         )
+
     }
 }
