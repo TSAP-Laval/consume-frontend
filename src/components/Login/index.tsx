@@ -2,7 +2,7 @@ import * as React from "react";
 import { TextField, FlatButton } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import Store from "./Store";
-import * as ActionCreator from "./ActionCreator"
+import * as ActionCreator from "./ActionCreator";
 
 export interface ILoginProps {
 }
@@ -50,7 +50,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                     fullWidth={true}
                     value ={this.state.email}
                     name='email'
-                onChange={this.handleEmailChange} 
+                onChange={this.handleEmailChange}
                 />
                 <br />
                 <TextField

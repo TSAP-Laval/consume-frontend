@@ -21,7 +21,7 @@ export function FetchTeam(team_id: number, token: string) {
     instance.get(url).then((response: AxiosResponse) => {
         let data: ITeam = (response.data.data as ITeam);
         Dispatcher.dispatch(new Actions.ReceiveTeam(data))
-    }).catch((error) => {
+    },(error) => {
         CreateErrorAction(error);
     });
 }
@@ -39,7 +39,7 @@ export function CreateGetTeamsAction(userId: number, token: string, isAdmin: boo
         let data: Array<ITeamSummary> = isAdmin ? (response.data.data.hits as Array<ITeamSummary>) :
             (response.data.data.teams as Array<ITeamSummary>);
         Dispatcher.dispatch(new Actions.ReceiveTeams(data));
-    }).catch((error) => {
+    },(error) => {
         CreateErrorAction(error);
     });
 }
@@ -57,7 +57,7 @@ export function FetchTeamMetricStats(team_id: number, token: string) {
     instance.get(url).then((response: AxiosResponse) => {
         let data: ITeamMetricStats = (response.data.data.team_matches as ITeamMetricStats);
         Dispatcher.dispatch(new Actions.ReceiveTeamMetricStats(team_id, data));
-    }).catch((error => {
+    },(error) => {
         CreateErrorAction(error);
-    }));
+    });
 }
