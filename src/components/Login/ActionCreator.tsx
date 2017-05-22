@@ -1,10 +1,10 @@
 import * as Actions from "./Actions"
 import Dispatcher from "../Dispatcher";
 import axios from 'axios';
-import { CreateErrorAction } from "../Error/ErrorAction";
 import {IUser} from "../../models/DatabaseModels";
 import * as Config from 'Config';
 import {browserHistory} from "react-router";
+import {OnLoginErrorAction} from "./Actions";
 
 export function CreateAuthenticateUserAction(email: string, password: string) {
     Dispatcher.dispatch(new Actions.AuthenticateUser());
@@ -23,7 +23,11 @@ export function CreateAuthenticateUserAction(email: string, password: string) {
         Dispatcher.dispatch(new Actions.OnAuthenticationSucceeded(user, token));
         browserHistory.push('/team');
     },
-    (error) => {
-        CreateErrorAction(error.response.message);
+    () => {
+        CreateOnLoginErrorAction("Courriel / Mot de passe invalide");
     })
+}
+
+export function CreateOnLoginErrorAction(message: string) {
+    Dispatcher.dispatch(new OnLoginErrorAction(message));
 }

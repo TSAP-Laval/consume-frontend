@@ -54,6 +54,7 @@ export default class Layout extends React.Component<ILayoutProps, ILayoutState> 
     }
 
     componentWillUnmount() {
+        ErrorStore.removeListener("errorOccured", this.getError);
     }
 
     getError() {
