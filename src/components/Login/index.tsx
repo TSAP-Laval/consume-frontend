@@ -14,7 +14,8 @@ export interface ILoginState {
     password?: string,
     emailError?:string,
     passwordError?:string,
-    requestState?: Status
+    requestState?: Status,
+    emailIsInvalid?:boolean
 }
 
 export default class Login extends React.Component<ILoginProps, ILoginState> {
@@ -26,7 +27,8 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             password:'',
             emailError: '',
             passwordError: '',
-            requestState: Store.requestStatus
+            requestState: Store.requestStatus,
+            emailIsInvalid: false
         };
 
         this.onLogin = this.onLogin.bind(this);
@@ -62,7 +64,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     }
 
     onLogin() {
-        if(this.state.emailError.length > 0 || this.state.passwordError.length > 0)
+        if(this.state.emailIsInvalid)
             return;
 
         ActionCreator.CreateAuthenticateUserAction(this.state.email, this.state.password);
@@ -76,13 +78,15 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     validateEmail(){
         let regex  = /^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
         if(this.state.email.trim().length == 0){
-            this.setState({emailError: "Le champ courriel est requis."})
+            this.setState({emailError: "Le champ courriel est requis.",
+            emailIsInvalid: true})
 
         } else if (!this.state.email.match(regex)) {
-            this.setState({emailError: "Veuillez entrer un courriel valide."})
+            this.setState({emailError: "Veuillez entrer un courriel valide.", 
+            emailIsInvalid: true})
         } 
         else{
-            this.setState({emailError: ''})
+            this.setState({emailError: '', emailIsInvalid: false})
         }
     }
 
