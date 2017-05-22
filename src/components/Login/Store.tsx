@@ -28,6 +28,14 @@ class LoginStore extends EventEmitter {
         return this.isLoggedIn && this.connectedUser.is_admin;
     }
 
+    logout() {
+        this.isLoggedIn = false;
+        this.requestStatus = Status.Idle;
+        delete this.connectedUser;
+        this.error = "";
+        this.token = "";
+    }
+
     handleActions(action: IAction) {
         switch (action.type) {
             case "AUTHENTICATE_USER":

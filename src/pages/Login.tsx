@@ -1,8 +1,6 @@
 import * as React from 'react';
 import LoginComponent from "../components/Login";
 import BigContent from "../components/Elements/BigContent";
-import LoginStore from "../components/Login/Store";
-import {browserHistory} from "react-router";
 
 export interface ILoginProps {
 }
