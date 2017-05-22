@@ -59,3 +59,13 @@ export class ReceiveTeamMetricStats implements IAction {
         this.stats = stats;
     }
 }
+
+export class ClearTeamStats implements IAction {
+    type: string;
+    team_id: number;
+
+    constructor(team_id: number) {
+        this.type = 'CLEAR_TEAM_STATS';
+        this.team_id = team_id;
+    }
+}

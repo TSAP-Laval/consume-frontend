@@ -4,6 +4,7 @@ import {IAction} from "../../../models/ActionCreation";
 import {ITeam} from "../../../models/DatabaseModels";
 import * as Actions from "../Actions"
 import { ITeamSummary } from "../../../models/DatabaseModelsSummaries";
+import {ClearTeamStats} from "../Actions";
 
 class TeamStore extends EventEmitter {
     fetching: boolean;
@@ -47,6 +48,11 @@ class TeamStore extends EventEmitter {
                 this.teamsList = (action as Actions.ReceiveTeams).teams;
                 this.fetching = false;
                 this.emit(action.type);
+                break;
+
+            case "CLEAR_TEAM_STATS":
+                this.teamsList = [];
+                this.teams = {};
                 break;
         }
     }

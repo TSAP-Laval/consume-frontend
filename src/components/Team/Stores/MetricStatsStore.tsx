@@ -6,13 +6,11 @@ import * as Actions from "../Actions"
 
 class TeamMetricStatsStore extends EventEmitter {
     fetching: boolean;
-    metrics_changed: boolean;
     metric_stats: {[team_id: string] : ITeamMetricStats};
     
      constructor() {
         super();
         this.fetching = false;
-        this.metrics_changed = false;
         this.metric_stats = {};
     }
 
@@ -30,22 +28,16 @@ class TeamMetricStatsStore extends EventEmitter {
                 this.fetching = true;
                 this.emit(action.type);
                 break;
+
             case "RECEIVE_TEAM_METRIC_STATS":
                 this.fetching = false;
                 this.addTeamMetricStats((action as Actions.ReceiveTeamMetricStats).team_id, (action as Actions.ReceiveTeamMetricStats).stats);
                 this.emit(action.type);
                 break;
-            case "CREATE_METRIC":
-            case "UPDATE_METRIC":
-            case "DELETE_METRIC":
-                this.metrics_changed = true;
-                break;
-            case "METRICS_RECEIVED":
-                if(this.metrics_changed) {
-                    this.metrics_changed = false;
-                    this.metric_stats = {};
-                    this.emit(action.type);
-                }
+
+            case "CLEAR_TEAM_STATS":
+                let act = action as Actions.ClearTeamStats;
+                delete this.metric_stats[act.team_id];
                 break;
         }
     }
