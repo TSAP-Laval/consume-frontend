@@ -19,7 +19,7 @@ export interface ILayoutProps {
 export interface ILayoutState {
     menu_opened?: boolean,
     title?: string,
-    Error?: string,
+    Error?: string
 }
 
 const muiTheme = getMuiTheme({
@@ -32,11 +32,6 @@ const AppTitle = styled(Link)`
     color: inherit;
     text-decoration: inherit;
 `;
-
-const linkStyle = {
-    textDecoration: 'none',
-    color: 'black'
-};
 
 // Global Styling
 injectGlobal`
@@ -67,9 +62,8 @@ export default class Layout extends React.Component<ILayoutProps, ILayoutState> 
 
         this.getError = this.getError.bind(this);
         this.showMenu = this.showMenu.bind(this);
-        this.redirectToTeams = this.redirectToTeams.bind(this);
-        this.redirectToUsers = this.redirectToUsers.bind(this);
-        this.redirectToLogin = this.redirectToLogin.bind(this);
+        this.redirect = this.redirect.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     componentWillMount() {
@@ -92,23 +86,15 @@ export default class Layout extends React.Component<ILayoutProps, ILayoutState> 
         });
     }
 
-    redirectToTeams() {
+    redirect(path: string) {
         this.setState({
             menu_opened: false
         }, () => {
-            browserHistory.push("/team");
+            browserHistory.push(path);
         });
     }
 
-    redirectToUsers() {
-        this.setState({
-            menu_opened: false
-        }, () => {
-            browserHistory.push("/users");
-        });
-    }
-
-    redirectToLogin() {
+    logout() {
         this.setState({
             menu_opened: false
         }, () => {
@@ -120,10 +106,10 @@ export default class Layout extends React.Component<ILayoutProps, ILayoutState> 
     createMenu() {
         if(LoginStore.isLoggedIn) {
             let menu = [<AppBar className={"navbar"} onLeftIconButtonTouchTap={this.showMenu} title={<AppTitle to="/team">TSAP</AppTitle>}/>];
-            let items =  [<MenuItem onClick={this.redirectToTeams}>Équipes</MenuItem>, <MenuItem onClick={this.redirectToLogin}>Déconnexion</MenuItem>];
+            let items =  [<MenuItem onClick={() => {this.redirect("/team")}}>Équipes</MenuItem>, <MenuItem onClick={this.logout}>Déconnexion</MenuItem>];
 
             if(LoginStore.isAdmin()) {
-                items.unshift(<MenuItem onClick={this.redirectToUsers}>Gestion des utilisateurs</MenuItem>);
+                items.unshift(<MenuItem onClick={() => {this.redirect("/users")}}>Gestion des utilisateurs</MenuItem>);
             }
 
             menu.push(<Drawer docked={false} open={this.state.menu_opened} onRequestChange={(open) => this.setState({menu_opened: open})}>
