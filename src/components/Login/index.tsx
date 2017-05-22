@@ -64,7 +64,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     }
 
     onLogin() {
-        if(this.state.emailIsInvalid)
+        if(this.state.emailIsInvalid || this.state.password.trim().length < 4)
             return;
 
         ActionCreator.CreateAuthenticateUserAction(this.state.email, this.state.password);
@@ -72,7 +72,8 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     }
 
     handleEmailChange(e: any) {
-        this.setState({ email:  e.target.value})
+        this.setState({ email:  e.target.value,
+        emailError: ''})
     }
 
     validateEmail(){
@@ -103,7 +104,8 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     }
 
     handlePasswordChange(e: any) {
-        this.setState({ password: e.target.value})
+        this.setState({ password: e.target.value,
+        passwordError: ''})
     }
 
     render() {
