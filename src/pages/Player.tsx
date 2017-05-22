@@ -93,8 +93,8 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         return (
             <AllContainer>
                 <select onChange={this.handleSelectedSeason} value={this.state.selectedSeasonID}>{menuItems}</select>
-                <DataPanel PlayerName={playerName} Header={graphTitle} ><StatsGraphs teamID={this.props.params.teamID} /></DataPanel>
-                <DataPanel PlayerName={playerName} Header={statsTitle} ><StatsTable teamID={this.props.params.teamID} /></DataPanel>
+                <DataPanel Name={playerName} Header={graphTitle} ><StatsGraphs teamID={this.props.params.teamID} /></DataPanel>
+                <DataPanel Name={playerName} Header={statsTitle} ><StatsTable teamID={this.props.params.teamID} /></DataPanel>
             </AllContainer>
         );
     }

@@ -5,14 +5,15 @@ import {serverUrl} from "Config"
 import * as Actions from "./Actions"
 import {IActionSummary} from "../../models/DatabaseModelsSummaries"
 import LoginStore from "../Login/Store";
+import {Size} from "../../models/ComponentModels";
 
 
-export function FetchMatchActions(team_id: number, match_id: number) {
+export function FetchMatchActions(team_id: number, match_id: number, token: string) {
     const fetch_match_actions = new Actions.FetchMatchActions;
     Dispatcher.dispatch(fetch_match_actions);
 
     let instance = axios.create({
-        headers: {"X-Auth-Token": LoginStore.token}
+        headers: {"X-Auth-Token": token}
     });
 
     let url = serverUrl + "teams/" + team_id + "/matches/" + match_id;
