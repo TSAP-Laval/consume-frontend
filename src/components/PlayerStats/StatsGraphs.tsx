@@ -104,7 +104,9 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
 
         for (let i = 0; i < this.state.playerStats.length; i++) {
             let match = this.state.playerStats[i].match;
-            labels.push(match.date.toString());
+            let d = match.date.split(" ");
+            d.splice(-2, 2);
+            labels.push(d.join(" "));
 
             this.getMetricNames().forEach((m) => {
                 let metricValue = this.state.playerStats[i].metrics[m];
