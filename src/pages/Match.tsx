@@ -28,10 +28,14 @@ export default class MatchView extends React.Component<ILayoutProps, ILayoutStat
 
     render() {
         return (
-            <BigContent>
-                <ActionMapComponent match_id={this.props.params.match_id}/>
-                <HeatMapComponent match_id={this.props.params.match_id} team_id={this.props.params.team_id}/>
-            </BigContent>
+            <div>
+                <BigContent>
+                    <ActionMapComponent match_id={this.props.params.match_id}/>
+                </BigContent>
+                <BigContent>
+                    <HeatMapComponent match_id={this.props.params.match_id} team_id={this.props.params.team_id}/>
+                </BigContent>
+            </div>
         )
     }
 }

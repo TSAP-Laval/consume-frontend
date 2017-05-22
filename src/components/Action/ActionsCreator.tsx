@@ -22,8 +22,8 @@ export function FetchMatchActions(team_id: number, match_id: number) {
         let data: IActionSummary[] = (response.data.data.actions as IActionSummary[]);
         const receive_match_actions = new Actions.ReceiveMatchActions(match_id, data);
         Dispatcher.dispatch(receive_match_actions);
-    }).catch((error) => {
-        CreateErrorAction(error);
+    }, (err) => {
+        CreateErrorAction(err);
     });
 }
 
@@ -39,8 +39,8 @@ export function FetchMapSize(team_id: number) {
         let data = response.data.data;
         const receive_map_size = new Actions.ReceiveMapSize(new Size(data.map_width, data.map_height));
         Dispatcher.dispatch(receive_map_size);
-    }).catch((error) => {
-        CreateErrorAction(error);
+    }, (err) => {
+        CreateErrorAction(err);
     });
 }
 
@@ -52,7 +52,7 @@ export function SetMapSize(team_id: number, size: Size) {
     let url = serverUrl + "teams/" + team_id;
 
     instance.put(url, {map_height:size.height, map_width: size.width}).then((response) => {
-    }).catch((error) => {
-        CreateErrorAction(error);
-    })
+    }, (err) => {
+        CreateErrorAction(err);
+    });
 }
