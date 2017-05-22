@@ -4,10 +4,10 @@ import Snackbar from 'material-ui/Snackbar';
 
 export interface IErrorProps {
     Message: string
-};
+}
 export interface IErrorState {
     alertVisible: boolean
-};
+}
 
 export default class ErrorAlert extends React.Component<IErrorProps, IErrorState> {
 
@@ -21,7 +21,6 @@ export default class ErrorAlert extends React.Component<IErrorProps, IErrorState
     }
 
     render() {
-
         return (
             <Snackbar
                 open={this.state.alertVisible}

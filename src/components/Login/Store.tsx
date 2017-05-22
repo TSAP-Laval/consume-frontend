@@ -4,6 +4,7 @@ import * as Actions from "./Actions"
 import Dispatcher from "../Dispatcher"
 import { Status } from "../PlayerStats/Models/Status";
 import {IUser} from "../../models/DatabaseModels";
+import {OnLoginErrorAction} from "./Actions";
 
 class LoginStore extends EventEmitter {
 
@@ -31,6 +32,15 @@ class LoginStore extends EventEmitter {
         switch (action.type) {
             case "AUTHENTICATE_USER":
                 this.requestStatus = Status.Started;
+                this.emit("requestState");
+                break;
+
+            case "AUTHENTICATION_ERROR":
+                let act = action as OnLoginErrorAction ;
+                this.error = act.message;
+                this.emit("errorState");
+
+                this.requestStatus = Status.Idle;
                 this.emit("requestState");
                 break;
 

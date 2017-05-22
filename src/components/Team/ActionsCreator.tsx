@@ -5,7 +5,6 @@ import * as Actions from "./Actions"
 import { ITeam, IUser, ITeamMetricStats } from "../../models/DatabaseModels";
 import { CreateErrorAction } from "../Error/ErrorAction";
 import { ITeamSummary } from "../../models/DatabaseModelsSummaries";
-import LoginStore from "../Login/Store";
 import {ClearTeamStats} from "./Actions";
 
 

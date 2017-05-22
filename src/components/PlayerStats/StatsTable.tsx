@@ -1,42 +1,22 @@
 import * as React from "react";
-import StatsTableStore from "./Store";
 
-import { CreateGetMatchesAction } from "./Actions/GetMatchesAction";
-import { CreateChangeFilterAction } from "./Actions/ChangeFilterAction";
-import Status from "./Models/Status";
-import IMatch from "./Models/IMatch";
-import { ISeason } from "./Models/ISeason";
-import { IPosition } from "./Models/IPosition";
-
-import Li from "../Elements/Li";
-import LeftDiv from "../Elements/LeftDiv";
-import RightDiv from "../Elements/RightDiv";
-import SmallContainer from "../Elements/SmallContainer";
+import StatStore from "./Store";
 import Spinner from "../Elements/Spinner";
-
-
-import Table from "./Table";
+import {IPlayer, IPlayerStats} from "../../models/DatabaseModels";
+import SmallContainer from "../Elements/SmallContainer";
+import CustomTable from "../CustomTable/CustomTable";
+import {ITeamSummary} from "../../models/DatabaseModelsSummaries";
+import CustomRow from "../CustomTable/CustomRow";
 
 
 export interface IStatsProps {
-    teamID: number,
-    playerID: number,
-    dateOptions: {
-        weekday: string,
-        year: string,
-        month:string,
-        day:string
-    },
-    dateLocal:string
+    teamID: number
 }
 
 export interface IStatsState {
-    requestState?: Status,
-    matches?: IMatch[],
-    seasons?: ISeason[],
-    positions?: IPosition[]
-    selectedSeasonID?: number
-    selectedPositionID?: number
+    loading?: boolean,
+    player?: IPlayer
+    playerStats?: IPlayerStats[]
 }
 
 export default class StatsTable extends React.Component<IStatsProps, IStatsState> {
@@ -44,111 +24,110 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
     constructor() {
         super();
 
-        this.getStatus = this.getStatus.bind(this);
-        this.getResults = this.getResults.bind(this);
-
         this.state = {
-            requestState: StatsTableStore.getRequestStatus(),
-            matches: StatsTableStore.getMatches(),
-            seasons: StatsTableStore.getSeasons(),
-            positions: StatsTableStore.getPositions()
-        }
+            loading: StatStore.isFetching(),
+            playerStats: []
+        };
+
+        this.changeLoadState = this.changeLoadState.bind(this);
+        this.changePlayer = this.changePlayer.bind(this);
+        this.changeStats = this.changeStats.bind(this);
+    }
+
+
+    changeLoadState() {
+        this.setState({
+            loading: StatStore.isFetching()
+        });
+    }
+
+    changePlayer() {
+        this.setState({
+            player: StatStore.player
+        });
+    }
+
+    changeStats() {
+        this.setState({
+            playerStats: StatStore.playerStats
+        });
     }
 
     componentWillMount() {
-        StatsTableStore.on("dataChange", this.getResults);
-        StatsTableStore.on("requestState", this.getStatus)
-        StatsTableStore.on("seasons", this.getSeasons.bind(this));
-        StatsTableStore.on("positions", this.getPositions.bind(this));
-        StatsTableStore.on("filter", this.getFilters.bind(this));
+        StatStore.on("FetchingStateChanged", this.changeLoadState);
+        StatStore.on("PlayerChanged", this.changePlayer);
+        StatStore.on("PlayerStatsChanged", this.changeStats);
     }
 
     componentWillUnmount() {
-        StatsTableStore.removeListener("dataChange", this.getResults);
-        StatsTableStore.removeListener("requestState", this.getStatus);
-        StatsTableStore.removeListener("seasons", this.getSeasons.bind(this));
-        StatsTableStore.removeListener("positions", this.getPositions.bind(this));
-        StatsTableStore.removeListener("filter", this.getFilters.bind(this));
+        StatStore.removeListener("FetchingStateChanged", this.changeLoadState);
+        StatStore.removeListener("PlayerChanged", this.changePlayer);
+        StatStore.removeListener("PlayerStatsChanged", this.changeStats);
     }
 
-    getFilters() {
-        this.setState({
-            selectedSeasonID: StatsTableStore.getSelectedSeason(),
-            selectedPositionID: StatsTableStore.getSelectedPosition()
+    private getMetricNames(): string[] {
+        let metrics = [];
+        if (this.state.playerStats.length > 0) {
+            for (let key in this.state.playerStats[0].metrics) {
+                if (this.state.playerStats[0].metrics.hasOwnProperty(key)) {
+                    metrics.push(key);
+                }
+            }
+        }
+
+        return metrics.sort();
+    }
+
+    private getColumns(): string[][] {
+        let cols = [["Adversaire"], ["Date"]];
+
+        return cols.concat(this.getMetricNames().map(x => [x]));
+    }
+
+    private getRows() {
+        let data: any[] = [];
+
+        data = this.state.playerStats.map((p, i) => {
+            // Identify adversary
+            let adv: ITeamSummary;
+
+            if (p.match.home_team.id !== this.props.teamID) {
+                adv = p.match.home_team;
+            } else {
+                adv = p.match.away_team;
+            }
+
+            // Get date
+            let date = p.match.date;
+
+            let d = date.split(" ");
+            d.splice(-2, 2);
+            date = d.join(" ");
+
+            let metrics = this.getMetricNames().map(mname => {
+                return p.metrics[mname].toFixed(2).toString();
+            });
+
+            let m_data = [adv.name, date].concat(metrics);
+
+            return <CustomRow key={i} data={m_data}/>
         });
-    }
 
-    getPositions() {
-        this.setState({
-            positions: StatsTableStore.getPositions()
-        });
-    }
-
-    getSeasons() {
-        this.setState({
-            seasons: StatsTableStore.getSeasons()
-        });
-    }
-
-    getResults() {
-        this.setState({
-            matches: StatsTableStore.getMatches()
-        });
-    }
-
-    getStatus() {
-        this.setState({
-            requestState: StatsTableStore.getRequestStatus()
-        })
-    }
-
-    handleSeasonChange(e: any) {
-        CreateChangeFilterAction(e.target.value, this.state.selectedPositionID, this.props.playerID, this.props.teamID);
-    }
-
-    handlePositionChange(e: any) {
-        CreateChangeFilterAction(this.state.selectedSeasonID, e.target.value, this.props.playerID, this.props.teamID);
+        return data
     }
 
     render() {
-        let baseCols: Array<String> = ["Adversaire", "Date"];
-
-        let cols = baseCols.concat(this.state.matches.length > 0?
-        this.state.matches[0].metrics.map((metric) => {
-            return metric.name
-        }): []);
-
-        let data = this.state.matches.map((match) => {
-            let baseData: Array<String> = [match.opposing.name, match.date.toLocaleDateString(this.props.dateLocal, this.props.dateOptions)];
-            return baseData.concat(match.metrics.map((metric) => {
-                return metric.value.toFixed(2).toString();
-            }));
-        });
-
-        let seasonOptions = [<option selected value="">-- Aucun Filtre --</option>].concat(this.state.seasons.map((season) =>(
-            <option value={season.ID}>{season.Annees}</option>
-        )));
-
-        let positionOptions = [<option selected value="">-- Aucun Filtre --</option>].concat(this.state.positions.map((position) => (
-            <option value={position.ID}>{position.Nom}</option>
-        )));
+        if (this.state.loading) {
+            return <Spinner/>;
+        }
 
         return (
-            this.state.requestState == Status.Idle?
             <SmallContainer>
-                <LeftDiv>
-                    <Table columns={ cols } data={ data }/>
-                </LeftDiv>
-                <RightDiv>
-                    <h3>Paramètres</h3>
-                    <ul>
-                        <Li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></Li>
-                        <Li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></Li>
-                    </ul>
-                </RightDiv>
+                <CustomTable columns={this.getColumns()}>
+                    {this.getRows()}
+                </CustomTable>
             </SmallContainer>
-            : <Spinner />
-        )
+        );
     }
 
 }

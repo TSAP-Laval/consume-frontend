@@ -11,6 +11,7 @@ import {ActionImpact, ActionType} from "../../../../models/ComponentModels";
 import ActionStore from "../../../../components/Action/Store";
 import {Toggle} from "material-ui";
 import Spinner from "../../../Elements/Spinner";
+import Li from "../../../Elements/Li";
 
 export interface ILayoutProps {
     match_id: number
@@ -30,7 +31,7 @@ export class ActionMapComponent
         super(props);
 
         this.state = {
-            size: new Size(1200, 600),
+            size: new Size(600, 300),
             actions: ActionStore.getActionsForMatch(this.props.match_id),
             action_types: [],
             action_impacts: []
@@ -159,22 +160,20 @@ export class ActionMapComponent
 
         let action_impact_filter = this.state.action_impacts.map((action_impact) => {
             let style = {color: action_impact.getColor().toString()};
-            return <li key={action_impact.id}><Toggle labelStyle={style} onToggle={this.onActionImpactToggle.bind(this)} defaultToggled={action_impact.used} value={action_impact.id} label={action_impact.name}/></li>;
+            return <Li key={action_impact.id}><Toggle labelStyle={style} onToggle={this.onActionImpactToggle.bind(this)} defaultToggled={action_impact.used} value={action_impact.id} label={action_impact.name}/></Li>;
         });
 
         let action_type_filter = this.state.action_types.map((action_type) => {
-            return <li key={action_type.id}><Toggle onToggle={this.onActionTypeToggle.bind(this)} defaultToggled={action_type.used} value={action_type.id} label={action_type.name}/></li>;
+            return <Li key={action_type.id}><Toggle onToggle={this.onActionTypeToggle.bind(this)} defaultToggled={action_type.used} value={action_type.id} label={action_type.name}/></Li>;
         });
 
         return (
             <SmallContainer>
                 <LeftDiv>
-                    <div ref="mainStage">
-                        <Stage width={this.state.size.width} height={this.state.size.height}>
-                            <FieldMap height={this.state.size.height}/>
-                            <Layer>{actions}</Layer>
-                        </Stage>
-                    </div>
+                    <Stage width={this.state.size.width} height={this.state.size.height}>
+                        <FieldMap height={this.state.size.height}/>
+                        <Layer>{actions}</Layer>
+                    </Stage>
                 </LeftDiv>
                 <RightDiv>
                     <h3>Impact de l'action</h3>

@@ -1,13 +1,15 @@
 import {IAction} from "../../../models/ActionCreation";
-import Dispatcher from "../../Dispatcher"
-import { ISeason } from "../Models/ISeason";
+import Dispatcher from "../../Dispatcher";
+import {ISeason} from "../../../models/DatabaseModels";
+
 
 export class SeasonsReceivedAction implements IAction {
-    type = "SEASONS_RECEIVED";
-    Seasons: ISeason[];
+    type: string;
+    seasons: ISeason[];
 
     constructor(seasons: ISeason[]) {
-        this.Seasons = seasons;
+        this.type = "SEASONS_RECEIVED";
+        this.seasons = seasons;
     }
 }
 
