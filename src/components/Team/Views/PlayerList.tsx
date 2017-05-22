@@ -110,7 +110,7 @@ export default class PlayerList extends React.Component<ILayoutProps, ILayoutSta
                     }
                 }
 
-                rowData.push(<FlatButton primary={true} label="Voir" containerElement={<Link to={"/team/" + this.props.params.team_id + "/player/" + player.id}/>} />);
+                rowData.push(<FlatButton primary={true} label="Voir" containerElement={<Link to={"/team/" + this.props.params.team_id + "/players/" + player.id}/>} />);
 
                 return <CustomRow key={i} data={rowData}/>
             })

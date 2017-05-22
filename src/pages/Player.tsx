@@ -1,23 +1,24 @@
 import * as React from "react";
 import styled from 'styled-components';
+import {IPlayer} from "../models/DatabaseModels";
+import {CreateFetchPlayerAction} from "../components/PlayerStats/Actions/FetchPlayer";
+import LoginStore from "../components/Login/Store";
+import StatsStore from "../components/PlayerStats/Store";
+import {DataPanel} from "../components/DataPanel/index";
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
-import StatsTableStore from "../components/PlayerStats/Store";
-import { CreateGetMatchesAction } from "../components/PlayerStats/Actions/GetMatchesAction";
-import { CreateGetSeasonsAction } from "../components/PlayerStats/Actions/GetSeasonsAction";
-import { CreateGetPositionsAction } from "../components/PlayerStats/Actions/GetPositionsAction";
+import {CreateFetchPlayerStatsAction} from "../components/PlayerStats/Actions/FetchPlayerStats";
 
-import { DataPanel } from "../components/DataPanel";
 
 export interface ILayoutProps {
     params: {
         teamID: number,
-        player_id: number
+        playerID: number
     }
 }
 
 export interface ILayoutState {
-    playerName?: string
+    player?: IPlayer
 }
 
 const AllContainer = styled.div`
@@ -28,29 +29,24 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
 
     constructor(props: ILayoutProps) {
         super(props);
-        this.getPlayerName = this.getPlayerName.bind(this);
+        this.state = {};
 
-        this.state = {
-            playerName: 'un joueur'
-        }
+        this.setPlayer = this.setPlayer.bind(this);
     }
 
     componentWillMount() {
-        StatsTableStore.on("dataChange", this.getPlayerName);
-
-        CreateGetSeasonsAction();
-        CreateGetPositionsAction(this.props.params.player_id);
-        CreateGetMatchesAction(this.props.params.player_id, this.props.params.teamID);
+        StatsStore.on("PlayerChanged", this.setPlayer);
+        CreateFetchPlayerAction(this.props.params.teamID, this.props.params.playerID, LoginStore.token);
+        CreateFetchPlayerStatsAction(this.props.params.teamID, this.props.params.playerID, LoginStore.token);
     }
 
     componentWillUnmount() {
-        StatsTableStore.removeListener("dataChange", this.getPlayerName);
+        StatsStore.removeListener("PlayerChanged", this.setPlayer);
     }
 
-    // Va récupérer les joueurs du store.
-     getPlayerName() {
+    setPlayer() {
         this.setState({
-            playerName: StatsTableStore.getPlayerName()
+            player: StatsStore.player
         });
     }
 
@@ -68,10 +64,12 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         // Format local de la date.
         let dateLocal = "fr-CA";
 
+        let playerName = this.state.player? this.state.player.first_name + " " + this.state.player.last_name: "un joueur";
+
         return (
             <AllContainer>
-                <DataPanel PlayerName={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
-                <DataPanel PlayerName={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
+                <DataPanel PlayerName={playerName} Header={graphTitle} ><StatsGraphs /></DataPanel>
+                <DataPanel PlayerName={playerName} Header={statsTitle} ><StatsTable teamID={this.props.params.teamID} /></DataPanel>
             </AllContainer>
         );
     }
