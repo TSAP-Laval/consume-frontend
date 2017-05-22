@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Size, Zone} from "../../../../Models/ComponentModels"
+import {Size, Zone} from "../../../../models/ComponentModels"
 import {Text} from "react-konva";
 
 export interface ILayoutProps {
@@ -23,7 +23,7 @@ export class ZoneRatioComponent extends React.Component<ILayoutProps, ILayoutSta
         let zoneWidth = this.props.parent_size.width / this.props.zone_size.width;
         let zoneHeight = this.props.parent_size.height / this.props.zone_size.height;
         let numberFormatted = parseFloat((this.props.zone.percentage * 100).toFixed(2));
-        let text =  numberFormatted.toString() + '%';
+        let text = !isNaN(numberFormatted)? (numberFormatted.toString() + '%') : '0%';
         let startX = (zoneWidth * this.props.zone.x) + (zoneWidth/2);
         let ys = [];
         for(let _i = this.props.zone_size.height - 1; _i > -1; _i--) {

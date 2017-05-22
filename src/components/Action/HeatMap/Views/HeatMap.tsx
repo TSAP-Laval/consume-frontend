@@ -11,12 +11,14 @@ import ActionStore from "../../../../components/Action/Store";
 import {ActionImpact, ActionType, Size, Zone, ZoneData} from "../../../../models/ComponentModels";
 import {DropDownMenu, MenuItem, Toggle} from "material-ui";
 import Spinner from "../../../Elements/Spinner";
+import * as ActionsCreator from "../../../../components/Action/ActionsCreator"
 import injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
 
 export interface ILayoutProps {
-    match_id: number
+    match_id: number,
+    team_id: number
 }
 
 export interface ILayoutState {
@@ -38,10 +40,11 @@ export class HeatMapComponent
             actions: ActionStore.getActionsForMatch(this.props.match_id),
             action_types: [],
             action_impacts: [],
-            zones_size: new Size(8,10)
+            zones_size: new Size(0,0)
         };
 
         this.setActions = this.setActions.bind(this);
+        this.setMapSize = this.setMapSize.bind(this);
         this.getActionImpacts = this.getActionImpacts.bind(this);
         this.getActionTypes = this.getActionTypes.bind(this);
         this.handleHeightChange = this.handleHeightChange .bind(this);
@@ -57,27 +60,22 @@ export class HeatMapComponent
         })
     }
 
+    setMapSize() {
+        this.setState({
+            zones_size: ActionStore.getMapSize()
+        })
+    }
+
     componentWillMount() {
         ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setActions);
+        ActionStore.on("RECEIVE_MAP_SIZE", this.setMapSize);
     }
 
     componentWillUnmount() {
         ActionStore.removeListener("RECEIVE_MATCH_ACTIONS", this.setActions);
+        ActionStore.removeListener("RECEIVE_MAP_SIZE", this.setMapSize);
     }
 
-    /*refs: {
-     [string: string]: (Element);
-     mainStage: (HTMLElement);
-     };
-
-     componentDidMount() {
-     let w = this.refs.mainStage.clientWidth;
-     let h = w / 2;
-
-     this.setState({
-     size: new Size(w, h)
-     });
-     }*/
 
     getActionImpacts(actions: IActionSummary[]) {
         let action_impacts: Array<ActionImpact> = [];
@@ -188,16 +186,18 @@ export class HeatMapComponent
         return zones;
     }
     handleHeightChange(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
-        let width = this.state.zones_size.width;
+        let new_size: Size = new Size(this.state.zones_size.width, menuItemValue);
         this.setState({
-            zones_size: new Size(width, menuItemValue)
-        })
+            zones_size: new_size
+        });
+        ActionsCreator.SetMapSize(this.props.team_id, new_size);
     }
     handleWidthChange(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
-        let height = this.state.zones_size.height;
+        let new_size: Size = new Size(menuItemValue,this.state.zones_size.height);
         this.setState({
-            zones_size: new Size(menuItemValue, height)
-        })
+            zones_size: new_size
+        });
+        ActionsCreator.SetMapSize(this.props.team_id, new_size);
     }
 
     render() {

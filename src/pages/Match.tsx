@@ -21,6 +21,7 @@ export default class MatchView extends React.Component<ILayoutProps, ILayoutStat
 
     componentDidMount() {
         if(!ActionStore.actionsExists(this.props.params.match_id)) {
+            ActionsCreator.FetchMapSize(this.props.params.team_id);
             ActionsCreator.FetchMatchActions(this.props.params.team_id, this.props.params.match_id)
         }
     }
@@ -29,7 +30,7 @@ export default class MatchView extends React.Component<ILayoutProps, ILayoutStat
         return (
             <BigContent>
                 <ActionMapComponent match_id={this.props.params.match_id}/>
-                <HeatMapComponent match_id={this.props.params.match_id}/>
+                <HeatMapComponent match_id={this.props.params.match_id} team_id={this.props.params.team_id}/>
             </BigContent>
         )
     }
