@@ -22,6 +22,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.validateEmail = this.validateEmail.bind(this);
+        this.validatePassword = this.validatePassword.bind(this);
           this.state = {
             email: '',
             password:'',
@@ -31,22 +32,39 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     }
 
     onLogin() {
+        if(this.state.emailError.length > 0 || this.state.passwordError.length > 0)
+            return;
+
         ActionCreator.CreateAuthenticateUserAction(this.state.email, this.state.password);
+        
     }
 
     handleEmailChange(e: any) {
         this.setState({ email:  e.target.value})
     }
 
-    validateEmail(e: any){
+    validateEmail(){
         let regex  = /^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
-        console.log("Avant le if de la validation.");
-        if (e.target.value.match(regex)) {
-            this.setState({emailError: "Veuillez entrer une email valide."})
-            console.log("Dans la validation");
-        } else{
+        if(this.state.email.trim().length == 0){
+            this.setState({emailError: "Le champ courriel est requis."})
+
+        } else if (!this.state.email.match(regex)) {
+            this.setState({emailError: "Veuillez entrer un courriel valide."})
+        } 
+        else{
             this.setState({emailError: ''})
-            console.log("Dans le else de la validation");
+        }
+    }
+
+     validatePassword(){
+        if(this.state.password.trim().length == 0){
+            this.setState({passwordError: "Le champ mot de passe est requis."})
+
+        } else if(this.state.password.trim().length < 4){
+            this.setState({passwordError: "Le champ mot de passe doit avoir au moins 4 caractères."})
+        }    
+        else{
+            this.setState({passwordError: ''})
         }
     }
 
@@ -69,7 +87,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                     name='email'
                     errorText = {this.state.emailError}
                 onChange={this.handleEmailChange}
-                onBlur = {this.validateEmail}
+                onBlur={this.validateEmail}
                 />
                 <br />
                 <TextField
@@ -81,6 +99,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                     name='password'
                     errorText = {this.state.passwordError}
                 onChange={this.handlePasswordChange}
+                onBlur={this.validatePassword}
                 />
                 <div style={{ float: 'right' }}>
                     <FlatButton label="Connexion" primary={true} onClick={this.onLogin} />
