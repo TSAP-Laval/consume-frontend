@@ -3,133 +3,165 @@ import {Layer, Stage} from 'react-konva';
 import LeftDiv from "../../../Elements/LeftDiv";
 import RightDiv from "../../../Elements/RightDiv";
 import SmallContainer from "../../../Elements/SmallContainer";
-import FieldMap from "../../../Map/Index"
+import FieldMap from "../../../Map"
 import {ZoneComponent} from "./Zone"
+import {ZoneRatioComponent} from "./ZoneRatio"
 import {IActionSummary} from "../../../../Models/DatabaseModelsSummaries"
-import {Filter, FilterNode, IComponent, RGBColor, Size, Zone, ZoneData} from "../../../../Models/ComponentModels"
-import * as FilterActionsCreator from "../../../Filter/ActionsCreator"
-import FilterStore from "../../../Filter/Store"
-import FilterComponent from "../../../Filter/Index"
-import {ActionImpact, ActionType} from "../../../../Models/ComponentModels";
+import ActionStore from "../../../../components/Action/Store";
+import {ActionImpact, ActionType, Size, Zone, ZoneData} from "../../../../models/ComponentModels";
+import {DropDownMenu, MenuItem, Toggle} from "material-ui";
+import Spinner from "../../../Elements/Spinner";
+import injectTapEventPlugin = require("react-tap-event-plugin");
+injectTapEventPlugin();
+
 
 export interface ILayoutProps {
-    actions: IActionSummary[]
+    match_id: number
 }
 
 export interface ILayoutState {
-    zones_size?: Size
-    size?: Size
-    filters?: {[name: string]  : Filter};
+    size?: Size,
+    zones_size?: Size,
+    actions?: IActionSummary[],
+    action_types?: ActionType[],
+    action_impacts?: ActionImpact[]
 }
 
-export class HeatMap
-    extends React.Component<ILayoutProps, ILayoutState>
-    implements IComponent{
-
-    readonly component_name: string = "HeatMap";
-    action_impacts: {[action_impact: string] : RGBColor};
-    mapParameters: Size;
-
-    refs: {
-        [string: string]: (Element);
-        mainStage: (HTMLElement);
-    };
+export class HeatMapComponent
+    extends React.Component<ILayoutProps, ILayoutState> {
 
     constructor(props: ILayoutProps) {
         super(props);
 
-        this.createActionTypeFilter = this.createActionTypeFilter.bind(this);
-        this.createActionImpactFilter = this.createActionImpactFilter.bind(this);
+        this.state = {
+            size: new Size(1200, 600),
+            actions: ActionStore.getActionsForMatch(this.props.match_id),
+            action_types: [],
+            action_impacts: [],
+            zones_size: new Size(8,10)
+        };
+
+        this.setActions = this.setActions.bind(this);
+        this.getActionImpacts = this.getActionImpacts.bind(this);
+        this.getActionTypes = this.getActionTypes.bind(this);
+        this.handleHeightChange = this.handleHeightChange .bind(this);
+        this.handleWidthChange = this.handleWidthChange.bind(this);
+    }
+    setActions() {
+        let actions: IActionSummary[] = ActionStore.getActionsForMatch(this.props.match_id);
+
+        this.setState({
+            actions: actions,
+            action_types: this.getActionTypes(actions),
+            action_impacts: this.getActionImpacts(actions)
+        })
     }
 
     componentWillMount() {
-        FilterStore.on("HANDLE_FILTER", this.handleFiltering);
-
-        let width = this.refs.mainStage.clientWidth;
-        let height = width / 2;
-
-        this.setState({
-            size: new Size(width, height),
-            zones_size: new Size(4,3)
-        });
-
-        this.createActionTypeFilter();
-        this.createActionImpactFilter();
+        ActionStore.on("RECEIVE_MATCH_ACTIONS", this.setActions);
     }
 
-    createActionImpactFilter() {
-        let nodes: Array<FilterNode> = [];
+    componentWillUnmount() {
+        ActionStore.removeListener("RECEIVE_MATCH_ACTIONS", this.setActions);
+    }
 
-        for(let action of this.props.actions) {
-            let nodes_values: string[] = nodes.map((node) => {return node.value});
+    /*refs: {
+     [string: string]: (Element);
+     mainStage: (HTMLElement);
+     };
 
-            if(nodes_values.indexOf(action.impact.toString()) === -1) {
-                let node = new ActionImpact(action.impact).toFilterNode();
-                this.action_impacts[node.value] = node.color;
-                nodes.push(node);
+     componentDidMount() {
+     let w = this.refs.mainStage.clientWidth;
+     let h = w / 2;
+
+     this.setState({
+     size: new Size(w, h)
+     });
+     }*/
+
+    getActionImpacts(actions: IActionSummary[]) {
+        let action_impacts: Array<ActionImpact> = [];
+
+        for(let action of actions) {
+            if(action_impacts.map((impact) => impact.id).indexOf(action.impact) === -1) {
+                action_impacts.push(new ActionImpact(action.impact));
             }
         }
 
-        let filter = new Filter("ACTION_IMPACT", this.component_name, nodes);
-        FilterActionsCreator.handleFilter(filter);
+        return action_impacts;
     }
 
-    createActionTypeFilter() {
-        let nodes: Array<FilterNode> = [];
+    getActionTypes(actions: IActionSummary[]) {
+        let action_types: Array<ActionType> = [];
 
-        for(let action of this.props.actions) {
-            let nodes_values: string[] = nodes.map((node) => {return node.value});
-
-            if(nodes_values.indexOf(action.type.id.toString()) === -1) {
-                let node = new ActionType(action.type.id, action.type.description).toFilterNode();
-                nodes.push(node);
+        for(let action of actions) {
+            if(action_types.map((action_type) => action_type.id).indexOf(action.type.id) === -1) {
+                action_types.push(new ActionType(action.type.id, action.type.description));
             }
         }
 
-        let filter = new Filter("ACTION_TYPE", this.component_name, nodes);
-        FilterActionsCreator.handleFilter(filter);
-    }
-
-    getFilterComponents() {
-        let filters = [];
-
-        for(let key in this.state.filters) {
-            if(this.state.filters.hasOwnProperty(key)) {
-                let filter = this.state.filters[key];
-                filters.push(
-                    <FilterComponent filter={filter}/>
-                );
-            }
-        }
-
-        return filters;
+        return action_types
     }
 
     getFilteredActions() {
-        let action_types = this.state.filters["ACTION_TYPE"].nodes.filter(node => node.used == true).map((node) => {
-            return node.value;
-        });
+        let usedImpacts = this.state.action_impacts.filter((i) => i.used).map(i => i.id);
 
-        let action_impacts = this.state.filters["ACTION_IMPACT"].nodes.filter(node => node.used == true).map((node) => {
-            return node.value
-        });
+        let usedTypes = this.state.action_types.filter((t) => t.used).map(t => t.id);
 
-        return this.props.actions.filter(action => action_impacts.indexOf(action.impact.toString()) !== -1)
-                                 .filter(action => action_types.indexOf(action.type.id.toString()) !== -1);
+        return this.state.actions.filter(action =>
+            usedImpacts.indexOf(action.impact) !== -1 && usedTypes.indexOf(action.type.id) !== -1
+        );
+
     }
+
+    onActionTypeToggle(e: React.FormEvent<HTMLInputElement>) {
+
+        let value: number = parseInt(e.currentTarget.value);
+
+        let currentDisplayState = this.state.action_types;
+
+        let newState = currentDisplayState.map((actType) => {
+            if (actType.id === value) {
+                actType.used = (e.target as any).checked;
+            }
+            return actType;
+        });
+
+        this.setState({
+            action_types: newState
+        });
+    }
+
+    onActionImpactToggle(e: React.FormEvent<HTMLInputElement>) {
+        let value = parseInt(e.currentTarget.value);
+
+        let currentDisplayState = this.state.action_impacts;
+
+        let newState = currentDisplayState.map(actImpact => {
+            if (actImpact.id === value) {
+                actImpact.used = (e.target as any).checked;
+            }
+            return actImpact
+        });
+
+        this.setState({
+            action_impacts: newState
+        });
+    }
+
+
 
     getZones() {
         let zonesData = [];
-
         for (let action of this.getFilteredActions()) {
-            let x = Math.floor(action.start_x * this.mapParameters.width);
-            let y = Math.floor(action.start_y * this.mapParameters.height);
+            let x = Math.floor(action.start_x * this.state.zones_size.width);
+            let y = Math.floor(action.start_y * this.state.zones_size.height);
             zonesData.push(new ZoneData(x,y, action.impact));
         }
         let zones = [];
 
-        for (let x = 0; x < this.mapParameters.width; x++) {
-            for (let y = 0; y < this.mapParameters.height; y++) {
+        for (let x = 0; x < this.state.zones_size.width; x++) {
+            for (let y = 0; y < this.state.zones_size.height; y++) {
                 zones.push(new Zone(x,y, 0, 0));
             }
         }
@@ -150,37 +182,90 @@ export class HeatMap
                 }
             }
 
-            zone.percentage = + (nbActions / zonesData.length).toFixed(2);
-            zone.rating = + (rating / nbActions - nbNeutres).toFixed(2);
+            zone.percentage = + (nbActions / zonesData.length);
+            zone.rating = + (rating / nbActions - nbNeutres);
         }
         return zones;
     }
-
-    handleFiltering() {
+    handleHeightChange(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
+        let width = this.state.zones_size.width;
         this.setState({
-            filters: FilterStore.getFiltersByComponent(this.component_name)
-        });
+            zones_size: new Size(width, menuItemValue)
+        })
+    }
+    handleWidthChange(e: __MaterialUI.TouchTapEvent, index: number, menuItemValue: any) {
+        let height = this.state.zones_size.height;
+        this.setState({
+            zones_size: new Size(menuItemValue, height)
+        })
     }
 
     render() {
-            let zones = this.getZones().map((zone) => {
-                return <ZoneComponent zone={zone} zone_size={this.state.zones_size} parent_size={this.state.size}/>
-            });
-
-            let filters = this.getFilterComponents();
-
+        if (this.state.actions.length === 0) {
             return(
                 <SmallContainer>
-                    <LeftDiv>
-                        <div ref="mainStage">
-                            <Stage width={this.state.size.width} height={this.state.size.height}>
-                                <FieldMap height={this.state.size.height}/>
-                                <Layer>{zones}</Layer>
-                            </Stage>
-                        </div>
-                    </LeftDiv>
-                    <RightDiv>{filters}</RightDiv>
+                    <Spinner/>
                 </SmallContainer>
-            );
+            )
+        }
+        let widthChoices = [2,3,4,5,6,7,8,9,10,11,12];
+        let heightChoices = [1,2,3,4,5,6,7,8];
+        let rawZones = this.getZones();
+        let zones = rawZones.map((zone, i) => {
+            return <ZoneComponent key={i} zone={zone} zone_size={this.state.zones_size} parent_size={this.state.size}/>
+        });
+        let ratios = rawZones.map((zone, i) => {
+            return <ZoneRatioComponent key={i} zone={zone} zone_size={this.state.zones_size} parent_size={this.state.size}/>
+        });
+        const styles = {
+            customWidth: {
+                width: 200,
+            },
+        };
+        const textWidth = this.state.zones_size.width;
+        const widthDropDown = widthChoices.map((val) => {
+            return (
+                <MenuItem key={val} value={val} primaryText={val + " Zones"} />
+            )
+        });
+
+        const textHeight = this.state.zones_size.height;
+        const heightDropDown = heightChoices.map((val) => {
+            return (
+                <MenuItem key={val} value={val} primaryText={val + " Zones"} />
+            )
+        });
+        let action_impact_filter = this.state.action_impacts.map((action_impact) => {
+            let style = {color: action_impact.getColor().toString()};
+            return <li key={action_impact.id}><Toggle labelStyle={style} onToggle={this.onActionImpactToggle.bind(this)} defaultToggled={action_impact.used} value={action_impact.id} label={action_impact.name}/></li>;
+        });
+
+        let action_type_filter = this.state.action_types.map((action_type) => {
+            return <li key={action_type.id}><Toggle onToggle={this.onActionTypeToggle.bind(this)} defaultToggled={action_type.used} value={action_type.id} label={action_type.name}/></li>;
+        });
+
+        return(
+            <SmallContainer>
+                <LeftDiv>
+                    <div ref="mainStage">
+                        <Stage width={this.state.size.width} height={this.state.size.height}>
+                            <Layer>{zones}</Layer>
+                            <Layer>{ratios}</Layer>
+                            <FieldMap height={this.state.size.height}/>
+                        </Stage>
+                    </div>
+                </LeftDiv>
+                <RightDiv>
+                    <h3>Impact de l'action</h3>
+                    <ul>{action_impact_filter}</ul>
+                    <h3>Type d'action</h3>
+                    <ul>{action_type_filter}</ul>
+                    <h3>Hauteur</h3>
+                    <DropDownMenu value={textHeight} onChange={this.handleHeightChange} style={styles.customWidth} autoWidth={false}>{heightDropDown}</DropDownMenu>
+                    <h3>Longeur</h3>
+                    <DropDownMenu value={textWidth} onChange={this.handleWidthChange} style={styles.customWidth} autoWidth={false}>{widthDropDown}</DropDownMenu>
+                </RightDiv>
+            </SmallContainer>
+        );
     }
 }

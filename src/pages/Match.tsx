@@ -3,6 +3,7 @@ import ActionStore from "../components/Action/Store"
 import * as ActionsCreator from "../components/Action/ActionsCreator"
 import BigContent from "../components/Elements/BigContent";
 import {ActionMapComponent} from "../components/Action/ActionMap/Views/ActionMap";
+import {HeatMapComponent} from "../components/Action/HeatMap/Views/HeatMap";
 
 export interface ILayoutProps {
     params: {
@@ -28,6 +29,7 @@ export default class MatchView extends React.Component<ILayoutProps, ILayoutStat
         return (
             <BigContent>
                 <ActionMapComponent match_id={this.props.params.match_id}/>
+                <HeatMapComponent match_id={this.props.params.match_id}/>
             </BigContent>
         )
     }
