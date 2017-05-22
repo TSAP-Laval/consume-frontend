@@ -23,13 +23,6 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
     }
 
     render() {
-        let adminOptions;
-        if (LoginStore.isAdmin()) {
-            adminOptions = <Link to="/users"><RaisedButton primary={true} label="Gestion des utilisateurs"/></Link>
-        } else {
-            adminOptions = null;
-        }
-
         return (
             <BigContent>
                 {

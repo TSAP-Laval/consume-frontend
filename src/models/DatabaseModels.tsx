@@ -1,5 +1,4 @@
 import {IActionSummary, IMatchSummary, IMetricSummary, ITeamSummary, IUserSummary} from "./DatabaseModelsSummaries";
-import {IPosition} from "../components/PlayerStats/Models/IPosition";
 
 export enum ActionImpactId {
     Negative = -1,
@@ -69,6 +68,11 @@ export interface ITeam {
 export interface ITeamMetricStats {
     metrics_avg: {[metric_id: string] : number}
     player_metrics: {[player_id: string] : {[metric_id: string] : {avg: number, last: number}}}
+}
+
+export interface IPlayerStats {
+    match: IMatchSummary;
+    metrics: {[metric_id: string]: number}
 }
 
 export interface IUser {
