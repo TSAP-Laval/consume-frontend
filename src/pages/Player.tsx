@@ -8,6 +8,12 @@ import StatsGraphs from "../components/PlayerStats/StatsGraphs";
 import {CreateFetchPlayerStatsAction} from "../components/PlayerStats/Actions/FetchPlayerStats";
 import {CreateFetchSeasonsAction} from "../components/PlayerStats/Actions/FetchSeasons";
 import AllContainer from "../components/Elements/AllContainer";
+import Toolbar from "material-ui/Toolbar";
+import ToolbarGroup from "material-ui/Toolbar/ToolbarGroup";
+import ToolbarTitle from "material-ui/Toolbar/ToolbarTitle";
+import DropDownMenu from "material-ui/DropDownMenu";
+import MenuItem from "material-ui/MenuItem";
+import {ToolbarSeparator} from "material-ui/Toolbar/ToolbarSeparator";
 
 
 export interface ILayoutProps {
@@ -59,11 +65,11 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         })
     }
 
-    handleSelectedSeason(e: any) {
+    handleSelectedSeason(e: any, i: any, value: any) {
         this.setState({
-            selectedSeasonID: e.target.value
+            selectedSeasonID: value
         });
-        CreateFetchPlayerStatsAction(this.props.params.teamID, this.props.params.playerID, e.target.value, LoginStore.token);
+        CreateFetchPlayerStatsAction(this.props.params.teamID, this.props.params.playerID, value, LoginStore.token);
     }
 
     render() {
@@ -73,15 +79,23 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         let playerName = this.state.player? this.state.player.first_name + " " + this.state.player.last_name: "un joueur";
 
         let menuItems = this.state.seasons.map((s) => {
-            return <option value={s.id} >{s.start_year.toString() + "-" + s.end_year.toString()}</option>;
+            return <MenuItem value={s.id} primaryText={s.start_year.toString() + "-" + s.end_year.toString()} />;
         });
 
         return (
-            <AllContainer>
-                <select onChange={this.handleSelectedSeason} value={this.state.selectedSeasonID}>{menuItems}</select>
-                <DataPanel Name={playerName} Header={graphTitle} ><StatsGraphs teamID={this.props.params.teamID} /></DataPanel>
-                <DataPanel Name={playerName} Header={statsTitle} ><StatsTable teamID={this.props.params.teamID} /></DataPanel>
-            </AllContainer>
+            <div>
+                <Toolbar>
+                    <ToolbarGroup firstChild={true}>
+                        <DropDownMenu value={this.state.selectedSeasonID} onChange={this.handleSelectedSeason}>
+                            {menuItems}
+                        </DropDownMenu>
+                    </ToolbarGroup>
+                </Toolbar>
+                <AllContainer>
+                    <DataPanel Header={graphTitle} Name={playerName}><StatsGraphs teamID={this.props.params.teamID} /></DataPanel>
+                    <DataPanel Header={statsTitle} Name={playerName}><StatsTable teamID={this.props.params.teamID} /></DataPanel>
+                </AllContainer>
+            </div>
         );
     }
 }

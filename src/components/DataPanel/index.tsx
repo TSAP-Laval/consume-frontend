@@ -5,7 +5,7 @@ import AppBar from 'material-ui/AppBar';
 
 export interface IDataPanelProps {
     Header: string;
-    Name: string;
+    Name: string
 }
 
 const StyledPaper = styled(Paper)`
@@ -23,7 +23,7 @@ export class DataPanel extends React.Component<IDataPanelProps, any> {
     render() {
         return (
             <StyledPaper zDepth={3}>
-                <AppBar showMenuIconButton={false} title={this.props.Header + ' - ' + this.props.Name} />
+                <AppBar showMenuIconButton={false} title={this.props.Header + " - " + this.props.Name} />
                 {this.props.children}
             </StyledPaper>
         )
