@@ -14,11 +14,9 @@ import {DropDownMenu, MenuItem, Toggle} from "material-ui";
 import Spinner from "../../../Elements/Spinner";
 import * as ActionsCreator from "../../../../components/Preferences/ActionsCreator"
 import LoginStore from "../../../../components/Login/Store";
-import injectTapEventPlugin = require("react-tap-event-plugin");
 import RightUnderDiv from "../../../Elements/RightUnderDiv";
 import LeftUnderDiv from "../../../Elements/LeftUnderDiv";
 import Li from "../../../Elements/Li";
-injectTapEventPlugin();
 
 export interface ILayoutProps {
     match_id: number,
