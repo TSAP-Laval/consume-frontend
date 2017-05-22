@@ -17,6 +17,7 @@ import LoginStore from "../../../../components/Login/Store";
 import injectTapEventPlugin = require("react-tap-event-plugin");
 import RightUnderDiv from "../../../Elements/RightUnderDiv";
 import LeftUnderDiv from "../../../Elements/LeftUnderDiv";
+import Li from "../../../Elements/Li";
 injectTapEventPlugin();
 
 export interface ILayoutProps {
@@ -247,16 +248,16 @@ export class HeatMapComponent
             });
             let action_impact_filter = this.state.action_impacts.map((action_impact) => {
                 let style = {color: action_impact.getColor().toString()};
-                return <li key={action_impact.id}><Toggle labelStyle={style}
+                return <Li key={action_impact.id}><Toggle labelStyle={style}
                                                           onToggle={this.onActionImpactToggle.bind(this)}
                                                           defaultToggled={action_impact.used} value={action_impact.id}
-                                                          label={action_impact.name}/></li>;
+                                                          label={action_impact.name}/></Li>;
             });
 
             let action_type_filter = this.state.action_types.map((action_type) => {
-                return <li key={action_type.id}><Toggle onToggle={this.onActionTypeToggle.bind(this)}
+                return <Li key={action_type.id}><Toggle onToggle={this.onActionTypeToggle.bind(this)}
                                                         defaultToggled={action_type.used} value={action_type.id}
-                                                        label={action_type.name}/></li>;
+                                                        label={action_type.name}/></Li>;
             });
 
             return (
