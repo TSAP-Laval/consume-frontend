@@ -1,10 +1,13 @@
 import * as React from "react";
-import { TextField, FlatButton } from 'material-ui';
+import {Paper, RaisedButton} from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import Store from "./Store";
 import * as ActionCreator from "./ActionCreator";
 import {Status} from "../PlayerStats/Models/Status";
 import Spinner from "../Elements/Spinner";
+import styled from "styled-components";
+import FormInput from "../Elements/FormInput";
+import Form from "../Elements/Form";
 
 export interface ILoginProps {
 }
@@ -17,6 +20,16 @@ export interface ILoginState {
     requestState?: Status,
     emailIsInvalid?:boolean
 }
+
+const StyledPaper = styled(Paper)`
+    max-width: 30%;
+    margin: 0;
+    margin-bottom: 4em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4em;
+    padding-bottom: 1em;
+`;
 
 export default class Login extends React.Component<ILoginProps, ILoginState> {
 
@@ -114,37 +127,39 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         }
 
         return (
-            <div style={{ paddingTop: '100px', maxWidth: '400px', margin: '0 auto' }}>
+            <StyledPaper zDepth={3}>
                 <AppBar
                     title="Connexion" showMenuIconButton={false}
                 />
-                <TextField
-                    ref='email'
-                    floatingLabelText='Courriel'
-                    multiLine={false}
-                    fullWidth={true}
-                    value ={this.state.email}
-                    name='email'
-                    errorText = {this.state.emailError}
-                onChange={this.handleEmailChange}
-                onBlur={this.validateEmail}
-                />
-                <br />
-                <TextField
-                    ref='password'
-                    floatingLabelText='Mot de passe'
-                    multiLine={false}
-                    fullWidth={true}
-                    type="password"
-                    name='password'
-                    errorText = {this.state.passwordError}
-                onChange={this.handlePasswordChange}
-                onBlur={this.validatePassword}
-                />
-                <div style={{ float: 'right' }}>
-                    <FlatButton label="Connexion" primary={true} onClick={this.onLogin} />
-                </div>
-            </div>
+                <Form>
+                    <div>
+                        <FormInput
+                            ref='email'
+                            floatingLabelText='Courriel'
+                            multiLine={false}
+                            fullWidth={true}
+                            value ={this.state.email}
+                            name='email'
+                            errorText = {this.state.emailError}
+                        onChange={this.handleEmailChange}
+                        onBlur={this.validateEmail}
+                        />
+                        <br />
+                        <FormInput
+                            ref='password'
+                            floatingLabelText='Mot de passe'
+                            multiLine={false}
+                            fullWidth={true}
+                            type="password"
+                            name='password'
+                            errorText = {this.state.passwordError}
+                        onChange={this.handlePasswordChange}
+                        onBlur={this.validatePassword}
+                        />
+                    </div>
+                    <RaisedButton label="Connexion" primary={true} onClick={this.onLogin} />
+                </Form>
+            </StyledPaper>
         );
     }
 }
