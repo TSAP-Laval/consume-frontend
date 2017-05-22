@@ -86,8 +86,6 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
 
         let playerName = this.state.player? this.state.player.first_name + " " + this.state.player.last_name: "un joueur";
 
-        console.log(this.state.seasons);
-
         let menuItems = this.state.seasons.map((s) => {
             return <option value={s.id} >{s.start_year.toString() + "-" + s.end_year.toString()}</option>;
         });

@@ -20,7 +20,6 @@ export function CreateFetchPlayerAction(teamID: number, playerID: number, token:
         headers: {"X-Auth-Token": token}
     });
 
-    console.log("FETCHING PL:AYER");
     Dispatcher.dispatch(new FetchPlayerAction());
 
     let url: string = serverUrl + "players/" + playerID;

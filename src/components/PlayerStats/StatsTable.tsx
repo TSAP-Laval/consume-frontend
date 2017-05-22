@@ -100,6 +100,10 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
             // Get date
             let date = p.match.date;
 
+            let d = date.split(" ");
+            d.splice(-2, 2);
+            date = d.join(" ");
+
             let metrics = this.getMetricNames().map(mname => {
                 return p.metrics[mname].toFixed(2).toString();
             });

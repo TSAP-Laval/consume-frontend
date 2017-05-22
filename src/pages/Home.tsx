@@ -29,7 +29,6 @@ export default class Home extends React.Component<ILayoutProps, ILayoutState> {
                     LoginStore.isAdmin()?
                         <Link to="/users"><RaisedButton primary={true} label="Gestion des Utilisateurs"/></Link>: null
                 }
-                <Link to="/team/1/players/1"><RaisedButton primary={true} label="TEST player" /></Link>
                 <TeamList />
             </BigContent>
         )
