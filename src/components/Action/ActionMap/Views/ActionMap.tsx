@@ -59,19 +59,19 @@ export class ActionMapComponent
         ActionStore.removeListener("RECEIVE_MATCH_ACTIONS", this.setActions);
     }
 
-    /*refs: {
+    refs: {
         [string: string]: (Element);
         mainStage: (HTMLElement);
     };
 
     componentDidMount() {
-        let w = this.refs.mainStage.clientWidth;
+        let w = this.refs.mainStage.clientWidth * 0.8;
         let h = w / 2;
 
         this.setState({
             size: new Size(w, h)
         });
-    }*/
+    }
 
     getActionImpacts(actions: IActionSummary[]) {
         let action_impacts: Array<ActionImpact> = [];
@@ -98,6 +98,7 @@ export class ActionMapComponent
     }
 
     getFilteredActions() {
+
         let usedImpacts = this.state.action_impacts.filter((i) => i.used).map(i => i.id);
 
         let usedTypes = this.state.action_types.filter((t) => t.used).map(t => t.id);
@@ -144,45 +145,46 @@ export class ActionMapComponent
     }
 
     render() {
-        if (this.state.actions.length === 0) {
-            return(
+        if (this.state.actions.length != 0) {
+            let actions = this.getFilteredActions().map((action) => {
+                let color: RGBColor = this.state.action_impacts.filter((impact) => {return impact.id == action.impact})[0].getColor();
+                return <ActionComponent key={action.id} params={{action: action, color: color, parent_size: this.state.size}}/>
+            });
+
+            let action_impact_filter = this.state.action_impacts.map((action_impact) => {
+                let style = {color: action_impact.getColor().toString()};
+                return <li key={action_impact.id}><Toggle labelStyle={style} onToggle={this.onActionImpactToggle.bind(this)} defaultToggled={action_impact.used} value={action_impact.id} label={action_impact.name}/></li>;
+            });
+
+            let action_type_filter = this.state.action_types.map((action_type) => {
+                return <li key={action_type.id}><Toggle onToggle={this.onActionTypeToggle.bind(this)} defaultToggled={action_type.used} value={action_type.id} label={action_type.name}/></li>;
+            });
+
+            return (
+                <SmallContainer>
+                    <LeftDiv>
+                        <div ref="mainStage">
+                            <Stage width={this.state.size.width} height={this.state.size.height}>
+                                <FieldMap height={this.state.size.height}/>
+                                <Layer>{actions}</Layer>
+                            </Stage>
+                        </div>
+                    </LeftDiv>
+                    <RightDiv>
+                        <h3>Impact de l'action</h3>
+                        <ul>{action_impact_filter}</ul>
+                        <h3>Type d'action</h3>
+                        <ul>{action_type_filter}</ul>
+                    </RightDiv>
+                </SmallContainer>
+            );
+        }
+        return(
+            <div ref="mainStage">
                 <SmallContainer>
                     <Spinner/>
                 </SmallContainer>
-            )
-        }
-
-        let actions = this.getFilteredActions().map((action) => {
-            let color: RGBColor = this.state.action_impacts.filter((impact) => {return impact.id == action.impact})[0].getColor();
-            return <ActionComponent key={action.id} params={{action: action, color: color, parent_size: this.state.size}}/>
-        });
-
-        let action_impact_filter = this.state.action_impacts.map((action_impact) => {
-            let style = {color: action_impact.getColor().toString()};
-            return <li key={action_impact.id}><Toggle labelStyle={style} onToggle={this.onActionImpactToggle.bind(this)} defaultToggled={action_impact.used} value={action_impact.id} label={action_impact.name}/></li>;
-        });
-
-        let action_type_filter = this.state.action_types.map((action_type) => {
-            return <li key={action_type.id}><Toggle onToggle={this.onActionTypeToggle.bind(this)} defaultToggled={action_type.used} value={action_type.id} label={action_type.name}/></li>;
-        });
-
-        return (
-            <SmallContainer>
-                <LeftDiv>
-                    <div ref="mainStage">
-                        <Stage width={this.state.size.width} height={this.state.size.height}>
-                            <FieldMap height={this.state.size.height}/>
-                            <Layer>{actions}</Layer>
-                        </Stage>
-                    </div>
-                </LeftDiv>
-                <RightDiv>
-                    <h3>Impact de l'action</h3>
-                    <ul>{action_impact_filter}</ul>
-                    <h3>Type d'action</h3>
-                    <ul>{action_type_filter}</ul>
-                </RightDiv>
-            </SmallContainer>
-        );
+            </div>
+        )
     }
 }

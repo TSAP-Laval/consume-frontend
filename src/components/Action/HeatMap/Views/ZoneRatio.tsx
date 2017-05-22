@@ -18,7 +18,6 @@ export class ZoneRatioComponent extends React.Component<ILayoutProps, ILayoutSta
         super(props);
     }
 
-
     render() {
         let zoneWidth = this.props.parent_size.width / this.props.zone_size.width;
         let zoneHeight = this.props.parent_size.height / this.props.zone_size.height;

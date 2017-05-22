@@ -26,6 +26,10 @@ class TeamStore extends EventEmitter {
         return (team_id.toString() in this.teams);
     }
 
+    getTeam(team_id: number) {
+        return this.teams[team_id.toString()];
+    }
+
     handleActions(action: IAction) {
         switch(action.type) {
             case "FETCH_TEAM":

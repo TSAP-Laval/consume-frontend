@@ -21,13 +21,3 @@ export class ReceiveMatchActions implements IAction {
         this.actions = actions
     }
 }
-
-export class ReceiveMapSize implements IAction {
-    type: string;
-    map_size: Size;
-
-    constructor(map_size: Size) {
-        this.type = "RECEIVE_MAP_SIZE";
-        this.map_size = map_size;
-    }
-}

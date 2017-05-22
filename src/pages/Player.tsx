@@ -70,8 +70,8 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
 
         return (
             <AllContainer>
-                <DataPanel PlayerName={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
-                <DataPanel PlayerName={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
+                <DataPanel Name={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
+                <DataPanel Name={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.player_id} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
             </AllContainer>
         );
     }
