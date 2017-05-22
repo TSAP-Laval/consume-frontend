@@ -1,7 +1,5 @@
 import * as React from "react";
-import styled from 'styled-components';
 import {IPlayer, IPlayerStats, ISeason} from "../models/DatabaseModels";
-import {CreateFetchPlayerAction} from "../components/PlayerStats/Actions/FetchPlayer";
 import LoginStore from "../components/Login/Store";
 import StatsStore from "../components/PlayerStats/Store";
 import {DataPanel} from "../components/DataPanel/index";
@@ -9,15 +7,7 @@ import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
 import {CreateFetchPlayerStatsAction} from "../components/PlayerStats/Actions/FetchPlayerStats";
 import {CreateFetchSeasonsAction} from "../components/PlayerStats/Actions/FetchSeasons";
-
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
-import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
-import MenuItem from 'material-ui/MenuItem';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import RaisedButton from 'material-ui/RaisedButton';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import AllContainer from "../components/Elements/AllContainer";
 
 
 export interface ILayoutProps {
@@ -33,10 +23,6 @@ export interface ILayoutState {
     selectedSeasonID?: number
     seasons?: ISeason[]
 }
-
-const AllContainer = styled.div`
-    margin-top: 2em;
-`;
 
 export default class Player extends React.Component<ILayoutProps, ILayoutState> {
 
@@ -93,8 +79,8 @@ export default class Player extends React.Component<ILayoutProps, ILayoutState> 
         return (
             <AllContainer>
                 <select onChange={this.handleSelectedSeason} value={this.state.selectedSeasonID}>{menuItems}</select>
-                <DataPanel PlayerName={playerName} Header={graphTitle} ><StatsGraphs teamID={this.props.params.teamID} /></DataPanel>
-                <DataPanel PlayerName={playerName} Header={statsTitle} ><StatsTable teamID={this.props.params.teamID} /></DataPanel>
+                <DataPanel Name={playerName} Header={graphTitle} ><StatsGraphs teamID={this.props.params.teamID} /></DataPanel>
+                <DataPanel Name={playerName} Header={statsTitle} ><StatsTable teamID={this.props.params.teamID} /></DataPanel>
             </AllContainer>
         );
     }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import LoginComponent from "../components/Login";
-import BigContent from "../components/Elements/BigContent";
+import AllContainer from "../components/Elements/AllContainer";
+
 
 export interface ILoginProps {
 }
@@ -14,9 +15,9 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
 
     render() {
         return (
-            <BigContent>
+            <AllContainer>
                 <LoginComponent/>
-            </BigContent>
+            </AllContainer>
         )
     }
 }
