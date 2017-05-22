@@ -3,6 +3,8 @@ import { TextField, FlatButton } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import Store from "./Store";
 import * as ActionCreator from "./ActionCreator"
+import {Status} from "../PlayerStats/Models/Status";
+import Spinner from "../Elements/Spinner";
 
 export interface ILoginProps {
 }
@@ -10,19 +12,48 @@ export interface ILoginProps {
 export interface ILoginState {
     email?: string,
     password?: string,
+    error?: string
+    requestState?: Status
 }
 
 export default class Login extends React.Component<ILoginProps, ILoginState> {
 
     constructor(props: ILoginProps) {
         super();
+        this.state = {
+            email: '',
+            password:'',
+            error: '',
+            requestState: Store.requestStatus
+        };
+
         this.onLogin = this.onLogin.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
-          this.state = {
-            email: '',
-            password:''
-        }
+        this.setError = this.setError.bind(this);
+        this.setRequestState = this.setRequestState.bind(this)
+    }
+
+    componentWillMount() {
+        Store.on("errorState", this.setError);
+        Store.on("requestState", this.setRequestState);
+    }
+
+    componentWillUnmount() {
+        Store.removeListener("errorState", this.setError);
+        Store.removeListener("requestState", this.setRequestState);
+    }
+
+    setRequestState() {
+        this.setState({
+            requestState: Store.requestStatus
+        });
+    }
+
+    setError() {
+        this.setState({
+            error: Store.error
+        });
     }
 
     onLogin() {
@@ -38,6 +69,10 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     }
 
     render() {
+        if (this.state.requestState === Status.Started) {
+            return <Spinner/>
+        }
+
         return (
             <div style={{ paddingTop: '100px', maxWidth: '400px', margin: '0 auto' }}>
                 <AppBar
@@ -50,7 +85,8 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                     fullWidth={true}
                     value ={this.state.email}
                     name='email'
-                onChange={this.handleEmailChange} 
+                    onChange={this.handleEmailChange}
+                    errorText={this.state.error}
                 />
                 <br />
                 <TextField
@@ -60,7 +96,8 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
                     fullWidth={true}
                     type="password"
                     name='password'
-                onChange={this.handlePasswordChange}
+                    onChange={this.handlePasswordChange}
+                    errorText={this.state.error}
                 />
                 <div style={{ float: 'right' }}>
                     <FlatButton label="Connexion" primary={true} onClick={this.onLogin} />
