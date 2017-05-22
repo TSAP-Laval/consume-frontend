@@ -24,7 +24,8 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         this.state = {
             email: '',
             password:'',
-            error: '',
+            emailError: '',
+            passwordError: '',
             requestState: Store.requestStatus
         };
 
@@ -33,12 +34,6 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.validateEmail = this.validateEmail.bind(this);
         this.validatePassword = this.validatePassword.bind(this);
-          this.state = {
-            email: '',
-            password:'',
-            emailError: '',
-            passwordError: ''
-        }
         this.setError = this.setError.bind(this);
         this.setRequestState = this.setRequestState.bind(this)
     }

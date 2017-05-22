@@ -9,10 +9,10 @@ import TeamSettings from './pages/TeamSettings';
 
 import Users from './pages/Users';
 import MatchList from "./components/Team/Views/MatchList";
+import PlayerList from "./components/Team/Views/PlayerList";
 import Login from "./pages/Login";
 import IsAuthenticated from "./pages/IsAuthenticated";
 import IsAdmin from "./pages/IsAdmin";
-import PlayerList from "./components/Player/PlayerList/Index";
 
 
 const root = document.getElementById("root");
