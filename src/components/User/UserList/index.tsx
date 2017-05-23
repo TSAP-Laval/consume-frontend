@@ -181,8 +181,6 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
 
         this.setState({
             checkedTeams: oldTeams
-        }, () => {
-            console.log(this.state.checkedTeams)
         });
     }
 
