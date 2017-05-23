@@ -105,22 +105,22 @@ export default class Layout extends React.Component<ILayoutProps, ILayoutState> 
 
     createMenu() {
         if(LoginStore.isLoggedIn) {
-            let menu = [<AppBar className={"navbar"} onLeftIconButtonTouchTap={this.showMenu} title={<AppTitle to="/team">TSAP</AppTitle>}/>];
-            let items =  [<MenuItem onClick={() => {this.redirect("/team")}}>Équipes</MenuItem>, <MenuItem onClick={this.logout}>Déconnexion</MenuItem>];
+            let menu = [<AppBar key={"appbar"}  className={"navbar"} onLeftIconButtonTouchTap={this.showMenu} title={<AppTitle to="/team">TSAP</AppTitle>}/>];
+            let items =  [<MenuItem key={"teams"}  onClick={() => {this.redirect("/team")}}>Équipes</MenuItem>, <MenuItem key={"logout"}  onClick={this.logout}>Déconnexion</MenuItem>];
 
             if(LoginStore.isAdmin()) {
-                items.unshift(<MenuItem onClick={() => {this.redirect("/users")}}>Gestion des utilisateurs</MenuItem>);
+                items.unshift(<MenuItem key={"admin"} onClick={() => {this.redirect("/users")}}>Gestion des utilisateurs</MenuItem>);
             }
 
-            menu.push(<Drawer docked={false} open={this.state.menu_opened} onRequestChange={(open) => this.setState({menu_opened: open})}>
-                <AppBar className={"navbar"} iconElementLeft={<IconButton><NavigationClose /></IconButton>} onLeftIconButtonTouchTap={this.showMenu} />
+            menu.push(<Drawer key={"drawer"} docked={false} open={this.state.menu_opened} onRequestChange={(open) => this.setState({menu_opened: open})}>
+                <AppBar key={"menuitem"} className={"navbar"} iconElementLeft={<IconButton><NavigationClose /></IconButton>} onLeftIconButtonTouchTap={this.showMenu} />
                 {items}
             </Drawer>);
 
             return(menu);
         }
 
-        return(<AppBar showMenuIconButton={false} className={"navbar"} title={<AppTitle to="/team">TSAP</AppTitle>}/> )
+        return(<AppBar key={"appbar"} showMenuIconButton={false} className={"navbar"} title={<AppTitle to="/team">TSAP</AppTitle>}/> )
     }
 
     render() {
