@@ -13,6 +13,7 @@ import PlayerList from "./components/Team/Views/PlayerList";
 import Login from "./pages/Login";
 import IsAuthenticated from "./pages/IsAuthenticated";
 import IsAdmin from "./pages/IsAdmin";
+import IsNotAuthenticated from "./pages/IsNotAuthenticated";
 
 
 const root = document.getElementById("root");
@@ -22,7 +23,10 @@ ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={Layout}>
             <IndexRoute component={Login}/>
-            <Route path="login" component={Login}/>
+            
+            <Route component={IsNotAuthenticated}>
+                <Route path="login" component={Login}/>
+             </Route>
 
             <Route component={IsAdmin}>
                 <Route path="users" component={Users} />
