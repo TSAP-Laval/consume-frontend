@@ -56,7 +56,7 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
                 first_name: "",
                 last_name: "",
                 email: "",
-                is_admin: false,
+                is_admin: false
             },
             checkedTeams: [],
              firstNameError: "",
