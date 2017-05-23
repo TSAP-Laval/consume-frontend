@@ -15,7 +15,8 @@ export interface ILoginState {
     emailError?:string,
     passwordError?:string,
     requestState?: Status,
-    emailIsInvalid?:boolean
+    emailIsInvalid?:boolean,
+    isLoggedIn?:boolean
 }
 
 export default class Login extends React.Component<ILoginProps, ILoginState> {
@@ -28,7 +29,8 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
             emailError: '',
             passwordError: '',
             requestState: Store.requestStatus,
-            emailIsInvalid: false
+            emailIsInvalid: false,
+            isLoggedIn: false
         };
 
         this.onLogin = this.onLogin.bind(this);
@@ -66,9 +68,8 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
     onLogin() {
         if(this.state.emailIsInvalid || this.state.password.trim().length < 4)
             return;
-
         ActionCreator.CreateAuthenticateUserAction(this.state.email, this.state.password);
-        
+        this.setState({isLoggedIn: Store.isLoggedIn});
     }
 
     handleEmailChange(e: any) {
@@ -112,7 +113,7 @@ export default class Login extends React.Component<ILoginProps, ILoginState> {
         if (this.state.requestState === Status.Started) {
             return <Spinner/>
         }
-
+        
         return (
             <div style={{ paddingTop: '100px', maxWidth: '400px', margin: '0 auto' }}>
                 <AppBar

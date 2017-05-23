@@ -66,7 +66,7 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
     getTableColumns() {
         let columns: string[][] = [];
         if(this.state.teams.length > 0) {
-            columns = [["Nom d'équipe"], ["Ville"], ["Action"]]
+            columns = [["Nom d'équipe"], ["Ville"], ["Actions"]]
         }
 
         return columns;

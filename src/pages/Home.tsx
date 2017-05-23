@@ -11,15 +11,11 @@ export interface ILayoutProps {
 }
 
 export interface ILayoutState {
-    isLoggedIn?: boolean
 }
 
 export default class Home extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
         super();
-        this.state = {
-            isLoggedIn: LoginStore.isLoggedIn
-        }
     }
 
     render() {

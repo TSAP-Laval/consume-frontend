@@ -16,13 +16,21 @@ import FormInput from "../../Elements/FormInput";
 import Li from "../../Elements/Li";
 import {CreateNewUserAction} from "../Actions/NewUser";
 import LoginStore from "../../Login/Store";
+import { Checkbox } from "material-ui";
+import { ITeamSummary } from "../../../Models/DatabaseModelsSummaries";
+import TeamStore from "../../Team/Stores/TeamStore";
+import { CreateAssignTeamsAction } from "../Actions/AssignTeams";
 
 export interface IUserListProps {}
 export interface IUserListState {
     fetching?: boolean,
     users?: IUser[],
     open?: boolean,
-    newUser?: IUser
+    newUser?: IUser,
+    addTeamIsOpen?: boolean,
+    teams: Array<ITeamSummary>,
+    listOfTeamsToAssign?: Array<number>,
+    userIdToAssignTeams?: number
 }
 
 const styles = {
@@ -43,6 +51,8 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
             fetching: UserStore.getFetching(),
             users: UserStore.getUsers(),
             open: false,
+            addTeamIsOpen: false,
+            teams: TeamStore.teamsList,
             newUser: {
                 first_name: "",
                 last_name: "",
@@ -54,8 +64,12 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
         this.getFetching = this.getFetching.bind(this);
         this.getUsers = this.getUsers.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
+        this.handleAddTeamsOpen = this.handleAddTeamsOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleCheck = this.handleCheck.bind(this);
+        this.handleAssignTeams = this.handleAssignTeams.bind(this);
+        this.handleAddTeamsClose = this.handleAddTeamsClose.bind(this);
 
         this.changeFirstName = this.changeFirstName.bind(this);
         this.changeLastName = this.changeLastName.bind(this);
@@ -84,12 +98,24 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
     }
 
     private static getColumns(): String[][] {
-        return [["Prénom"], ["Nom"], ["Courriel"], ["Administrateur"]];
+        return [["Prénom"], ["Nom"], ["Courriel"], ["Administrateur"],["Actions"]];
     }
 
     private getUserRows(): any[] {
         return this.state.users.map((u, i) => {
-            return <CustomRow key={i} data={[u.first_name, u.last_name, u.email, u.is_admin ? "Oui" : "Non"]}/>
+            return <CustomRow key={i} data={[u.first_name, u.last_name, u.email, u.is_admin ? "Oui" : "Non", 
+            <FlatButton primary={true} label="Assigner équipes" onClick={() => this.handleAddTeamsOpen(u.id)} />]}/>
+        });
+    }
+
+    private static getTeamsColumns(): String[][] {
+        return [["Nom d'équipe"], ["Ville"], ["Assigner"]];
+    }
+
+    private getTeamsRows(): any[] {
+        return this.state.teams.map((t, i) => {
+            return <CustomRow key={i} data={[t.name, t.city, 
+            <Checkbox style={styles.checkbox} onCheck={() => this.handleCheck(t.id)} />]}/>
         });
     }
 
@@ -116,6 +142,38 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
             open: false
         });
         CreateNewUserAction(this.state.newUser, LoginStore.token);
+    }
+
+     handleAssignTeams() {
+        this.setState({
+            addTeamIsOpen: false
+        });
+        CreateAssignTeamsAction(this.state.userIdToAssignTeams, 
+        this.state.listOfTeamsToAssign, LoginStore.token);
+    }
+
+    handleAddTeamsOpen(id: number){
+        this.setState({
+            addTeamIsOpen: true,
+            userIdToAssignTeams: id
+        });
+        console.log(this.state.userIdToAssignTeams);
+    }
+
+    handleAddTeamsClose() {
+        this.setState({
+            addTeamIsOpen: false,
+            listOfTeamsToAssign: null
+        });
+    }
+
+    handleCheck(id: number){
+        let newArray = this.state.listOfTeamsToAssign.slice();
+        newArray.push(id);
+        this.setState({
+            listOfTeamsToAssign: newArray
+        });
+        console.log(this.state.listOfTeamsToAssign);
     }
 
     private changeUserProperty(property: any, value: any) {
@@ -159,6 +217,20 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
                 primary={true}
                 keyboardFocused={true}
                 onClick={this.handleSave}
+            />,
+        ];
+
+        const AddTeamActions =[
+            <FlatButton
+                label="Annuler"
+                primary={true}
+                onClick={this.handleAddTeamsClose}
+            />,
+            <FlatButton
+                label="Ajouter"
+                primary={true}
+                keyboardFocused={true}
+                onClick={this.handleAssignTeams}
             />,
         ];
 
@@ -209,10 +281,25 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
                         />
                     </Form>
                     </Dialog>
+                   
+                    <Dialog
+                        title="Assigner l'utilisateur aux équipes"
+                        actions={AddTeamActions}
+                        modal={false}
+                        open={this.state.addTeamIsOpen}
+                        onRequestClose={this.handleClose}
+                    >
+                    <Form>
 
-                    <CustomTable columns={UserList.getColumns()}>
-                        {this.getUserRows()}
+                    <CustomTable columns={UserList.getTeamsColumns()}>
+                        {this.getTeamsRows()}
                     </CustomTable>
+                    </Form>
+                    </Dialog>
+
+                     <CustomTable columns={UserList.getColumns()}>
+                        {this.getUserRows()}
+                        </CustomTable>
                     <AddButton onClick={this.handleOpen}/>
                 </div>
             )

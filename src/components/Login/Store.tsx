@@ -4,7 +4,7 @@ import * as Actions from "./Actions"
 import Dispatcher from "../Dispatcher"
 import { Status } from "../PlayerStats/Models/Status";
 import {IUser} from "../../models/DatabaseModels";
-import {OnLoginErrorAction} from "./Actions";
+import { OnLoginErrorAction } from "./Actions";
 
 class LoginStore extends EventEmitter {
 
