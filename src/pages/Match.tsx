@@ -2,13 +2,11 @@ import * as React from "react";
 import ActionStore from "../components/Action/Store"
 import * as ActionsActionsCreator from "../components/Action/ActionsCreator"
 import * as PreferencesActionsCreator from "../components/Preferences/ActionsCreator"
-import BigContent from "../components/Elements/BigContent";
 import {ActionMapComponent} from "../components/Action/ActionMap/Views/ActionMap";
 import {HeatMapComponent} from "../components/Action/HeatMap/Views/HeatMap";
 import LoginStore from "../components/Login/Store";
 import TeamStore from "../components/Team/Stores/TeamStore";
 import {DataPanel} from "../components/DataPanel/index";
-import {Container} from "konva";
 
 export interface ILayoutProps {
     params: {
