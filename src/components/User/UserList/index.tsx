@@ -25,7 +25,13 @@ export interface IUserListState {
     users?: IUser[],
     open?: boolean,
     newUser?: IUser,
-    checkedTeams?: number[]
+    checkedTeams?: number[],
+    firstNameError?:string,
+    lastNameError?:string,
+    emailError?:string,
+    passwordError?: string,
+    emailIsInvalid?: boolean
+
 }
 
 const styles = {
@@ -52,7 +58,12 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
                 email: "",
                 is_admin: false
             },
-            checkedTeams: []
+            checkedTeams: [],
+             firstNameError: "",
+            lastNameError:"",
+            emailError:"",
+            passwordError: "",
+            emailIsInvalid: false
         };
 
         this.getFetching = this.getFetching.bind(this);
@@ -66,6 +77,10 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
         this.changeEmail = this.changeEmail.bind(this);
         this.changePassword = this.changePassword.bind(this);
         this.changeAdmin = this.changeAdmin.bind(this);
+        this.validateFirstName = this.validateFirstName.bind(this);
+        this.validateLastName = this.validateLastName.bind(this);
+        this.validateEmail = this.validateEmail.bind(this);
+        this.validatePassword = this.validatePassword.bind(this);
 
         this.getTeamsRows = this.getTeamsRows.bind(this);
         this.handleToggle = this.handleToggle.bind(this)
@@ -125,6 +140,10 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
     }
 
     handleSave() {
+        if(this.state.emailIsInvalid || this.state.newUser.password.trim().length < 4 ||
+         this.state.newUser.first_name.trim().length == 0 || this.state.newUser.last_name.trim().length == 0)
+            return;
+
         this.setState({
             open: false
         });
@@ -140,24 +159,75 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
         });
     }
 
+    //In this case validate firstname and lastname should 
+    //be done in the same function. Anyway...
     changeFirstName(e: any) {
         this.changeUserProperty('first_name', e.target.value);
+        this.setState({firstNameError: ""});
     }
 
     changeLastName(e: any) {
         this.changeUserProperty('last_name', e.target.value);
+        this.setState({lastNameError: ""});
     }
 
     changeEmail(e: any) {
         this.changeUserProperty('email', e.target.value);
+        this.setState({emailError: ""});
     }
 
     changePassword(e: any) {
         this.changeUserProperty('password', e.target.value);
+        this.setState({passwordError: ""});
     }
 
     changeAdmin(e: any) {
         this.changeUserProperty('is_admin', e.target.checked);
+    }
+
+    validateFirstName(){
+        if(this.state.newUser.first_name.trim().length == 0){
+            this.setState({firstNameError: "Le champ prénom est requis"})
+        }
+        else{
+            this.setState({firstNameError: ""})
+        }
+    }
+
+     validateLastName(){
+        if(this.state.newUser.last_name.trim().length == 0){
+            this.setState({lastNameError: "Le champ prénom est requis"})
+        }
+        else{
+            this.setState({lastNameError: ""})
+        }
+    }
+
+    validateEmail(){
+        let regex  = /^[a-z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
+        if(this.state.newUser.email.trim().length == 0){
+            this.setState({emailError: "Le champ courriel est requis.",
+            emailIsInvalid: true})
+
+        } else if (!this.state.newUser.email.match(regex)) {
+            this.setState({emailError: "Veuillez entrer un courriel valide.", 
+            emailIsInvalid: true})
+        } 
+        else{
+            this.setState({emailError: '', emailIsInvalid: false})
+        }
+    }
+
+    validatePassword(){
+        if(this.state.newUser.password.trim().length == 0){
+            this.setState({passwordError: "Le champ mot de passe est requis."})
+
+        } else if(this.state.newUser.password.trim().length < 4){
+            this.setState({passwordError: "Le champ mot de passe doit avoir au moins 4 caractères."})
+        }    
+        else{
+            this.setState({passwordError: ''})
+        }
     }
 
     private static getTeamsColumns(): String[][] {
@@ -218,11 +288,15 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
                                     floatingLabelText="Prénom"
                                     value={this.state.newUser.first_name}
                                     onChange={this.changeFirstName}
+                                    errorText={this.state.firstNameError}
+                                    onBlur={this.validateFirstName}
                                 />
                                 <FormInput
                                     floatingLabelText="Nom"
                                     value={this.state.newUser.last_name}
                                     onChange={this.changeLastName}
+                                    errorText={this.state.lastNameError}
+                                    onBlur={this.validateLastName}
                                 />
                             </Li>
                             <Li>
@@ -230,12 +304,17 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
                                     floatingLabelText="Courriel"
                                     value={this.state.newUser.email}
                                     onChange={this.changeEmail}
+                                    errorText={this.state.emailError}
+                                    onBlur={this.validateEmail}
+
                                 />
                                 <FormInput
                                     floatingLabelText="Mot de Passe"
                                     value={this.state.newUser.password}
                                     onChange={this.changePassword}
                                     type="password"
+                                    errorText={this.state.passwordError}
+                                    onBlur={this.validatePassword}
                                 />
                             </Li>
                         </ul>
