@@ -7,32 +7,29 @@ import Dispatcher from "../../Dispatcher";
 import * as Config from "Config";
 import {CreateErrorAction} from "../../Error/ErrorAction";
 import {CreateFetchUsersAction} from "./FetchUsers";
-import {CreateAddTeamsAction} from "./AddTeams";
 
 
-export class NewUserAction implements IAction {
+export class AddTeamsAction implements IAction {
     type: string;
-    user: IUser;
 
-    constructor(u: IUser) {
-        this.type = "NEW_USER";
-        this.user = u;
+    constructor() {
+        this.type = "ADD_TEAMS";
     }
 
 }
 
-export function CreateNewUserAction(u: IUser, teamIDs: number[], token: string): void {
-    Dispatcher.dispatch(new NewUserAction(u));
+export function CreateAddTeamsAction(userID: number, teamIDs: number[], token: string): void {
+    Dispatcher.dispatch(new AddTeamsAction());
 
     let instance = axios.create({
         headers: {"X-Auth-Token": token}
     });
 
-    let url: string = Config.serverUrl + 'users';
+    let url: string = Config.serverUrl + 'users/' + userID + '/teams';
 
-    instance.post(url, u).then(
-        (resp: AxiosResponse) => {
-            CreateAddTeamsAction(resp.data.data.id, teamIDs, token);
+    instance.put(url, {'teams': teamIDs}).then(
+        () => {
+            CreateFetchUsersAction(token);
         },
         (err) => {
             CreateErrorAction(err.toString());

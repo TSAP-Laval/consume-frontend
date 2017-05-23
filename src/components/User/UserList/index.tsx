@@ -16,13 +16,16 @@ import FormInput from "../../Elements/FormInput";
 import Li from "../../Elements/Li";
 import {CreateNewUserAction} from "../Actions/NewUser";
 import LoginStore from "../../Login/Store";
+import TeamStore from "../../Team/Stores/TeamStore";
+import Checkbox from "material-ui/Checkbox";
 
 export interface IUserListProps {}
 export interface IUserListState {
     fetching?: boolean,
     users?: IUser[],
     open?: boolean,
-    newUser?: IUser
+    newUser?: IUser,
+    checkedTeams?: number[]
 }
 
 const styles = {
@@ -48,7 +51,8 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
                 last_name: "",
                 email: "",
                 is_admin: false
-            }
+            },
+            checkedTeams: []
         };
 
         this.getFetching = this.getFetching.bind(this);
@@ -62,6 +66,9 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
         this.changeEmail = this.changeEmail.bind(this);
         this.changePassword = this.changePassword.bind(this);
         this.changeAdmin = this.changeAdmin.bind(this);
+
+        this.getTeamsRows = this.getTeamsRows.bind(this);
+        this.handleToggle = this.handleToggle.bind(this)
     }
 
     private getFetching() {
@@ -112,7 +119,8 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
                 last_name: "",
                 email: "",
                 is_admin: false
-            }
+            },
+            checkedTeams: []
         });
     }
 
@@ -120,7 +128,7 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
         this.setState({
             open: false
         });
-        CreateNewUserAction(this.state.newUser, LoginStore.token);
+        CreateNewUserAction(this.state.newUser, this.state.checkedTeams, LoginStore.token);
     }
 
     private changeUserProperty(property: any, value: any) {
@@ -150,6 +158,32 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
 
     changeAdmin(e: any) {
         this.changeUserProperty('is_admin', e.target.checked);
+    }
+
+    private static getTeamsColumns(): String[][] {
+        return [["Nom d'équipe"], ["Ville"], ["Assigner"]];
+    }
+
+    private getTeamsRows(): any[] {
+        return TeamStore.teamsList.map((t, i) => {
+            return <CustomRow key={i} data={[t.name, t.city,
+                <Checkbox style={styles.checkbox} onCheck={() => this.handleToggle(t.id)} />]}/>
+        });
+    }
+
+    private handleToggle(teamID: number) {
+        let oldTeams = this.state.checkedTeams.slice();
+        if (oldTeams.indexOf(teamID) === -1) {
+            oldTeams.push(teamID);
+        } else {
+            oldTeams.splice(oldTeams.indexOf(teamID), 1);
+        }
+
+        this.setState({
+            checkedTeams: oldTeams
+        }, () => {
+            console.log(this.state.checkedTeams)
+        });
     }
 
     render() {
@@ -212,6 +246,9 @@ export default class UserList extends React.Component<IUserListProps, IUserListS
                             onToggle={this.changeAdmin}
                             toggled={this.state.newUser.is_admin}
                         />
+                        <CustomTable columns={UserList.getTeamsColumns()}>
+                            {this.getTeamsRows()}
+                        </CustomTable>
                     </Form>
                     </Dialog>
 
