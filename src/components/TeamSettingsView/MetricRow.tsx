@@ -1,15 +1,11 @@
 import * as React from "react";
-
 import RaisedButton from 'material-ui/RaisedButton';
-
-import { CreateUpdateMetricAction } from "./actions/UpdateMetric";
-import { CreateCreateMetricAction } from "./actions/CreateMetric";
-import { CreateDeleteMetricAction } from "./actions/DeleteMetric";
-
+import { CreateUpdateMetricAction } from "./Actions/UpdateMetric";
+import { CreateCreateMetricAction } from "./Actions/CreateMetric";
+import { CreateDeleteMetricAction } from "./Actions/DeleteMetric";
 import { Metric } from './MetricModel';
-
 import FormInput from "../Elements/FormInput";
-
+import LoginStore from "../Login/Store";
 
 export interface IMetricRowProps {
     metric?: Metric
@@ -42,11 +38,11 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
         this.changeName = this.changeName.bind(this);
         this.changeDesc = this.changeDesc.bind(this);
         this.changeFormula = this.changeFormula.bind(this);
-        this.delete = this.delete.bind(this);
+        this.deleteMetric = this.deleteMetric.bind(this);
     }
 
-    delete() {
-        CreateDeleteMetricAction(this.state.metric.id, this.props.teamID)
+    deleteMetric() {
+        CreateDeleteMetricAction(this.state.metric.id, this.props.teamID, LoginStore.token)
     }
 
     changeName(e: any) {
@@ -60,7 +56,7 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
 
     changeDesc(e: any) {
         let oldMetric = this.state.metric;
-        oldMetric.description = e.target.value
+        oldMetric.description = e.target.value;
 
         this.setState({
             metric: oldMetric
@@ -77,10 +73,7 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
     }
 
     handleSave(e: React.FocusEvent<any>) {
-
         let metric = this.state.metric;
-
-        let valid = true;
         let nameError = "";
         let descError = "";
         let formulaError = "";
@@ -107,11 +100,9 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
         }
 
         if (this.state.metric.id) {
-            // Update the metric
-            CreateUpdateMetricAction(this.state.metric, this.props.teamID);
+            CreateUpdateMetricAction(this.state.metric, this.props.teamID, LoginStore.token);
         } else {
-            // Create the metric
-            CreateCreateMetricAction(this.state.metric, this.props.teamID);
+            CreateCreateMetricAction(this.state.metric, this.props.teamID, LoginStore.token);
         }
     }
 
@@ -144,7 +135,7 @@ export default class MetricRow extends React.Component<IMetricRowProps, IMetricR
 
                 <RaisedButton
                     label="Supprimer"
-                    onClick={this.delete}
+                    onClick={this.deleteMetric}
                 />
             </div>
         );

@@ -1,4 +1,6 @@
-export class Metric {
+import {IMetricSummary} from "../../models/DatabaseModelsSummaries";
+
+export class Metric implements IMetricSummary {
     public id: number;
     public name: string;
     public description: string;

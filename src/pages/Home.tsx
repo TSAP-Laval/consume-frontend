@@ -1,35 +1,36 @@
 import * as React from "react";
-import { ActionMap } from "../components/Map/ActionMap/Index"
-
-import StatsTable from "../components/PlayerStats/StatsTable";
-import StatsGraphs from "../components/PlayerStats/StatsGraphs";
-import RaisedButton from 'material-ui/RaisedButton';
-
-import { Link } from 'react-router';
-
 import BigContent from "../components/Elements/BigContent";
+import Li from '../components/Elements/Li';
+import LoginStore from "../components/Login/Store";
+import {RaisedButton} from "material-ui";
+import { Link } from 'react-router';
+import TeamList from "../components/Team/Views/TeamList";
 
 
-export interface IHomeProps {}
+export interface ILayoutProps {
+}
 
-export interface IHomeState {}
+export interface ILayoutState {
+    isLoggedIn?: boolean
+}
 
-export default class Home extends React.Component<IHomeProps, IHomeState> {
-
+export default class Home extends React.Component<ILayoutProps, ILayoutState> {
     constructor() {
         super();
+        this.state = {
+            isLoggedIn: LoginStore.isLoggedIn
+        }
     }
 
     render() {
         return (
             <BigContent>
-                <h1>Console TSAP</h1>
-                <p>
-                    <Link to="/team/3">
-                        <RaisedButton primary={true} label="Statistiques de l'équipe" />
-                    </Link>
-                </p>
+                {
+                    LoginStore.isAdmin()?
+                        <Link to="/users"><RaisedButton primary={true} label="Gestion des Utilisateurs"/></Link>: null
+                }
+                <TeamList />
             </BigContent>
-        );
+        )
     }
 }

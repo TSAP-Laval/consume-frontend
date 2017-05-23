@@ -1,21 +1,20 @@
 import * as React from "react";
-
-import styled from 'styled-components';
-
-import {ActionMap} from "../components/Map/ActionMap/Index"
-import {HeatMap} from "../components/Map/HeatMap/Index"
-
+import {IPlayer, IPlayerStats, ISeason} from "../models/DatabaseModels";
+import LoginStore from "../components/Login/Store";
+import StatsStore from "../components/PlayerStats/Store";
+import {DataPanel} from "../components/DataPanel/index";
 import StatsTable from "../components/PlayerStats/StatsTable";
 import StatsGraphs from "../components/PlayerStats/StatsGraphs";
-import GenericMetricsView from "../components/genericMetrics/GenericMetricsView";
-import StatsTableStore from "../components/PlayerStats/store";
-import { CreateGetMatchesAction } from "../components/PlayerStats/actions/GetMatchesAction";
-import { CreateGetSeasonsAction } from "../components/PlayerStats/actions/GetSeasonsAction";
-import { CreateGetPositionsAction } from "../components/PlayerStats/actions/GetPositionsAction";
+import {CreateFetchPlayerStatsAction} from "../components/PlayerStats/Actions/FetchPlayerStats";
+import {CreateFetchSeasonsAction} from "../components/PlayerStats/Actions/FetchSeasons";
+import AllContainer from "../components/Elements/AllContainer";
+import Toolbar from "material-ui/Toolbar";
+import ToolbarGroup from "material-ui/Toolbar/ToolbarGroup";
+import ToolbarTitle from "material-ui/Toolbar/ToolbarTitle";
+import DropDownMenu from "material-ui/DropDownMenu";
+import MenuItem from "material-ui/MenuItem";
+import {ToolbarSeparator} from "material-ui/Toolbar/ToolbarSeparator";
 
-import { DataPanel } from "../components/DataPanel";
-
-import Paper from 'material-ui/Paper';
 
 export interface ILayoutProps {
     params: {
@@ -25,67 +24,78 @@ export interface ILayoutProps {
 }
 
 export interface ILayoutState {
-    playerName?: string
-}
+    player?: IPlayer
 
-const AllContainer = styled.div`
-    margin-top: 2em;
-`;
+    selectedSeasonID?: number
+    seasons?: ISeason[]
+}
 
 export default class Player extends React.Component<ILayoutProps, ILayoutState> {
 
     constructor(props: ILayoutProps) {
-        super();
-        this.getPlayerName = this.getPlayerName.bind(this);
+        super(props);
+        this.state = {seasons: []};
 
-        this.state = {
-            playerName: 'un joueur'
-        }
+        this.setPlayer = this.setPlayer.bind(this);
+        this.setSeasons = this.setSeasons.bind(this);
+        this.handleSelectedSeason = this.handleSelectedSeason.bind(this);
     }
 
     componentWillMount() {
-        StatsTableStore.on("dataChange", this.getPlayerName);
+        StatsStore.on("PlayerChanged", this.setPlayer);
+        StatsStore.on("SeasonsChanged", this.setSeasons);
 
-        CreateGetSeasonsAction();
-        CreateGetPositionsAction(this.props.params.playerID);
-        CreateGetMatchesAction(this.props.params.playerID, this.props.params.teamID);
+        CreateFetchSeasonsAction(this.props.params.teamID, this.props.params.playerID, LoginStore.token);
     }
 
     componentWillUnmount() {
-        StatsTableStore.removeListener("dataChange", this.getPlayerName);
+        StatsStore.removeListener("PlayerChanged", this.setPlayer);
     }
 
-    // Va récupérer les joueurs du store.
-     getPlayerName() {
+    setPlayer() {
         this.setState({
-            playerName: StatsTableStore.getPlayerName()
+            player: StatsStore.player
         });
     }
 
+    setSeasons() {
+        this.setState({
+            seasons: StatsStore.seasons,
+            selectedSeasonID: StatsStore.seasons[StatsStore.seasons.length - 1].id
+        })
+    }
+
+    handleSelectedSeason(e: any, i: any, value: any) {
+        this.setState({
+            selectedSeasonID: value
+        });
+        CreateFetchPlayerStatsAction(this.props.params.teamID, this.props.params.playerID, value, LoginStore.token);
+    }
+
     render() {
-        let arrowTitle = "Tracé des actions";
-        let heatmapTitle = "Heatmap des actions";
         let statsTitle = "Statistiques du joueur";
         let graphTitle = "Progression du joueur";
 
-        // Les options de la date.
-        let dateOptions = {
-        weekday: "short",
-        year: "numeric",
-        month:"short",
-        day:"numeric"
-    };
-        // Format local de la date.
-        let dateLocal = "fr-CA";
+        let playerName = this.state.player? this.state.player.first_name + " " + this.state.player.last_name: "un joueur";
+
+        let menuItems = this.state.seasons.map((s) => {
+            return <MenuItem value={s.id} primaryText={s.start_year.toString() + "-" + s.end_year.toString()} />;
+        });
 
         return (
-            <AllContainer>
-                <DataPanel PlayerName={this.state.playerName} Header={arrowTitle}><ActionMap playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></DataPanel>
-                <DataPanel PlayerName={this.state.playerName} Header={heatmapTitle} ><HeatMap playerID={this.props.params.playerID} teamID={this.props.params.teamID}/></DataPanel>
-
-                <DataPanel PlayerName={this.state.playerName} Header={graphTitle} ><StatsGraphs playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
-                <DataPanel PlayerName={this.state.playerName} Header={statsTitle} ><StatsTable playerID={this.props.params.playerID} teamID={this.props.params.teamID} dateLocal={dateLocal} dateOptions ={dateOptions}/></DataPanel>
-            </AllContainer>
+            <div>
+                <Toolbar>
+                    <ToolbarGroup firstChild={true}>
+                        <DropDownMenu value={this.state.selectedSeasonID} onChange={this.handleSelectedSeason}>
+                            {menuItems}
+                        </DropDownMenu>
+                    </ToolbarGroup>
+                </Toolbar>
+                <AllContainer>
+                    <DataPanel Header={graphTitle} Name={playerName}><StatsGraphs teamID={this.props.params.teamID} /></DataPanel>
+                    <DataPanel Header={statsTitle} Name={playerName}><StatsTable teamID={this.props.params.teamID} /></DataPanel>
+                </AllContainer>
+            </div>
         );
     }
 }

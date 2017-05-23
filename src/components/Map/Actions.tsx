@@ -1,5 +1,5 @@
-import IAction from "../IAction"
-import {Action, Size} from "./Models"
+import {IAction} from "../../models/ActionCreation";
+import { Size } from "../../models/ComponentModels";
 
 export class FetchActions implements IAction {
     type: string
@@ -11,9 +11,9 @@ export class FetchActions implements IAction {
 
 export class ReceiveActions implements IAction {
     type: string
-    actions: Action[]
+    actions: IAction[]
 
-    constructor(actions: Action[]) {
+    constructor(actions: IAction[]) {
         this.type = "RECEIVE_ACTIONS"
         this.actions = actions
     }

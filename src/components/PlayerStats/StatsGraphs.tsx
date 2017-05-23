@@ -1,34 +1,16 @@
 import * as React from "react";
-import StatsTableStore from "./store";
-
-import { CreateGetMatchesAction } from "./actions/GetMatchesAction";
-import { CreateChangeFilterAction } from './actions/ChangeFilterAction';
-import Status from "./models/Status";
-import IMatch from "./models/IMatch";
 
 import { IStatsState } from './StatsTable';
-
-import Table from "./Table";
+import StatStore from "./Store";
 
 import { Chart } from 'chart.js';
-
-import Li from "../Elements/Li";
-import LeftDiv from "../Elements/LeftDiv";
-import RightDiv from "../Elements/RightDiv";
-import SmallContainer from "../Elements/SmallContainer";
 import Spinner from "../Elements/Spinner";
+import {ITeamSummary} from "../../models/DatabaseModelsSummaries";
+import SmallContainer from "../Elements/SmallContainer";
 
 
 export interface IGraphsProps {
-    teamID: number,
-    playerID: number,
-    dateOptions: {
-        weekday: string,
-        year: string,
-        month:string,
-        day:string
-    },
-    dateLocal:string
+    teamID: number
 }
 
 
@@ -37,7 +19,7 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
     refs: {
         [string: string]: (Element);
         statGraph: (HTMLElement);
-    }
+    };
 
     colors: string[];
 
@@ -45,106 +27,102 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
     constructor() {
         super();
 
-        this.getStatus = this.getStatus.bind(this);
-        this.getResults = this.getResults.bind(this);
-
         this.state = {
-            requestState: StatsTableStore.getRequestStatus(),
-            matches: StatsTableStore.getMatches(),
-            seasons: StatsTableStore.getSeasons(),
-            positions: StatsTableStore.getPositions()
-        }
+            loading: StatStore.isFetching()
+        };
 
         this.colors = [
             "rgba(191, 63, 63, 255)",
             "rgba(63, 191, 63, 255)",
             "rgba(63, 63, 191, 255)"
-        ]
+        ];
+
+        this.changeLoadState = this.changeLoadState.bind(this);
+        this.changePlayer = this.changePlayer.bind(this);
+        this.changeStats = this.changeStats.bind(this);
+        this.drawGraph = this.drawGraph.bind(this);
     }
 
-    componentWillMount() {
-        StatsTableStore.on("dataChange", this.getResults);
-        StatsTableStore.on("requestState", this.getStatus);
-        StatsTableStore.on("seasons", this.getSeasons.bind(this));
-        StatsTableStore.on("positions", this.getPositions.bind(this));
-        StatsTableStore.on("filter", this.getFilters.bind(this));
-    }
-
-    componentWillUnmount() {
-        StatsTableStore.removeListener("dataChange", this.getResults);
-        StatsTableStore.removeListener("requestState", this.getStatus);
-        StatsTableStore.removeListener("seasons", this.getSeasons.bind(this));
-        StatsTableStore.removeListener("positions", this.getPositions.bind(this));
-        StatsTableStore.on("filter", this.getFilters.bind(this));
-    }
-
-    getFilters() {
+    changeLoadState() {
         this.setState({
-            selectedSeasonID: StatsTableStore.getSelectedSeason(),
-            selectedPositionID: StatsTableStore.getSelectedPosition()
+            loading: StatStore.isFetching()
         });
     }
 
-    getPositions() {
+    changePlayer() {
         this.setState({
-            positions: StatsTableStore.getPositions()
+            player: StatStore.player
         });
     }
 
-    getSeasons() {
+    changeStats() {
         this.setState({
-            seasons: StatsTableStore.getSeasons()
-        });
-    }
-
-    getResults() {
-        this.setState({
-            matches: StatsTableStore.getMatches(),
-            requestState: StatsTableStore.getRequestStatus()
+            playerStats: StatStore.playerStats
         }, this.drawGraph);
     }
 
-    getStatus() {
-        this.setState({
-            requestState: StatsTableStore.getRequestStatus()
-        })
+    componentWillMount() {
+        StatStore.on("FetchingStateChanged", this.changeLoadState);
+        StatStore.on("PlayerChanged", this.changePlayer);
+        StatStore.on("PlayerStatsChanged", this.changeStats);
     }
 
-    handleSeasonChange(e: any) {
-        CreateChangeFilterAction(e.target.value, this.state.selectedPositionID, this.props.playerID, this.props.teamID);
+    componentWillUnmount() {
+        StatStore.removeListener("FetchingStateChanged", this.changeLoadState);
+        StatStore.removeListener("PlayerChanged", this.changePlayer);
+        StatStore.removeListener("PlayerStatsChanged", this.changeStats);
     }
 
-    handlePositionChange(e: any) {
-        CreateChangeFilterAction(this.state.selectedSeasonID, e.target.value, this.props.playerID, this.props.teamID);
-    }
-
-    drawGraph() {
-
-        if (this.state.requestState == Status.Started) {
-            return
-        }
-        let ctx : CanvasRenderingContext2D = (this.refs.statGraph as HTMLCanvasElement).getContext("2d");
-
-        let points: {[label: string]: number[]} = {};
-        let labels : string[] = [];
-        for (let i = 0; i < this.state.matches.length; i++) {
-            let match = this.state.matches[i];
-            labels.push(match.date.toLocaleDateString(this.props.dateLocal, this.props.dateOptions));
-
-            for (let j = 0; j < match.metrics.length; j++) {
-                let metric = match.metrics[j];
-                if (points[metric.name]) {
-                    points[metric.name].push(metric.value);
-                } else {
-                    points[metric.name] = [metric.value];
+    private getMetricNames(): string[] {
+        let metrics = [];
+        if (this.state.playerStats.length > 0) {
+            for (let key in this.state.playerStats[0].metrics) {
+                if (this.state.playerStats[0].metrics.hasOwnProperty(key)) {
+                    metrics.push(key);
                 }
             }
+        }
+
+        return metrics.sort();
+    }
+
+    private getColumns(): string[][] {
+        let cols = [["Adversaire"], ["Date"]];
+
+        return cols.concat(this.getMetricNames().map(x => [x]));
+    }
+
+    private drawGraph() {
+        if (this.state.loading) {
+            return;
+        }
+
+        let ctx: CanvasRenderingContext2D = (this.refs.statGraph as HTMLCanvasElement).getContext("2d");
+
+        let points: {[label: string]: number[]} = {};
+        let labels: string[] = [];
+
+        for (let i = 0; i < this.state.playerStats.length; i++) {
+            let match = this.state.playerStats[i].match;
+            let d = match.date.split(" ");
+            d.splice(-2, 2);
+            labels.push(d.join(" "));
+
+            this.getMetricNames().forEach((m) => {
+                let metricValue = this.state.playerStats[i].metrics[m];
+
+                if (points[m]) {
+                    points[m].push(metricValue);
+                } else {
+                    points[m] = [metricValue];
+                }
+            })
         }
 
         let datasets: any[] = [];
 
         let i: number = 0;
-        for (let key in points) {
+        for(let key in points) {
             let value = points[key];
             let color: string = this.colors[i++];
 
@@ -165,50 +143,20 @@ export default class StatsGraphs extends React.Component<IGraphsProps, IStatsSta
         let config: Chart.ChartConfiguration = {
             type: "line",
             data: data
-        }
+        };
         let statChart = new Chart(ctx, config);
     }
 
     render() {
-        let baseCols: Array<String> = ["Adversaire", "Date"];
-
-        let cols = baseCols.concat(this.state.matches.length > 0?
-        this.state.matches[0].metrics.map((metric) => {
-            return metric.name
-        }): []);
-
-        let data = this.state.matches.map((match) => {
-            let baseData: Array<String> = [match.opposing.name, match.date.toLocaleDateString(this.props.dateLocal,
-             this.props.dateOptions)];
-            return baseData.concat(match.metrics.map((metric) => {
-                return metric.value.toFixed(2).toString();
-            }));
-        });
-
-        let seasonOptions = [<option selected value="">-- Aucun Filtre --</option>].concat(this.state.seasons.map((season) =>(
-            <option value={season.ID}>{season.Annees}</option>
-        )));
-
-        let positionOptions = [<option selected value="">-- Aucun Filtre --</option>].concat(this.state.positions.map((position) => (
-            <option value={position.ID}>{position.Nom}</option>
-        )));
+        if (this.state.loading) {
+            return <Spinner/>;
+        }
 
         return (
-            this.state.requestState == Status.Idle?
-                <SmallContainer>
-                    <LeftDiv>
-                        <canvas ref={"statGraph"} >
-                        </canvas>
-                    </LeftDiv>
-                    <RightDiv>
-                        <h3>Paramètres</h3>
-                        <ul>
-                            <Li><select onChange={this.handleSeasonChange.bind(this)} value={this.state.selectedSeasonID}>{seasonOptions}</select></Li>
-                            <Li><select onChange={this.handlePositionChange.bind(this)} value={this.state.selectedPositionID}>{positionOptions}</select></Li>
-                        </ul>
-                    </RightDiv>
-                </SmallContainer>
-            : <Spinner />
+            <SmallContainer>
+                <canvas ref={"statGraph"}>
+                </canvas>
+            </SmallContainer>
         )
     }
 
