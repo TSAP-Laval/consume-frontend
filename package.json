@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "test": "echo hello",
-    "start": "webpack-dev-server --progress --colors --hot"
+    "start": "webpack-dev-server --progress --colors --hot",
+    "build": "NODE_ENV='production' webpack"
   },
   "dependencies": {
     "@types/chai": "^3.4.34",
