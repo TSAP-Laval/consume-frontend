@@ -78,9 +78,11 @@ export default class TeamList extends React.Component<ILayoutProps, ILayoutState
             data = this.state.teams.map((team, i) => {
                 let rowData: Array<any> = [team.name,
                    team.city,
-                    <FlatButton primary={true} label="Liste de matchs" containerElement={<Link to={"/team/" + team.id + "/matches"}/>} /> ,
-                    <FlatButton primary={true} label="Liste de joueurs" containerElement={<Link to={"/team/" + team.id + "/players"}/>} />,
-                    <FlatButton primary={true} label="Paramètres" containerElement={<Link to={"/team/" + team.id + "/settings"}/>} />];
+                    <span>
+                    <FlatButton primary={true} label="Matchs" containerElement={<Link to={"/team/" + team.id + "/matches"}/>} />
+                    <FlatButton primary={true} label="Joueurs" containerElement={<Link to={"/team/" + team.id + "/players"}/>} />
+                    <FlatButton primary={true} label="Paramètres" containerElement={<Link to={"/team/" + team.id + "/settings"}/>} />
+                    </span>];
 
                 return <CustomRow key={i} data={rowData}/>
             })
