@@ -7,6 +7,7 @@ import SmallContainer from "../Elements/SmallContainer";
 import CustomTable from "../CustomTable/CustomTable";
 import {ITeamSummary} from "../../models/DatabaseModelsSummaries";
 import CustomRow from "../CustomTable/CustomRow";
+import { Link } from 'react-router';
 
 
 export interface IStatsProps {
@@ -108,7 +109,8 @@ export default class StatsTable extends React.Component<IStatsProps, IStatsState
                 return p.metrics[mname].toFixed(2).toString();
             });
 
-            let m_data = [adv.name, date].concat(metrics);
+            let url = "/team/" + this.props.teamID + "/matches/" + p.match.id;
+            let m_data = ([adv.name, <Link to={url}>{date}</Link>] as any).concat(metrics);
 
             return <CustomRow key={i} data={m_data}/>
         });
